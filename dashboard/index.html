@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Invest 策略面板</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans SC",sans-serif;background:#f5f5f5;color:#111;line-height:1.5}
+.container{max-width:1120px;margin:0 auto;padding:20px 16px}
+.grid{display:grid;gap:12px}
+.grid-3{grid-template-columns:1fr 1fr 1fr}
+.grid-5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
+
+.header{background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 0;position:sticky;top:0;z-index:100}
+.header-inner{max-width:1120px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:1.15rem;font-weight:600;letter-spacing:-0.01em}
+.header-meta{font-size:0.78rem;color:#6b7280;display:flex;align-items:center;gap:12px}
+.header-meta .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px}
+.dot-green{background:#10b981}.dot-red{background:#ef4444}.dot-yellow{background:#f59e0b}
+#refreshBtn{background:none;border:1px solid #e5e7eb;padding:4px 10px;font-size:0.78rem;cursor:pointer;border-radius:4px;color:#6b7280}
+#refreshBtn:hover{background:#f9fafb;color:#111}
+.header .subtitle{font-size:0.78rem;color:#9ca3af;display:block;margin-top:1px}
+
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:16px}
+.card-title{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#6b7280;margin-bottom:8px}
+.card-value{font-size:1.5rem;font-weight:600;line-height:1.2}
+.card-sub{font-size:0.78rem;color:#6b7280;margin-top:4px}
+
+.signal-bar{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:16px;margin-bottom:12px}
+.signal-bar .label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:#6b7280;margin-bottom:4px}
+.signal-main{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.signal-tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:0.85rem;font-weight:600}
+.signal-tag.x05{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+.signal-tag.x10{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.signal-tag.x15{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+.signal-text{font-size:0.88rem;flex:1;min-width:200px}
+.signal-detail{display:flex;gap:16px;margin-top:8px}
+.signal-detail-item{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:#6b7280}
+.signal-detail-item strong{color:#111;font-weight:600}
+
+.force-card{padding:12px 16px}
+.force-card .force-header{display:flex;justify-content:space-between;align-items:flex-start}
+.force-card .force-name{font-size:0.85rem;font-weight:600}
+.force-card .force-weight{font-size:0.7rem;color:#9ca3af;background:#f3f4f6;padding:1px 6px;border-radius:3px}
+.force-card .force-value{font-size:1.1rem;font-weight:600;margin-top:4px}
+.force-card .force-change{font-size:0.72rem;margin-top:1px}
+.force-card .force-desc{font-size:0.72rem;color:#6b7280;margin-top:6px;line-height:1.4}
+.indicator-red{color:#dc2626}.indicator-green{color:#16a34a}.indicator-yellow{color:#d97706}
+
+.table-wrap{overflow-x:auto}
+.holdings-table{width:100%;border-collapse:collapse;font-size:0.82rem}
+.holdings-table th{text-align:left;padding:8px 6px 6px;font-weight:500;color:#6b7280;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid #e5e7eb}
+.holdings-table td{padding:7px 6px;border-bottom:1px solid #f3f4f6}
+.holdings-table tr:last-child td{border-bottom:none}
+.holdings-table .ticker{font-weight:600}
+.holdings-table .pe-high{color:#dc2626}.holdings-table .pe-low{color:#16a34a}
+
+.fed-grid{display:flex;gap:12px;flex-wrap:wrap}
+.fed-item{flex:1;min-width:100px}
+.fed-item .fed-label{font-size:0.68rem;color:#6b7280;font-weight:500;margin-bottom:2px}
+.fed-item .fed-value{font-size:0.9rem;font-weight:600}
+
+.section{margin-bottom:16px}
+.section-title{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#9ca3af;margin-bottom:8px;padding:0 2px}
+.knowledge-card{padding:12px 16px}
+.knowledge-card summary{font-size:0.82rem;font-weight:600;cursor:pointer;color:#374151;padding:4px 0;list-style:none}
+.knowledge-card summary::-webkit-details-marker{display:none}
+.knowledge-card summary::before{content:"+";font-size:0.78rem;margin-right:6px;color:#9ca3af}
+.knowledge-card[open] summary::before{content:"−"}
+.knowledge-card .kb-content{padding-top:8px;border-top:1px solid #f3f4f6;margin-top:6px}
+.knowledge-card .kb-item{font-size:0.78rem;padding:4px 0;border-bottom:1px solid #f9fafb;display:flex}
+.knowledge-card .kb-item:last-child{border-bottom:none}
+.knowledge-card .kb-label{font-weight:500;color:#374151;min-width:90px;flex-shrink:0}
+.knowledge-card .kb-value{color:#6b7280}
+#loading{text-align:center;padding:60px 0;color:#9ca3af;font-size:0.92rem}
+#dashboard{display:none}
+.error-msg{padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:6px;color:#dc2626;font-size:0.82rem}
+@media(max-width:768px){.grid-3,.grid-5{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.grid-3,.grid-5{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <div><h1>Invest</h1><span class="subtitle">策略面板</span></div>
+    <div class="header-meta">
+      <span id="updateTime">--</span>
+      <span id="dataStatus">--</span>
+      <button id="refreshBtn" onclick="location.reload()">刷新</button>
+    </div>
+  </div>
+</header>
+<div class="container">
+  <div id="loading">正在加载数据...</div>
+  <div id="dashboard">
+
+    <div id="signalSection" class="signal-bar">
+      <div class="label">PE-DCA 执行信号</div>
+      <div class="signal-main">
+        <span id="signalTag" class="signal-tag">--</span>
+        <div class="signal-text" id="signalText">--</div>
+      </div>
+      <div class="signal-detail">
+        <div class="signal-detail-item">纳指 PE <span id="nasdaqPeDisplay">--</span> <span id="nasdaqSignalTag">--</span></div>
+        <div class="signal-detail-item">沪深300 PE <span id="csiPeDisplay">--</span> <span id="csiSignalTag">--</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">组合快照</div>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-title">纳指 100</div>
+          <div class="card-value" id="nasdaqPrice">--</div>
+          <div class="card-sub" id="nasdaqSub">PE: --</div>
+        </div>
+        <div class="card">
+          <div class="card-title">沪深 300</div>
+          <div class="card-value" id="csiPrice">--</div>
+          <div class="card-sub" id="csiSub">PE: --</div>
+        </div>
+        <div class="card">
+          <div class="card-title">总组合</div>
+          <div class="card-value">55:45</div>
+          <div class="card-sub">纳指55% | 沪深300 45%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">宏观信号（按权重排列）</div>
+      <div class="grid grid-5" id="macroGrid"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">核心持仓</div>
+      <div class="card">
+        <div class="table-wrap">
+          <table class="holdings-table">
+            <thead><tr><th>代码</th><th>价格</th><th>PE</th><th>Fwd PE</th><th>毛利率</th><th>净利率</th><th>ROE</th><th>PEG</th></tr></thead>
+            <tbody id="holdingsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">美联储监视器</div>
+      <div class="card">
+        <div class="fed-grid">
+          <div class="fed-item"><div class="fed-label">新主席</div><div class="fed-value">Kevin Warsh</div><div style="font-size:0.68rem;color:#9ca3af">2026.5.15上任</div></div>
+          <div class="fed-item"><div class="fed-label">利率</div><div class="fed-value">3.75%</div><div style="font-size:0.68rem;color:#9ca3af">3次降息·累计75bp</div></div>
+          <div class="fed-item"><div class="fed-label">资产负债表</div><div class="fed-value">$7.5T</div><div style="font-size:0.68rem;color:#9ca3af">缩表加速中</div></div>
+          <div class="fed-item"><div class="fed-label">核心PCE</div><div class="fed-value">3.2%</div><div style="font-size:0.68rem;color:#9ca3af">目标2%·仍偏高</div></div>
+          <div class="fed-item"><div class="fed-label">制衡</div><div class="fed-value" style="font-size:0.85rem">鲍威尔理事</div><div style="font-size:0.68rem;color:#9ca3af">留任至2028</div></div>
+        </div>
+        <div style="font-size:0.78rem;color:#6b7280;margin-top:8px;border-top:1px solid #f3f4f6;padding-top:8px">
+          <strong>核心矛盾：</strong>沃什主张降息+缩表并行，两股力量对冲。通胀3.2%限制降息空间。PE-DCA自动处理：跌了加倍，涨了减半。
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">投资框架与决策记录</div>
+      <details class="card knowledge-card" open>
+        <summary>三问评估框架</summary>
+        <div class="kb-content">
+          <div class="kb-item"><span class="kb-label">Q1 赚钱效率</span><span class="kb-value">ROE、毛利率、净利率 → 杜邦拆解</span></div>
+          <div class="kb-item"><span class="kb-label">Q2 增长</span><span class="kb-value">营收增长、利润增长、利润>营收?</span></div>
+          <div class="kb-item"><span class="kb-label">Q3 价格</span><span class="kb-value">PE、PEG、Forward PE vs 历史区间</span></div>
+        </div>
+      </details>
+      <details class="card knowledge-card">
+        <summary>五大宏观力权重</summary>
+        <div class="kb-content" id="macroForceContent"></div>
+      </details>
+      <details class="card knowledge-card">
+        <summary>核心判断摘要</summary>
+        <div class="kb-content" id="judgmentsContent"></div>
+      </details>
+    </div>
+
+  </div>
+</div>
+
+<script>
+async function loadData(){
+  try{
+    const resp=await fetch('./data.json?_='+Date.now());
+    if(!resp.ok) throw new Error('无法读取数据文件');
+    const d=await resp.json();
+    renderAll(d);
+  }catch(e){
+    document.getElementById('loading').innerHTML=
+      '<div class="error-msg">数据加载失败: '+e.message+'<br><br>请先运行 <code>python3 dashboard/data_fetcher.py</code> 生成数据文件</div>';
+  }
+}
+
+function fmtPrice(v){return v==null?'--':'$'+Number(v).toFixed(0)}
+function fmtPe(v){return v==null?'--':Number(v).toFixed(1)}
+function fmtPct(v){return v==null?'--':(Number(v)*100).toFixed(1)+'%'}
+function fmtChg(v){if(v==null)return '--';const n=Number(v);const c=n>0?'indicator-green':n<0?'indicator-red':'indicator-yellow';const s=n>0?'+':'';return '<span class="'+c+'">'+s+n.toFixed(2)+'%</span>'}
+function sigTag(s){if(s==='x0.5')return {cls:'x05',label:'×0.5 减半'};if(s==='x1.5')return {cls:'x15',label:'×1.5 加倍'};return {cls:'x10',label:'×1.0 正常'}}
+
+function renderAll(d){
+  document.getElementById('loading').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('updateTime').textContent='更新 '+d.last_updated;
+
+  const s=d.signals||{};
+  const signals=[s.nasdaq_signal,s.csi_signal];
+  let worst='x1.0',wLabel='中性·维持';
+  if(signals.includes('x0.5')){worst='x0.5';wLabel='谨慎·减仓'}
+  else if(signals.includes('x1.5')){worst='x1.5';wLabel='机会·加仓'}
+  const tag=sigTag(worst);
+  document.getElementById('signalTag').className='signal-tag '+tag.cls;
+  document.getElementById('signalTag').textContent=tag.label;
+  document.getElementById('signalText').textContent=s.overall||'--';
+
+  const nPe=d.nasdaq100?d.nasdaq100.pe:null;
+  const cPe=d.csi300?d.csi300.pe:null;
+  document.getElementById('nasdaqPeDisplay').textContent=fmtPe(nPe);
+  document.getElementById('csiPeDisplay').textContent=fmtPe(cPe);
+  const nt=sigTag(s.nasdaq_signal);
+  const ct=sigTag(s.csi_signal);
+  document.getElementById('nasdaqSignalTag').className='signal-tag '+nt.cls;
+  document.getElementById('nasdaqSignalTag').textContent=nt.label;
+  document.getElementById('csiSignalTag').className='signal-tag '+ct.cls;
+  document.getElementById('csiSignalTag').textContent=ct.label;
+
+  const statusEl=document.getElementById('dataStatus');
+  if(worst==='x0.5')statusEl.innerHTML='<span class="dot dot-red"></span> 谨慎';
+  else if(worst==='x1.5')statusEl.innerHTML='<span class="dot dot-green"></span> 机会';
+  else statusEl.innerHTML='<span class="dot dot-yellow"></span> 中性';
+
+  const na=d.nasdaq100||{},cs=d.csi300||{};
+  document.getElementById('nasdaqPrice').textContent=na.price?fmtPrice(na.price):'--';
+  document.getElementById('nasdaqSub').textContent='PE: '+fmtPe(na.pe)+' | Fwd PE: '+fmtPe(na.forward_pe);
+  document.getElementById('csiPrice').textContent=cs.price?Number(cs.price).toFixed(0):'--';
+  document.getElementById('csiSub').textContent='PE: '+fmtPe(cs.pe);
+
+  const m=d.macro||{};
+  const forces=[
+    {k:'us10y',n:'利率',w:'35%',v:m.us10y?(m.us10y.price+'%'):'--',c:m.us10y?m.us10y.change:null,d:'10Y国债决定PE定价锚'},
+    {k:'dxy',n:'流动性',w:'25%',v:m.dxy?m.dxy.price.toFixed(1):'--',c:null,d:'缩表7.5T→7.4T·沃什加速'},
+    {k:'usdcny',n:'汇率',w:'20%',v:m.usdcny?m.usdcny.price.toFixed(2):'--',c:m.usdcny?m.usdcny.change:null,d:'DXY 99=美元中性'},
+    {k:'gold',n:'地缘',w:'15%',v:m.gold?'$'+Number(m.gold.price).toFixed(0):'--',c:m.gold?m.gold.change:null,d:'黄金4547=避险仍存'},
+    {k:null,n:'中国财政',w:'5%',v:'宽松',c:null,d:'LPR 3.1%·A股已定价最坏预期'},
+  ];
+  document.getElementById('macroGrid').innerHTML=forces.map(f=>
+    '<div class="card force-card"><div class="force-header"><span class="force-name">'+f.n+'</span><span class="force-weight">'+f.w+'</span></div><div class="force-value">'+f.v+'</div><div class="force-change">'+(f.c!==null?fmtChg(f.c):'')+'</div><div class="force-desc">'+f.d+'</div></div>'
+  ).join('');
+
+  const h=d.holdings||{};
+  const order=['NVDA','MSFT','GOOGL','AMZN','META','AVGO','TSM','AAPL','TSLA'];
+  document.getElementById('holdingsBody').innerHTML=order.map(t=>{
+    const s=h[t];if(!s)return '';
+    const pe=fmtPe(s.pe),peCls=(s.pe&&Number(s.pe)>30)?'pe-high':(s.pe&&Number(s.pe)<15)?'pe-low':'';
+    return '<tr><td class="ticker">'+s.name+'</td><td>'+(s.price?'$'+Number(s.price).toFixed(0):'--')+'</td><td class="'+peCls+'">'+pe+'</td><td>'+fmtPe(s.forward_pe)+'</td><td>'+fmtPct(s.gm)+'</td><td>'+fmtPct(s.nm)+'</td><td>'+fmtPct(s.roe)+'</td><td>'+(s.peg?Number(s.peg).toFixed(2):'--')+'</td></tr>';
+  }).join('');
+
+  const k=d.knowledge;
+  if(k&&k.macro_framework){
+    document.getElementById('macroForceContent').innerHTML=k.macro_framework.five_forces.map(f=>
+      '<div class="kb-item"><span class="kb-label">'+f.name+' '+f.weight+'</span><span class="kb-value">'+f.description+'</span></div>'
+    ).join('');
+  }
+  document.getElementById('judgmentsContent').innerHTML=
+    '<div class="kb-item"><span class="kb-label">英伟达</span><span class="kb-value">ROE 76%来自净利率→最安全高ROE。毛利率>70%是定价权温度计</span></div>'+
+    '<div class="kb-item"><span class="kb-label">台积电</span><span class="kb-value">AI制造咽喉节点。Fwd PE 20合理。3%底仓→PE25加→PE20满</span></div>'+
+    '<div class="kb-item"><span class="kb-label">存储股</span><span class="kb-value">净利率57%是周期顶峰信号，非可持续定价权</span></div>'+
+    '<div class="kb-item"><span class="kb-label">组合盲点</span><span class="kb-value">缺少AI制造环节(台积电)。纳指AI集中度极高，PE-DCA自动保护</span></div>'+
+    '<div class="kb-item"><span class="kb-label">沃什上台</span><span class="kb-value">降息+缩表并行→矛盾对冲。PE-DCA自动处理，暴跌加倍，暴涨减半</span></div>'+
+    '<div class="kb-item"><span class="kb-label">五力权重</span><span class="kb-value">利率35%+流动性25%=60%都和美联储相关</span></div>';
+}
+loadData();
+</script>
+</body>
+</html>
