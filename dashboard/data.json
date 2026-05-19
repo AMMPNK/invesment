@@ -1,42 +1,42 @@
 {
-  "last_updated": "2026-05-19 13:28:22",
-  "last_updated_date": "2026-05-19",
+  "last_updated": "2026-05-20 00:09:40",
+  "last_updated_date": "2026-05-20",
   "nasdaq100": {
-    "price": 705.88,
-    "pe": 34.433815,
+    "price": 699.3001,
+    "pe": 34.11284,
     "forward_pe": null,
-    "pb": 1.9729774
+    "pb": 1.9545863
   },
   "csi300": {
     "price": 4852.8833,
-    "pe": 16.918547,
+    "pe": 16.8323,
     "forward_pe": null,
     "pb": null
   },
   "macro": {
     "us10y": {
-      "price": 4.645,
-      "change": 0.48
+      "price": 4.667,
+      "change": 0.95
     },
     "dxy": {
-      "price": 99.31,
-      "change": 0.12
+      "price": 99.346,
+      "change": 0.15
     },
     "usdcny": {
-      "price": 6.8059,
-      "change": 0.09
+      "price": 6.8139,
+      "change": 0.21
     },
     "gold": {
-      "price": 4521.5,
-      "change": -0.8
+      "price": 4512.3,
+      "change": -1.0
     }
   },
   "holdings": {
     "NVDA": {
       "name": "英伟达",
-      "price": 222.32,
-      "pe": 45.464214,
-      "forward_pe": 19.122343,
+      "price": 220.65,
+      "pe": 45.122395,
+      "forward_pe": 18.978573,
       "gm": 0.71068,
       "nm": 0.55603004,
       "roe": 1.01485,
@@ -45,9 +45,9 @@
     },
     "AAPL": {
       "name": "苹果",
-      "price": 297.84,
-      "pe": 36.101818,
-      "forward_pe": 31.069988,
+      "price": 296.945,
+      "pe": 35.99515,
+      "forward_pe": 30.978188,
       "gm": 0.47862,
       "nm": 0.27152002,
       "roe": 1.4147099,
@@ -56,9 +56,9 @@
     },
     "MSFT": {
       "name": "微软",
-      "price": 423.54,
-      "pe": 25.255814,
-      "forward_pe": 21.864609,
+      "price": 418.26,
+      "pe": 24.940966,
+      "forward_pe": 21.592037,
       "gm": 0.68309,
       "nm": 0.39341998,
       "roe": 0.34013999,
@@ -67,9 +67,9 @@
     },
     "GOOGL": {
       "name": "谷歌",
-      "price": 396.94,
-      "pe": 30.300762,
-      "forward_pe": 27.467329,
+      "price": 387.3251,
+      "pe": 29.566801,
+      "forward_pe": 26.802002,
       "gm": 0.60368,
       "nm": 0.37919,
       "roe": 0.38884997,
@@ -78,9 +78,9 @@
     },
     "AMZN": {
       "name": "亚马逊",
-      "price": 264.86,
-      "pe": 31.643965,
-      "forward_pe": 26.967283,
+      "price": 255.99,
+      "pe": 30.58423,
+      "forward_pe": 26.064167,
       "gm": 0.50604,
       "nm": 0.12224,
       "roe": 0.24285,
@@ -89,9 +89,9 @@
     },
     "META": {
       "name": "Meta",
-      "price": 611.21,
-      "pe": 22.225819,
-      "forward_pe": 16.901941,
+      "price": 602.94,
+      "pe": 21.92509,
+      "forward_pe": 16.673248,
       "gm": 0.81941,
       "nm": 0.32837,
       "roe": 0.32930002,
@@ -100,9 +100,9 @@
     },
     "TSLA": {
       "name": "特斯拉",
-      "price": 409.99,
-      "pe": 369.36035,
-      "forward_pe": 163.3628,
+      "price": 397.36,
+      "pe": 357.98196,
+      "forward_pe": 158.3303,
       "gm": 0.19065,
       "nm": 0.03946,
       "roe": 0.04901,
@@ -111,9 +111,9 @@
     },
     "AVGO": {
       "name": "博通",
-      "price": 420.71,
-      "pe": 82.00974,
-      "forward_pe": 23.04918,
+      "price": 410.0,
+      "pe": 79.91325,
+      "forward_pe": 22.459951,
       "gm": 0.76725996,
       "nm": 0.36571997,
       "roe": 0.33370999,
@@ -122,9 +122,9 @@
     },
     "TSM": {
       "name": "台积电",
-      "price": 395.95,
-      "pe": 34.016323,
-      "forward_pe": 20.287724,
+      "price": 393.02,
+      "pe": 33.764603,
+      "forward_pe": 20.137594,
       "gm": 0.61873,
       "nm": 0.46505,
       "roe": 0.3621,
@@ -138,6 +138,29 @@
     "overall": "纳指PE偏高（>30），触发×0.5信号。建议纳指定投减半，资金可暂时存入货币基金等待PE回落。A股按正常节奏投入。",
     "nasdaq_pe_threshold": "PE>30: x0.5 | PE 20-30: x1.0 | PE<20: x1.5",
     "csi_pe_threshold": "PE>18: x0.5 | PE 10-18: x1.0 | PE<10: x1.5"
+  },
+  "personal_portfolio": {
+    "total_assets": 59366.02,
+    "stock_index_value": 9256.7,
+    "cash_value": 50099.32,
+    "monthly_income": 7500,
+    "monthly_living": 3500,
+    "monthly_dca": 4000,
+    "emergency_fund_target": 15000,
+    "allocation_plan": {
+      "nasdaq_pct": 55,
+      "csi_pct": 45
+    },
+    "dca_plan": {
+      "total_deployable": 35099.32,
+      "weekly_dca": 5000,
+      "weeks_total": 7
+    },
+    "current_multipliers": {
+      "nasdaq": 0.5,
+      "csi": 1.0
+    },
+    "deployed": 9256.7
   },
   "knowledge": {
     "investment_framework": {

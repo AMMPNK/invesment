@@ -125,7 +125,33 @@ def fetch_data():
         'csi_pe_threshold': 'PE>18: x0.5 | PE 10-18: x1.0 | PE<10: x1.5',
     }
 
-    # 6. Static knowledge
+    # 6. Personal portfolio (edit these numbers as they change)
+    portfolio_pct = round(data.get('stock_index_value', 0) / data.get('total_assets', 1) * 100, 1)
+    data['personal_portfolio'] = {
+        'total_assets': 59366.02,
+        'stock_index_value': 9256.70,
+        'cash_value': 50099.32,
+        'monthly_income': 7500,
+        'monthly_living': 3500,
+        'monthly_dca': 4000,
+        'emergency_fund_target': 15000,
+        'allocation_plan': {
+            'nasdaq_pct': 55,
+            'csi_pct': 45,
+        },
+        'dca_plan': {
+            'total_deployable': 35099.32,
+            'weekly_dca': 5000,
+            'weeks_total': 7,
+        },
+        'current_multipliers': {
+            'nasdaq': 0.5 if nasdaq_signal == 'x0.5' else (1.5 if nasdaq_signal == 'x1.5' else 1.0),
+            'csi': 0.5 if csi_signal == 'x0.5' else (1.5 if csi_signal == 'x1.5' else 1.0),
+        },
+        'deployed': 9256.70,
+    }
+
+    # 7. Static knowledge
     data['knowledge'] = {
         'investment_framework': {
             'three_questions': [
