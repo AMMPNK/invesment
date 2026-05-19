@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-19 21:23:59",
+  "last_updated": "2026-05-19 13:28:22",
   "last_updated_date": "2026-05-19",
   "nasdaq100": {
     "price": 705.88,
@@ -19,16 +19,16 @@
       "change": 0.48
     },
     "dxy": {
-      "price": 99.266,
-      "change": 0.07
+      "price": 99.31,
+      "change": 0.12
     },
     "usdcny": {
       "price": 6.8059,
       "change": 0.09
     },
     "gold": {
-      "price": 4528.8,
-      "change": -0.64
+      "price": 4521.5,
+      "change": -0.8
     }
   },
   "holdings": {
@@ -36,7 +36,7 @@
       "name": "英伟达",
       "price": 222.32,
       "pe": 45.464214,
-      "forward_pe": 19.556273,
+      "forward_pe": 19.122343,
       "gm": 0.71068,
       "nm": 0.55603004,
       "roe": 1.01485,
