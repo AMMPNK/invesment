@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>白小阳 · 个人管理落地方案</title>
+<style>
+  :root {
+    --bg: #FAF9F5;
+    --bg-card: #F5F3EE;
+    --bg-card2: #EEEAE0;
+    --text-primary: #141413;
+    --text-secondary: #73726C;
+    --text-tertiary: #3D3D3A;
+    --accent: #C26645;
+    --accent-light: rgba(194, 102, 69, 0.1);
+    --accent-mid: rgba(194, 102, 69, 0.2);
+    --border: rgba(31,30,29,0.12);
+    --border-strong: rgba(31,30,29,0.22);
+    --green: #4A7C59;
+    --green-light: rgba(74, 124, 89, 0.1);
+    --amber: #B07D2A;
+    --amber-light: rgba(176, 125, 42, 0.1);
+    --blue: #2E5F8A;
+    --blue-light: rgba(46, 95, 138, 0.1);
+    --red: #C04040;
+    --red-light: rgba(192, 64, 64, 0.1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    padding: 48px 0 36px;
+    text-align: center;
+  }
+  .header-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    border: 0.5px solid rgba(194,102,69,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 18px;
+    font-weight: 600;
+  }
+  .header h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 400;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .header h1 span { color: var(--accent); }
+  .header p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    max-width: 480px;
+    margin: 0 auto 24px;
+  }
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .meta-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* ─── NAV ─── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,249,245,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 24px;
+  }
+  .nav-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 10px 0;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-link {
+    flex-shrink: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-link:hover { color: var(--text-primary); background: var(--bg-card2); }
+  .nav-link.active { color: var(--accent); background: var(--accent-light); font-weight: 600; }
+
+  /* ─── MAIN ─── */
+  .main { max-width: 820px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* ─── SECTION ─── */
+  .section { margin-bottom: 60px; }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .section > h2 {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .section-desc {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 28px;
+    max-width: 560px;
+  }
+
+  /* ─── DIAGNOSIS CARD ─── */
+  .diagnosis-card {
+    background: #FDF4F0;
+    border: 0.5px solid rgba(194,102,69,0.3);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .diagnosis-card h3 {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .diagnosis-card p { color: var(--text-tertiary); font-size: 14px; line-height: 1.8; }
+  .diagnosis-card p b { color: var(--text-primary); }
+
+  /* ─── THREE LAYER ─── */
+  .layers-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .layer-card {
+    border-radius: 18px;
+    padding: 22px 20px;
+    border: 0.5px solid var(--border);
+  }
+  .layer-card.red { background: #FEF1EE; border-color: rgba(192,64,64,0.2); }
+  .layer-card.amber { background: #FEF7EA; border-color: rgba(176,125,42,0.2); }
+  .layer-card.green { background: #EEF5F1; border-color: rgba(74,124,89,0.2); }
+  .layer-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .layer-card.red .layer-num { color: var(--red); }
+  .layer-card.amber .layer-num { color: var(--amber); }
+  .layer-card.green .layer-num { color: var(--green); }
+  .layer-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--text-primary); }
+  .layer-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ─── TIME TABLE ─── */
+  .time-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .time-block {
+    display: grid;
+    grid-template-columns: 130px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 18px;
+  }
+  .time-block.highlight { background: #FDF4F0; border-color: rgba(194,102,69,0.25); }
+  .time-block.work { background: #EEF3FA; border-color: rgba(46,95,138,0.2); }
+  .time-range {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .time-content { font-size: 14px; color: var(--text-primary); }
+  .time-content b { color: var(--accent); }
+  .time-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .tag-must { background: rgba(192,64,64,0.1); color: var(--red); }
+  .tag-do { background: rgba(176,125,42,0.1); color: var(--amber); }
+  .tag-flex { background: rgba(74,124,89,0.1); color: var(--green); }
+  .tag-work { background: rgba(46,95,138,0.1); color: var(--blue); }
+
+  /* ─── WEEKLY BREAKTHROUGH ─── */
+  .breakthrough-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .breakthrough-item {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 24px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  .breakthrough-item.urgent {
+    background: #FDF4F0;
+    border-color: rgba(194,102,69,0.3);
+  }
+  .week-badge {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+  .badge-red { background: var(--red-light); color: var(--red); }
+  .badge-amber { background: var(--amber-light); color: var(--amber); }
+  .badge-blue { background: var(--blue-light); color: var(--blue); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .breakthrough-item h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .breakthrough-item .context {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--bg-card2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-top: 1px;
+  }
+  .breakthrough-item.urgent .step-num { background: var(--accent-light); color: var(--accent); }
+
+  /* ─── WECHAT TEMPLATE ─── */
+  .wechat-box {
+    background: var(--bg-card2);
+    border: 0.5px solid var(--border-strong);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-top: 14px;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.8;
+    position: relative;
+  }
+  .wechat-box::before {
+    content: '微信模板';
+    position: absolute;
+    top: -1px; left: 16px;
+    transform: translateY(-50%);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    background: var(--bg-card2);
+    padding: 0 8px;
+  }
+
+  /* ─── THREE MAIN TRACKS ─── */
+  .tracks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .track-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 22px;
+  }
+  .track-card.full { grid-column: 1 / -1; }
+  .track-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .track-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .track-card h4 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+  .track-card .sub { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+  .track-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .track-list li {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .track-list li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    font-size: 12px;
+    margin-top: 1px;
+  }
+
+  /* ─── STAT CARDS ─── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 12px; color: var(--text-secondary); }
+
+  /* ─── PRINCIPLE CARDS ─── */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .principle-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 20px;
+  }
+  .principle-card h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .principle-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ─── MONTHLY ─── */
+  .monthly-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 18px;
+    padding: 24px 26px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  .monthly-col h5 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  .monthly-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .monthly-col ul li {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .monthly-col ul li::before { content: '·'; color: var(--accent); font-size: 16px; line-height: 1.3; }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  /* ─── CALLOUT ─── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-light);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--text-tertiary);
+    margin: 20px 0;
+    line-height: 1.7;
+  }
+  .callout b { color: var(--text-primary); }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    border-top: 0.5px solid var(--border);
+    padding: 24px 0;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+    max-width: 820px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .layers-row { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .tracks-grid { grid-template-columns: 1fr; }
+    .tracks-grid .track-card.full { grid-column: auto; }
+    .principles-grid { grid-template-columns: 1fr; }
+    .monthly-card { grid-template-columns: 1fr; }
+    .time-block { grid-template-columns: 110px 1fr; }
+    .time-block .time-tag { display: none; }
+    .breakthrough-item { grid-template-columns: 1fr; }
+    .week-badge { width: 36px; height: 36px; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section { animation: fadeUp 0.5s ease both; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+  .section:nth-child(6) { animation-delay: 0.25s; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-tag">Personal OS · 2025 实习期版</div>
+  <h1>白小阳 · <span>个人管理落地方案</span></h1>
+  <p>从规划到执行的系统重建——基于真实时间与精力，而非理想状态</p>
+  <div class="header-meta">
+    <div class="meta-item"><div class="meta-dot"></div>研一 · 产品实习</div>
+    <div class="meta-item"><div class="meta-dot"></div>版本 1.0 · 2025年4月</div>
+    <div class="meta-item"><div class="meta-dot"></div>每日可用时长 ~5-6小时</div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-link active" href="#diagnosis">诊断</a>
+    <a class="nav-link" href="#system">三层系统</a>
+    <a class="nav-link" href="#time">时间表</a>
+    <a class="nav-link" href="#weekly">每周突破</a>
+    <a class="nav-link" href="#tracks">主线追踪</a>
+    <a class="nav-link" href="#monthly">月度节奏</a>
+    <a class="nav-link" href="#principles">执行原则</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- SECTION 0: STATS -->
+  <div class="stat-row" style="margin-top: 8px;">
+    <div class="stat-card">
+      <span class="stat-num">5~6h</span>
+      <div class="stat-label">每日实际可用时间</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">3件</span>
+      <div class="stat-label">每日底线事项</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">1件</span>
+      <div class="stat-label">每周突破重点</div>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">4件</span>
+      <div class="stat-label">每月计划上限</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: DIAGNOSIS -->
+  <section class="section" id="diagnosis">
+    <div class="section-label">诊断</div>
+    <h2>你的真实问题是什么</h2>
+    <p class="section-desc">在设计任何方案之前，先把根因说清楚。</p>
+
+    <div class="diagnosis-card">
+      <h3>病因不是执行力，是系统设计失败</h3>
+      <p>
+        你以前的文档相当于为自己设计了一套「完美人类操作系统」，执行条件是：<b>每天精力100%、不受外界干扰、完全自律、没有情绪波动</b>。<br><br>
+        实习期间这四个条件一个都不稳定。所以你不是执行力差——是系统过载让任何人都会失败。<b>执行力差是症状，系统过重才是病因。</b>
+      </p>
+    </div>
+
+    <div class="diagnosis-card" style="background:#EEF3FA; border-color:rgba(46,95,138,0.25);">
+      <h3 style="color:var(--blue);">关于「虚假充实」感</h3>
+      <p>
+        你说被工作占据思考时间让你迷茫。但实际上：<b>产品实习本身就是最好的创业前置准备</b>，不是干扰。<br><br>
+        你现在接触真实的产品决策流程、用户需求、团队协作——这些是未来AI创业方向都需要的认知底座。
+        问题不是「被工作占据」，而是<b>没有从工作中主动提取有价值的认知</b>。每周写一条「工作洞察」可以解决这个问题。
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 2: THREE LAYERS -->
+  <section class="section" id="system">
+    <div class="section-label">核心架构</div>
+    <h2>三层系统</h2>
+    <p class="section-desc">不是增加工作量，而是把你已有的想法做减法，建立一个任何状态下都能运转的系统。</p>
+
+    <div class="layers-row">
+      <div class="layer-card red">
+        <div class="layer-num">🔴 第一层</div>
+        <h3>每日底线</h3>
+        <p>3件事，30分钟以内。不论多累多忙，完成就算没有摆烂。这是你的最低保障线。</p>
+      </div>
+      <div class="layer-card amber">
+        <div class="layer-num">🟡 第二层</div>
+        <h3>每周突破</h3>
+        <p>每周只聚焦1件停滞已久的事，向前推进一步。不是完成，只是推进。</p>
+      </div>
+      <div class="layer-card green">
+        <div class="layer-num">🟢 第三层</div>
+        <h3>月度重置</h3>
+        <p>每月最后一天花30分钟：回顾本月、写出下月4件突破事项、更新财务表。</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>核心逻辑：</b> 三层之间不是并列的，是漏斗关系。第一层是护城河（每天），第二层是推进器（每周），第三层是校准仪（每月）。忙的时候只守第一层，有余裕时推第二层，用第三层做全局校准。
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 3: TIME TABLE -->
+  <section class="section" id="time">
+    <div class="section-label">时间分配</div>
+    <h2>实习期每日时间表</h2>
+    <p class="section-desc">基于你实际的工作时段（10:30~20:00）和每日5~6小时可用时间重新设计。工作饱和度50%意味着工作中有大量间隙可利用。</p>
+
+    <div class="time-grid">
+      <div class="time-block">
+        <span class="time-range">8:30 ~ 9:30</span>
+        <div class="time-content">早餐 + <b>Bloomberg/财经播客</b>（英语输入）</div>
+        <span class="time-tag tag-must">必须</span>
+      </div>
+      <div class="time-block highlight">
+        <span class="time-range">9:30 ~ 10:30</span>
+        <div class="time-content">通勤 → <b>单词App + ESLPod</b>（20~30min英语）</div>
+        <span class="time-tag tag-must">必须</span>
+      </div>
+      <div class="time-block work">
+        <span class="time-range">10:30 ~ 12:30</span>
+        <div class="time-content">工作 · 高专注任务（饱和时）</div>
+        <span class="time-tag tag-work">实习</span>
+      </div>
+      <div class="time-block highlight">
+        <span class="time-range">12:30 ~ 13:30</span>
+        <div class="time-content">午餐 + 午休 → <b>AI系统学习</b>（工作饱和度低时可延长至60min）</div>
+        <span class="time-tag tag-must">必须</span>
+      </div>
+      <div class="time-block work">
+        <span class="time-range">13:30 ~ 17:00</span>
+        <div class="time-content">工作 · <b>饱和度低时穿插：</b>期刊阅读 / 产品分析 / 计量学习（7月前）</div>
+        <span class="time-tag tag-work">实习</span>
+      </div>
+      <div class="time-block">
+        <span class="time-range">17:00 ~ 18:00</span>
+        <div class="time-content"><b>健身</b>（如果公司有健身房或附近有场地）</div>
+        <span class="time-tag tag-do">尽量</span>
+      </div>
+      <div class="time-block work">
+        <span class="time-range">18:00 ~ 20:00</span>
+        <div class="time-content">工作收尾 / 饱和度低时 → <b>当周突破任务推进</b></div>
+        <span class="time-tag tag-work">实习</span>
+      </div>
+      <div class="time-block highlight">
+        <span class="time-range">20:00 ~ 21:00</span>
+        <div class="time-content">通勤 → <b>播客/阅读</b>（文明之旅 / 经济学人）</div>
+        <span class="time-tag tag-do">尽量</span>
+      </div>
+      <div class="time-block">
+        <span class="time-range">21:00 ~ 22:00</span>
+        <div class="time-content"><b>自由时间</b>：电影 / 刷剧 / 社交 / 随意放松</div>
+        <span class="time-tag tag-flex">自由</span>
+      </div>
+      <div class="time-block highlight">
+        <span class="time-range">22:00 ~ 22:20</span>
+        <div class="time-content"><b>今日1句 + 记账更新</b>（每日底线收尾）</div>
+        <span class="time-tag tag-must">必须</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>关键变化：</b> 原方案有16个时间段，每段都塞满。新方案把「必须」只留3个锚点（通勤英语、午休AI、睡前记录），其余时间根据当天状态灵活填充。<b>工作间隙是你最重要的隐形资产</b>，不要浪费在刷手机上。
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 4: WEEKLY BREAKTHROUGH -->
+  <section class="section" id="weekly">
+    <div class="section-label">每周推进</div>
+    <h2>四件停滞事务的启动路径</h2>
+    <p class="section-desc">按优先级排序，每周只做一件。不求完成，只求「向前走一步」。</p>
+
+    <div class="breakthrough-list">
+
+      <!-- Week 1: 老乡会 -->
+      <div class="breakthrough-item urgent">
+        <div class="week-badge badge-red">W1<br>本周</div>
+        <div>
+          <h4>老乡会 · 迈出第一步</h4>
+          <div class="context">
+            你说「不知道怎么跟前辈开始聊，有点畏难」。这里有一个认知误区需要先纠正：<b>前辈们最不喜欢被一个准备过度的PPT轰炸。</b>真实的连接从聊天开始，不从方案开始。你不需要先做好规划再去聊——方案可以聊完第一次之后再写。
+          </div>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <span>找一个你觉得好说话的前辈（不用是最厉害的），发下面这条消息</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <span>等对方回复，再根据对话决定下一步——不要预设结果</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <span>第一次见面目标只有一个：了解这位前辈现在在做什么、对老乡会有什么感受</span>
+            </div>
+          </div>
+          <div class="wechat-box">
+            「[名字]哥/姐，我最近接了老乡会会长，一直想找时间跟您聊聊。您方便的话能找个时间喝杯茶吗？就是随便聊聊，没别的事。」
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 2: 理财 -->
+      <div class="breakthrough-item">
+        <div class="week-badge badge-amber">W2</div>
+        <div>
+          <h4>资产梳理 + 投资账户开通</h4>
+          <div class="context">
+            记账只是入口，你真正想做的是资产配置。但这件事需要「先摸底，再配置」的顺序，不能随手就买。
+          </div>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <span>建一张表：现金 + 余额宝 + 零钱 + 银行存款，加总算出净资产</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <span>确定「可波动资金」= 净资产 - 3个月生活费备用金</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <span>开一个证券账户（推荐富途 / 华泰，10分钟搞定）</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <span>第一笔投资：买一只宽基指数基金（沪深300ETF），先感受市场再说</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 3: 论文/计量 -->
+      <div class="breakthrough-item">
+        <div class="week-badge badge-blue">W3</div>
+        <div>
+          <h4>论文方向确认 + 导师沟通</h4>
+          <div class="context">
+            计量经济在7月前是刚需，现在才4月，还有3个月窗口期。但方向不确认之前学什么都是撒网——最先要做的是让导师帮你划定边界。
+          </div>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <span>和导师约一次谈话（可以微信约，10分钟即可）</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <span>问清楚：论文方向是否已稳定？你现在应该优先补哪块方法论？</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <span>根据导师建议，制定5月~7月的计量学习路线（SPSS / Stata / R选一个）</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 4: 内容方向 -->
+      <div class="breakthrough-item">
+        <div class="week-badge badge-green">W4</div>
+        <div>
+          <h4>个人内容方向确定</h4>
+          <div class="context">
+            你想做内容输出（思想、AI、营养、健身）。这件事唯一的障碍是「选择太多」。现在不需要马上发内容，只需要做一个决定。
+          </div>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <span>从四个方向中选一个主方向：<b>AI认知</b> 是当前最有积累、市场最热的选项</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <span>选一个平台：微信公众号（沉淀）or 小红书（传播）二选一</span>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <span>写出第一篇的标题（不用写正文），让这件事变得「具体」而非「概念」</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 5: MAIN TRACKS -->
+  <section class="section" id="tracks">
+    <div class="section-label">主线追踪</div>
+    <h2>2025年关键节点与主线任务</h2>
+    <p class="section-desc">按时间轴管理，避免临时抱佛脚。</p>
+
+    <div class="tracks-grid">
+      <div class="track-card">
+        <div class="track-header">
+          <div class="track-icon" style="background:var(--red-light); font-size:18px;">🎓</div>
+          <div>
+            <h4>研究生主线</h4>
+            <div class="sub">2025 关键时间节点</div>
+          </div>
+        </div>
+        <ul class="track-list">
+          <li><b>4月：</b>确认暑期实习继续 / 论文方向沟通</li>
+          <li><b>6月：</b>秋招简历准备 · 产品实习经验整理</li>
+          <li><b>7~8月：</b>计量经济集中学习（SPSS/Stata）</li>
+          <li><b>9月：</b>开题答辩 · 论文框架5000字</li>
+          <li><b>12月：</b>中期检查 · 初稿提交</li>
+        </ul>
+      </div>
+
+      <div class="track-card">
+        <div class="track-header">
+          <div class="track-icon" style="background:var(--amber-light); font-size:18px;">💼</div>
+          <div>
+            <h4>产品能力 · 职业发展</h4>
+            <div class="sub">实习期重点积累</div>
+          </div>
+        </div>
+        <ul class="track-list">
+          <li>从每周工作中提炼1条「产品洞察」</li>
+          <li>系统整理AI产品认知（方便秋招输出）</li>
+          <li>6月前完成一份完整的竞品分析文档</li>
+          <li>关注简历里「AI+产品」叙事的打磨</li>
+        </ul>
+      </div>
+
+      <div class="track-card">
+        <div class="track-header">
+          <div class="track-icon" style="background:var(--blue-light); font-size:18px;">🤖</div>
+          <div>
+            <h4>AI学习主线</h4>
+            <div class="sub">系统认知 → 应用能力</div>
+          </div>
+        </div>
+        <ul class="track-list">
+          <li>吴恩达《AI for everyone》→ 每天午休20min</li>
+          <li>Datawhale《AI系统学习》→ 工作间隙碎片消化</li>
+          <li>重点：智能体（Agent）方向深入理解</li>
+          <li>每两周输出一篇AI认知笔记（哪怕500字）</li>
+        </ul>
+      </div>
+
+      <div class="track-card">
+        <div class="track-header">
+          <div class="track-icon" style="background:var(--green-light); font-size:18px;">🌍</div>
+          <div>
+            <h4>英语主线</h4>
+            <div class="sub">每日积累，不可中断</div>
+          </div>
+        </div>
+        <ul class="track-list">
+          <li>单词：通勤时用Anki/扇贝，每天50个</li>
+          <li>听力：Bloomberg ChinaShow → 早餐时间</li>
+          <li>阅读：经济学人每周1篇（工作间隙）</li>
+          <li>口语：暂时不排，等听读有积累再开</li>
+        </ul>
+      </div>
+
+      <div class="track-card full">
+        <div class="track-header">
+          <div class="track-icon" style="background:var(--accent-light); font-size:18px;">🏡</div>
+          <div>
+            <h4>老乡会 · 思想家角色</h4>
+            <div class="sub">你的个人抱负落地路径</div>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <ul class="track-list">
+            <li><b>阶段1（4~5月）：</b>与3~5位前辈建立个人连接，聊天了解现状</li>
+            <li><b>阶段2（6月）：</b>基于聊天内容，设计老乡会「第一次活动」方案</li>
+            <li><b>阶段3（7~8月）：</b>举办第一次小规模线下活动（10人以内）</li>
+          </ul>
+          <ul class="track-list">
+            <li>不要一开始就做「大而全」的改造计划</li>
+            <li>用「连接个人」替代「组织活动」作为起点</li>
+            <li>每次聊天后做1段记录，积累老乡画像</li>
+            <li>你的「思想家」角色可以在老乡会的分享活动里自然呈现</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 6: MONTHLY -->
+  <section class="section" id="monthly">
+    <div class="section-label">月度节奏</div>
+    <h2>每月最后一天做这三件事</h2>
+    <p class="section-desc">月度回顾不是写作文，是校准系统的维护动作。30分钟即可完成。</p>
+
+    <div class="monthly-card">
+      <div class="monthly-col">
+        <h5>📊 回顾本月</h5>
+        <ul>
+          <li>每日底线完成率（大概几成）</li>
+          <li>本月推进了哪几件突破事务</li>
+          <li>有哪件事一直没做、为什么</li>
+          <li>写一条最重要的「本月洞察」</li>
+        </ul>
+      </div>
+      <div class="monthly-col">
+        <h5>🎯 规划下月</h5>
+        <ul>
+          <li>写出下月4件突破事项（不超过4件）</li>
+          <li>对照年度节点确认有无紧急事项</li>
+          <li>评估下月工作饱和度预期</li>
+          <li>调整时间表中的柔性时间分配</li>
+        </ul>
+      </div>
+      <div class="monthly-col">
+        <h5>💰 财务更新</h5>
+        <ul>
+          <li>更新资产负债表（各账户余额）</li>
+          <li>复盘本月支出结构</li>
+          <li>查看投资账户收益情况</li>
+          <li>判断下月是否需要调整配置</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SECTION 7: PRINCIPLES -->
+  <section class="section" id="principles">
+    <div class="section-label">执行哲学</div>
+    <h2>让系统持续运转的5条原则</h2>
+    <p class="section-desc">这些原则来自你自己描述的真实困境，是专门为你设计的。</p>
+
+    <div class="principles-grid">
+      <div class="principle-card">
+        <h5>⚡ 启动即完成一半</h5>
+        <p>老乡会的前辈那条微信，今天发出去就等于完成了70%。所有「一直在规划没有开始」的事，都可以被拆解到「5分钟内能完成的第一步」。找到那个第一步，做它。</p>
+      </div>
+      <div class="principle-card">
+        <h5>🛡️ 守住底线比完成完美更重要</h5>
+        <p>连续完成3件底线事项7天，带来的执行力自信，远超一次「理想状态下完美执行24小时计划」。系统的价值在于稳定性，不在于密度。</p>
+      </div>
+      <div class="principle-card">
+        <h5>📦 工作间隙是你的隐形资产</h5>
+        <p>50%饱和度意味着每天工作中有约4小时间隙。这不是摸鱼，是很多人做个人成长的黄金时间。把AI学习、期刊阅读、计量基础放在这里，比回家再学效率高得多。</p>
+      </div>
+      <div class="principle-card">
+        <h5>🔄 从工作中提炼，而非逃离工作</h5>
+        <p>每周写一条「工作洞察」——今天在实习里看到了什么让你觉得「原来如此」的东西。这条洞察是你未来创业认知的原材料，也是秋招面试的真实素材。</p>
+      </div>
+      <div class="principle-card" style="grid-column: 1 / -1; background: #FDF4F0; border-color: rgba(194,102,69,0.25);">
+        <h5>🧭 方向感比执行力更稀缺</h5>
+        <p>你方向感模糊时容易停滞，方向清晰时驱动力极强（你已经因为AI学习主动戒游戏，这是很强的证明）。所以「老乡会前辈的聊天」「导师确认论文方向」这两件事的优先级极高——它们不是具体任务，它们是帮你找到方向感的元任务。做完它们，很多下游任务会自动变得清晰。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  白小阳 · 个人管理落地方案 v1.0 · 生成于 2025年4月
+</footer>
+
+<script>
+  // Nav active state on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-05-21 03:02:28",
+  "last_updated": "2026-05-21 11:10:58",
   "last_updated_date": "2026-05-21",
   "nasdaq100": {
     "price": 713.15,
@@ -8,7 +8,7 @@
     "pb": 1.9932976
   },
   "csi300": {
-    "price": 4901.0938,
+    "price": 4891.7153,
     "pe": 17.014374,
     "forward_pe": null,
     "pb": null
@@ -19,16 +19,16 @@
       "change": -2.04
     },
     "dxy": {
-      "price": 99.194,
-      "change": 0.1
+      "price": 99.201,
+      "change": 0.11
     },
     "usdcny": {
-      "price": 6.8012,
-      "change": 0.01
+      "price": 6.7996,
+      "change": -0.01
     },
     "gold": {
-      "price": 4536.9,
-      "change": 0.04
+      "price": 4533.9,
+      "change": -0.03
     }
   },
   "holdings": {
@@ -68,7 +68,7 @@
     "GOOGL": {
       "name": "谷歌",
       "price": 388.91,
-      "pe": 29.574905,
+      "pe": 29.665142,
       "forward_pe": 26.911673,
       "gm": 0.60368,
       "nm": 0.37919,
@@ -90,7 +90,7 @@
     "META": {
       "name": "Meta",
       "price": 605.06,
-      "pe": 21.930408,
+      "pe": 21.978205,
       "forward_pe": 16.731873,
       "gm": 0.81941,
       "nm": 0.32837,
@@ -141,8 +141,8 @@
   },
   "personal_portfolio": {
     "total_assets": 59366.02,
-    "stock_index_value": 9256.7,
-    "cash_value": 50099.32,
+    "stock_index_value": 8854,
+    "cash_value": 50512,
     "monthly_income": 7500,
     "monthly_living": 3500,
     "monthly_dca": 4000,
@@ -152,15 +152,15 @@
       "csi_pct": 45
     },
     "dca_plan": {
-      "total_deployable": 35099.32,
-      "weekly_dca": 5000,
-      "weeks_total": 7
+      "total_deployable": 35512,
+      "weekly_dca": 5700,
+      "weeks_total": 11
     },
     "current_multipliers": {
       "nasdaq": 0.5,
       "csi": 1.0
     },
-    "deployed": 9256.7
+    "deployed": 8854
   },
   "knowledge": {
     "investment_framework": {

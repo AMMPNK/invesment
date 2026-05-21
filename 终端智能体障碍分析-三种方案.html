@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>终端智能体领域发展障碍与破局分析</title>
+<style>
+  :root {
+    /* 核心调色板：高级深邃科技风 */
+    --bg-base: oklch(0.15 0.02 260); /* 深夜蓝黑 */
+    --bg-surface: oklch(0.2 0.03 260); 
+    --bg-card: oklch(0.25 0.04 260);
+    
+    --accent-red: oklch(0.65 0.25 25);   /* 警示/障碍红 */
+    --accent-blue: oklch(0.7 0.15 250);  /* 科技/连接蓝 */
+    --accent-green: oklch(0.75 0.15 150); /* 破局/价值绿 */
+    
+    --text-primary: oklch(0.95 0.01 260);
+    --text-secondary: oklch(0.75 0.02 260);
+    --text-muted: oklch(0.6 0.03 260);
+    
+    --font-heading: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --font-body: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding-bottom: 100px;
+    /* subtle noise texture */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  /* ========== 导航与控制 ========== */
+  .view-controls {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px;
+    background: linear-gradient(to bottom, var(--bg-base) 60%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .ctrl-btn {
+    background: var(--bg-surface);
+    border: 1px solid oklch(1 0 0 / 0.1);
+    color: var(--text-secondary);
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: 0.5px;
+  }
+
+  .ctrl-btn:hover {
+    color: var(--text-primary);
+    border-color: oklch(1 0 0 / 0.3);
+  }
+
+  .ctrl-btn.active {
+    background: var(--text-primary);
+    color: var(--bg-base);
+    border-color: transparent;
+    box-shadow: 0 4px 20px oklch(1 0 0 / 0.15);
+  }
+
+  /* ========== 页面通用 ========== */
+  .view-container {
+    display: none;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 40px;
+    animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .view-container.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 60px;
+    margin-top: 20px;
+  }
+
+  .page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #fff 30%, var(--text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .page-desc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+
+  /* ========================================================= */
+  /* 设计一：极简主义的断层线架构 (Brutalist / Grid / Monospace)*/
+  /* 灵感：金融终端、Bloomberg、数据大屏、极简网格 */
+  /* ========================================================= */
+  .v1-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    border: 1px solid oklch(1 0 0 / 0.15);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .v1-row {
+    display: grid;
+    grid-template-columns: 2fr 3fr 3fr;
+    border-bottom: 1px solid oklch(1 0 0 / 0.15);
+  }
+  .v1-row:last-child { border-bottom: none; }
+
+  /* 表头 */
+  .v1-header {
+    background: var(--bg-surface);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .v1-cell {
+    padding: 32px;
+    border-right: 1px solid oklch(1 0 0 / 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .v1-cell:last-child { border-right: none; }
+
+  .v1-actor {
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  .v1-actor-num {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--accent-blue);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .v1-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .v1-list li {
+    font-size: 15px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .v1-pain li::before {
+    content: "×";
+    color: var(--accent-red);
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .v1-val li::before {
+    content: "↗";
+    color: var(--accent-green);
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .v1-highlight {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+
+  /* ========================================================= */
+  /* 设计二：空间堆叠与流体卡片 (Spatial / Soft Neumorphism / Modern)*/
+  /* 灵感：现代 SaaS、Apple 官网介绍页、大圆角、模糊阴影 */
+  /* ========================================================= */
+  .v2-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .v2-card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-xl);
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 60px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), inset 0 1px 0 oklch(1 0 0 / 0.1);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .v2-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* 背景光晕装饰 */
+  .v2-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle, var(--accent-blue) 0%, transparent 60%);
+    opacity: 0.05;
+    pointer-events: none;
+    border-radius: 50%;
+    filter: blur(40px);
+  }
+  
+  .v2-card:nth-child(even)::after {
+    background: radial-gradient(circle, var(--accent-green) 0%, transparent 60%);
+    left: -10%;
+    right: auto;
+  }
+
+  .v2-title-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .v2-num {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1;
+    color: oklch(1 0 0 / 0.05);
+    margin-bottom: -10px;
+  }
+
+  .v2-actor {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .v2-content-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    position: relative;
+  }
+
+  /* 中间的连接线 */
+  .v2-content-area::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, oklch(1 0 0 / 0.1) 20%, oklch(1 0 0 / 0.1) 80%, transparent);
+  }
+
+  .v2-col-title {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .v2-col-pain .v2-col-title { color: var(--accent-red); }
+  .v2-col-val .v2-col-title { color: var(--accent-green); }
+
+  .v2-item-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .v2-item {
+    background: oklch(1 0 0 / 0.03);
+    padding: 20px 24px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    color: var(--text-secondary);
+    border: 1px solid oklch(1 0 0 / 0.05);
+  }
+
+  .v2-col-pain .v2-item {
+    border-left: 3px solid oklch(0.65 0.25 25 / 0.5);
+  }
+
+  .v2-col-val .v2-item {
+    border-left: 3px solid oklch(0.75 0.15 150 / 0.5);
+    color: var(--text-primary);
+    background: oklch(0.75 0.15 150 / 0.05);
+  }
+
+
+  /* ========================================================= */
+  /* 设计三：电影感时间线横向卷轴 (Cinematic / Editorial / Horizontal)*/
+  /* 灵感：高端展览、博物馆横向导览、画廊、剧院黑 */
+  /* ========================================================= */
+  .v3-container {
+    padding: 20px 0;
+  }
+
+  .v3-intro {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .v3-timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    padding-left: 50%;
+  }
+
+  /* 居中的主轴线 */
+  .v3-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: oklch(1 0 0 / 0.1);
+    transform: translateX(-50%);
+  }
+
+  .v3-node {
+    position: relative;
+    width: 100%;
+  }
+
+  /* 轴上的发光点 */
+  .v3-node::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--bg-base);
+    border: 2px solid var(--accent-blue);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    box-shadow: 0 0 15px var(--accent-blue);
+  }
+
+  .v3-content {
+    position: relative;
+    width: 85%;
+  }
+
+  /* 奇数行在右边 */
+  .v3-node:nth-child(odd) .v3-content {
+    padding-left: 60px;
+  }
+
+  /* 偶数行挪到左边 */
+  .v3-node:nth-child(even) {
+    display: flex;
+    justify-content: flex-end;
+    left: -50%;
+  }
+  .v3-node:nth-child(even) .v3-content {
+    padding-right: 60px;
+    text-align: right;
+  }
+  .v3-node:nth-child(even)::before {
+    left: 100%;
+  }
+
+  .v3-actor {
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--text-primary);
+    margin-bottom: 30px;
+    line-height: 1.2;
+  }
+  
+  .v3-actor span {
+    font-size: 14px;
+    color: var(--accent-blue);
+    display: block;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .v3-compare {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .v3-box {
+    padding: 24px 32px;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    position: relative;
+  }
+
+  .v3-node:nth-child(even) .v3-box {
+    text-align: left; /* 卡片内文字保持左对齐易读 */
+  }
+
+  .v3-pain {
+    background: oklch(1 0 0 / 0.02);
+    border-top: 1px solid oklch(1 0 0 / 0.05);
+    color: var(--text-secondary);
+  }
+  .v3-pain-title { color: var(--accent-red); font-size: 12px; letter-spacing: 1px; margin-bottom: 12px; }
+
+  .v3-val {
+    background: linear-gradient(135deg, oklch(0.75 0.15 150 / 0.1), transparent);
+    border-top: 1px solid oklch(0.75 0.15 150 / 0.3);
+    color: var(--text-primary);
+  }
+  .v3-val-title { color: var(--accent-green); font-size: 12px; letter-spacing: 1px; margin-bottom: 12px; }
+
+  .v3-ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .v3-ul li { position: relative; padding-left: 16px; line-height: 1.5; }
+  .v3-pain .v3-ul li::before { content: ""; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent-red); }
+  .v3-val .v3-ul li::before { content: ""; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; background: var(--accent-green); }
+
+
+  /* ========== 响应式调整 ========== */
+  @media (max-width: 1024px) {
+    .v2-card { grid-template-columns: 1fr; gap: 30px; }
+    .v2-content-area { grid-template-columns: 1fr; gap: 30px; }
+    .v2-content-area::before { display: none; }
+    .v2-card::after { display: none; }
+
+    .v3-timeline { padding-left: 20px; }
+    .v3-timeline::before { left: 20px; }
+    .v3-node::before { left: 20px; }
+    .v3-node:nth-child(even) { left: 0; justify-content: flex-start; }
+    .v3-node:nth-child(even) .v3-content { padding-right: 0; padding-left: 40px; text-align: left; }
+    .v3-node:nth-child(even)::before { left: 20px; }
+    .v3-content { width: 100%; padding-left: 40px !important; }
+  }
+
+  @media (max-width: 768px) {
+    .v1-row { grid-template-columns: 1fr; border-bottom: none; gap: 0; margin-bottom: 20px; border: 1px solid oklch(1 0 0 / 0.1); border-radius: var(--radius-md); }
+    .v1-header { display: none; }
+    .v1-cell { padding: 20px; border-right: none; border-bottom: 1px solid oklch(1 0 0 / 0.1); }
+    .v1-cell:last-child { border-bottom: none; }
+    .v1-actor { font-size: 20px; }
+    .view-controls { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- 控制面板 -->
+  <div class="view-controls">
+    <button class="ctrl-btn active" onclick="switchView('v1')">01 极简数据网格 (Grid)</button>
+    <button class="ctrl-btn" onclick="switchView('v2')">02 流体空间卡片 (Spatial)</button>
+    <button class="ctrl-btn" onclick="switchView('v3')">03 电影时间线 (Cinematic)</button>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- 视图一：极简数据网格 (Brutalist Grid) -->
+  <!-- ============================================== -->
+  <div id="v1" class="view-container active">
+    <header class="page-header">
+      <h1 class="page-title">终端智能体：生态破局图谱</h1>
+      <p class="page-desc">基于六大参与者的核心障碍，推演电信终端公司的战略生态位与破局支点。</p>
+    </header>
+
+    <div class="v1-grid">
+      <div class="v1-row v1-header">
+        <div class="v1-cell">参与者类型</div>
+        <div class="v1-cell">当前核心障碍 (Pain Points)</div>
+        <div class="v1-cell">电信终端破局价值 (Solutions)</div>
+      </div>
+
+      <div class="v1-row">
+        <div class="v1-cell">
+          <div class="v1-actor-num">01</div>
+          <div class="v1-actor">大模型公司 <br>& AI提供方</div>
+        </div>
+        <div class="v1-cell v1-pain">
+          <ul class="v1-list">
+            <li>无终端通路，大模型落不了地</li>
+            <li>无数据回流，效果无法评估优化</li>
+          </ul>
+        </div>
+        <div class="v1-cell v1-val">
+          <ul class="v1-list">
+            <li><span class="v1-highlight">开放统一接入层</span>，提供全品类终端分发适配</li>
+            <li>提供<span class="v1-highlight">Token计量与使用数据</span>回传机制</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="v1-row">
+        <div class="v1-cell">
+          <div class="v1-actor-num">02</div>
+          <div class="v1-actor">手机与终端<br>品牌厂商</div>
+        </div>
+        <div class="v1-cell v1-pain">
+          <ul class="v1-list">
+            <li>AI功能同质化，缺差异化卖点</li>
+            <li>生态封闭，售后服务链路断裂</li>
+          </ul>
+        </div>
+        <div class="v1-cell v1-val">
+          <ul class="v1-list">
+            <li><span class="v1-highlight">联合行业场景赋能</span>，打造垂直应用差异化</li>
+            <li><span class="v1-highlight">借运营商渠道扩展</span>生态边界，延伸服务运营</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="v1-row">
+        <div class="v1-cell">
+          <div class="v1-actor-num">03 · 核心切入</div>
+          <div class="v1-actor">泛智能<br>硬件厂商</div>
+        </div>
+        <div class="v1-cell v1-pain">
+          <ul class="v1-list">
+            <li>无AI研发能力，适配门槛高</li>
+            <li>缺渠道，难进主流销售体系</li>
+          </ul>
+        </div>
+        <div class="v1-cell v1-val">
+          <ul class="v1-list">
+            <li>提供<span class="v1-highlight">标准SDK与一点接入</span>的AI能力平台</li>
+            <li>提供<span class="v1-highlight">入库引导与渠道撮合</span>，打通进入路径</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="v1-row">
+        <div class="v1-cell">
+          <div class="v1-actor-num">04</div>
+          <div class="v1-actor">应用与互联<br>网平台公司</div>
+        </div>
+        <div class="v1-cell v1-pain">
+          <ul class="v1-list">
+            <li>入口被OS/硬件厂商卡住</li>
+            <li>多终端行为数据割裂，缺乏全局洞察</li>
+          </ul>
+        </div>
+        <div class="v1-cell v1-val">
+          <ul class="v1-list">
+            <li>提供<span class="v1-highlight">统一Agent接口</span>，开放终端触达通道</li>
+            <li><span class="v1-highlight">汇聚跨终端用户数据</span>，输出运营洞察</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="v1-row">
+        <div class="v1-cell">
+          <div class="v1-actor-num">05</div>
+          <div class="v1-actor">运营商内部<br>专业公司</div>
+        </div>
+        <div class="v1-cell v1-pain">
+          <ul class="v1-list">
+            <li>各自为战，终端入口割裂</li>
+            <li>渠道与业务未联动，流量未转化</li>
+          </ul>
+        </div>
+        <div class="v1-cell v1-val">
+          <ul class="v1-list">
+            <li>作为集团<span class="v1-highlight">终端化总整合平台</span>，统一入口分发</li>
+            <li><span class="v1-highlight">渠道销售与业务激活</span>一体化联动</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="v1-row">
+        <div class="v1-cell">
+          <div class="v1-actor-num">06</div>
+          <div class="v1-actor">芯片 / OS / <br>基础软件厂商</div>
+        </div>
+        <div class="v1-cell v1-pain">
+          <ul class="v1-list">
+            <li>远离用户，底层价值感知弱</li>
+            <li>生态引力弱，厂商采用率低</li>
+          </ul>
+        </div>
+        <div class="v1-cell v1-val">
+          <ul class="v1-list">
+            <li><span class="v1-highlight">汇聚终端厂商</span>，为底层提供批量落地场景</li>
+            <li><span class="v1-highlight">牵引选型标准</span>，提升底层产业链影响力</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================== -->
+  <!-- 视图二：流体空间卡片 (Spatial Cards) -->
+  <!-- ============================================== -->
+  <div id="v2" class="view-container">
+    <header class="page-header">
+      <h1 class="page-title">终端智能体领域发展障碍与破局</h1>
+      <p class="page-desc">基于六大参与者的核心障碍，推演电信终端公司的战略生态位与破局支点。</p>
+    </header>
+
+    <div class="v2-layout">
+      
+      <div class="v2-card">
+        <div class="v2-title-area">
+          <div class="v2-num">01</div>
+          <div class="v2-actor">大模型公司 &<br>AI能力提供方</div>
+        </div>
+        <div class="v2-content-area">
+          <div class="v2-col-pain">
+            <div class="v2-col-title">CORE OBSTACLES 核心障碍</div>
+            <div class="v2-item-box">
+              <div class="v2-item">无终端通路，大模型落不了地</div>
+              <div class="v2-item">无数据回流，效果无法评估优化</div>
+            </div>
+          </div>
+          <div class="v2-col-val">
+            <div class="v2-col-title">TELECOM VALUE 电信破局价值</div>
+            <div class="v2-item-box">
+              <div class="v2-item">开放统一接入层，提供全品类终端分发适配</div>
+              <div class="v2-item">提供 Token 计量与使用数据回传机制</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v2-card">
+        <div class="v2-title-area">
+          <div class="v2-num">02</div>
+          <div class="v2-actor">手机与终端<br>品牌厂商</div>
+        </div>
+        <div class="v2-content-area">
+          <div class="v2-col-pain">
+            <div class="v2-col-title">CORE OBSTACLES 核心障碍</div>
+            <div class="v2-item-box">
+              <div class="v2-item">AI功能同质化，缺差异化卖点</div>
+              <div class="v2-item">生态封闭，售后服务链路断裂</div>
+            </div>
+          </div>
+          <div class="v2-col-val">
+            <div class="v2-col-title">TELECOM VALUE 电信破局价值</div>
+            <div class="v2-item-box">
+              <div class="v2-item">联合行业场景赋能，打造垂直应用差异化</div>
+              <div class="v2-item">借运营商渠道扩展生态边界，延伸服务运营</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v2-card">
+        <div class="v2-title-area">
+          <div class="v2-num">03</div>
+          <div class="v2-actor">泛智能硬件厂商<br><span style="font-size:14px;color:var(--text-secondary);font-weight:normal;display:block;margin-top:8px;">★ 核心合作切入点</span></div>
+        </div>
+        <div class="v2-content-area">
+          <div class="v2-col-pain">
+            <div class="v2-col-title">CORE OBSTACLES 核心障碍</div>
+            <div class="v2-item-box">
+              <div class="v2-item">无AI研发能力，适配门槛高</div>
+              <div class="v2-item">缺渠道，难进主流销售体系</div>
+            </div>
+          </div>
+          <div class="v2-col-val">
+            <div class="v2-col-title">TELECOM VALUE 电信破局价值</div>
+            <div class="v2-item-box">
+              <div class="v2-item">提供标准SDK与一点接入的AI能力平台</div>
+              <div class="v2-item">入库引导与渠道撮合，打通进入路径</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v2-card">
+        <div class="v2-title-area">
+          <div class="v2-num">04</div>
+          <div class="v2-actor">应用与互联网<br>平台公司</div>
+        </div>
+        <div class="v2-content-area">
+          <div class="v2-col-pain">
+            <div class="v2-col-title">CORE OBSTACLES 核心障碍</div>
+            <div class="v2-item-box">
+              <div class="v2-item">入口被OS/硬件厂商卡住，难触达终端</div>
+              <div class="v2-item">多终端行为数据割裂，缺乏全局洞察</div>
+            </div>
+          </div>
+          <div class="v2-col-val">
+            <div class="v2-col-title">TELECOM VALUE 电信破局价值</div>
+            <div class="v2-item-box">
+              <div class="v2-item">提供统一Agent接口，开放终端触达通道</div>
+              <div class="v2-item">汇聚跨终端用户数据，输出运营洞察</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v2-card">
+        <div class="v2-title-area">
+          <div class="v2-num">05</div>
+          <div class="v2-actor">运营商内部<br>专业公司</div>
+        </div>
+        <div class="v2-content-area">
+          <div class="v2-col-pain">
+            <div class="v2-col-title">CORE OBSTACLES 核心障碍</div>
+            <div class="v2-item-box">
+              <div class="v2-item">各自为战，终端入口割裂</div>
+              <div class="v2-item">渠道与业务未联动，流量未转化</div>
+            </div>
+          </div>
+          <div class="v2-col-val">
+            <div class="v2-col-title">TELECOM VALUE 电信破局价值</div>
+            <div class="v2-item-box">
+              <div class="v2-item">作为集团终端化总整合平台，统一入口分发</div>
+              <div class="v2-item">渠道销售与业务激活一体化联动</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v2-card">
+        <div class="v2-title-area">
+          <div class="v2-num">06</div>
+          <div class="v2-actor">芯片 / OS / <br>基础软件厂商</div>
+        </div>
+        <div class="v2-content-area">
+          <div class="v2-col-pain">
+            <div class="v2-col-title">CORE OBSTACLES 核心障碍</div>
+            <div class="v2-item-box">
+              <div class="v2-item">远离用户，底层价值感知弱</div>
+              <div class="v2-item">生态引力弱，厂商采用率低</div>
+            </div>
+          </div>
+          <div class="v2-col-val">
+            <div class="v2-col-title">TELECOM VALUE 电信破局价值</div>
+            <div class="v2-item-box">
+              <div class="v2-item">汇聚终端厂商，为底层提供批量落地场景</div>
+              <div class="v2-item">牵引选型标准，提升底层技术产业链影响力</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================== -->
+  <!-- 视图三：电影时间线 (Cinematic Timeline) -->
+  <!-- ============================================== -->
+  <div id="v3" class="view-container">
+    <header class="page-header v3-intro">
+      <h1 class="page-title">生态破局时间线</h1>
+      <p class="page-desc">从底层算力到终端展现，全生态链条的痛点识别与价值重构。</p>
+    </header>
+
+    <div class="v3-timeline">
+      
+      <div class="v3-node">
+        <div class="v3-content">
+          <div class="v3-actor"><span>01 / Capability</span>大模型公司 & AI提供方</div>
+          <div class="v3-compare">
+            <div class="v3-box v3-pain">
+              <div class="v3-pain-title">OBSTACLES</div>
+              <ul class="v3-ul">
+                <li>无终端通路，大模型落不了地</li>
+                <li>无数据回流，效果无法评估优化</li>
+              </ul>
+            </div>
+            <div class="v3-box v3-val">
+              <div class="v3-val-title">BREAKTHROUGH</div>
+              <ul class="v3-ul">
+                <li>开放统一接入层，提供全品类终端分发适配</li>
+                <li>提供Token计量与使用数据回传机制</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v3-node">
+        <div class="v3-content">
+          <div class="v3-actor"><span>02 / Device Brands</span>手机与终端品牌</div>
+          <div class="v3-compare">
+            <div class="v3-box v3-pain">
+              <div class="v3-pain-title">OBSTACLES</div>
+              <ul class="v3-ul">
+                <li>AI功能同质化，缺差异化卖点</li>
+                <li>生态封闭，售后服务链路断裂</li>
+              </ul>
+            </div>
+            <div class="v3-box v3-val">
+              <div class="v3-val-title">BREAKTHROUGH</div>
+              <ul class="v3-ul">
+                <li>联合行业场景赋能，打造垂直应用差异化</li>
+                <li>借运营商渠道扩展生态边界，延伸服务运营</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v3-node">
+        <div class="v3-content">
+          <div class="v3-actor"><span>03 / Smart Hardware</span>泛智能硬件厂商</div>
+          <div class="v3-compare">
+            <div class="v3-box v3-pain">
+              <div class="v3-pain-title">OBSTACLES</div>
+              <ul class="v3-ul">
+                <li>无AI研发能力，适配门槛高</li>
+                <li>缺渠道，难进主流销售体系</li>
+              </ul>
+            </div>
+            <div class="v3-box v3-val">
+              <div class="v3-val-title">BREAKTHROUGH</div>
+              <ul class="v3-ul">
+                <li>提供标准SDK与一点接入的AI能力平台</li>
+                <li>入库引导与渠道撮合，打通进入路径</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v3-node">
+        <div class="v3-content">
+          <div class="v3-actor"><span>04 / Platforms</span>应用与互联网平台</div>
+          <div class="v3-compare">
+            <div class="v3-box v3-pain">
+              <div class="v3-pain-title">OBSTACLES</div>
+              <ul class="v3-ul">
+                <li>入口被OS/硬件厂商卡住，难触达终端</li>
+                <li>多终端行为数据割裂，缺乏全局洞察</li>
+              </ul>
+            </div>
+            <div class="v3-box v3-val">
+              <div class="v3-val-title">BREAKTHROUGH</div>
+              <ul class="v3-ul">
+                <li>提供统一Agent接口，开放终端触达通道</li>
+                <li>汇聚跨终端用户数据，输出运营洞察</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v3-node">
+        <div class="v3-content">
+          <div class="v3-actor"><span>05 / Internal Units</span>运营商内部专业公司</div>
+          <div class="v3-compare">
+            <div class="v3-box v3-pain">
+              <div class="v3-pain-title">OBSTACLES</div>
+              <ul class="v3-ul">
+                <li>各自为战，终端入口割裂</li>
+                <li>渠道与业务未联动，流量未转化</li>
+              </ul>
+            </div>
+            <div class="v3-box v3-val">
+              <div class="v3-val-title">BREAKTHROUGH</div>
+              <ul class="v3-ul">
+                <li>作为集团终端化总整合平台，统一入口分发</li>
+                <li>渠道销售与业务激活一体化联动</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="v3-node">
+        <div class="v3-content">
+          <div class="v3-actor"><span>06 / Infrastructure</span>芯片/OS/基础软件厂商</div>
+          <div class="v3-compare">
+            <div class="v3-box v3-pain">
+              <div class="v3-pain-title">OBSTACLES</div>
+              <ul class="v3-ul">
+                <li>远离用户，底层价值感知弱</li>
+                <li>生态引力弱，厂商采用率低</li>
+              </ul>
+            </div>
+            <div class="v3-box v3-val">
+              <div class="v3-val-title">BREAKTHROUGH</div>
+              <ul class="v3-ul">
+                <li>汇聚终端厂商，为底层提供批量落地场景</li>
+                <li>牵引选型标准，提升底层产业链影响力</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <script>
+    function switchView(viewId) {
+      document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
+      
+      document.querySelectorAll('.ctrl-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

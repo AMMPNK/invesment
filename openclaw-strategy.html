@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenClaw 商业化策略全景</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: oklch(18% 0.02 260);
+    --ink-soft: oklch(42% 0.02 260);
+    --ink-muted: oklch(62% 0.015 260);
+    --paper: oklch(97% 0.005 80);
+    --paper-warm: oklch(94% 0.01 80);
+    --accent: oklch(52% 0.18 25);
+    --accent-light: oklch(82% 0.1 25);
+    --accent-bg: oklch(96% 0.03 25);
+    --gold: oklch(72% 0.14 80);
+    --teal: oklch(55% 0.12 195);
+    --teal-bg: oklch(95% 0.04 195);
+    --border: oklch(88% 0.01 260);
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    font-family: 'DM Sans', 'PingFang SC', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    border-bottom: 2px solid var(--ink);
+    padding: 2.5rem 4rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 2rem;
+  }
+  .masthead-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 0.6rem;
+  }
+  .masthead-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .masthead-title em {
+    font-style: normal;
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent-light);
+  }
+  .masthead-meta {
+    text-align: right;
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    line-height: 1.8;
+  }
+  .masthead-meta strong {
+    display: block;
+    font-size: 1rem;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ── LAYOUT ── */
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 4rem 5rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 0 3.5rem;
+  }
+
+  .col-main { min-width: 0; }
+  .col-side { border-left: 1px solid var(--border); padding-left: 2.5rem; }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 3rem; }
+
+  /* ── VERDICT BLOCK ── */
+  .verdict {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1.6rem 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .verdict::before {
+    content: '"';
+    font-family: 'Noto Serif SC', serif;
+    font-size: 8rem;
+    line-height: 1;
+    position: absolute;
+    right: 1.5rem;
+    top: -1.5rem;
+    color: oklch(30% 0.02 260);
+  }
+  .verdict-text {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    font-weight: 400;
+    max-width: 32rem;
+    position: relative;
+  }
+  .verdict-text strong {
+    color: var(--accent-light);
+  }
+
+  /* ── INSIGHT ROW ── */
+  .insight-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .insight-cell {
+    padding: 1.3rem 1.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .insight-cell:last-child { border-right: none; }
+  .insight-cell-label {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    margin-bottom: 0.5rem;
+  }
+  .insight-cell-value {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .insight-cell-sub {
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    margin-top: 0.3rem;
+  }
+  .insight-cell.accent { background: var(--accent-bg); }
+  .insight-cell.accent .insight-cell-value { color: var(--accent); }
+
+  /* ── BODY TEXT ── */
+  .body-text {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  .body-text strong { color: var(--ink); font-weight: 500; }
+
+  /* ── FINDING LIST ── */
+  .finding-list { list-style: none; margin-bottom: 1.5rem; }
+  .finding-list li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.7rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    align-items: start;
+  }
+  .finding-list li:last-child { border-bottom: none; }
+  .finding-tag {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-top: 0.1rem;
+  }
+  .tag-block { background: var(--ink); color: var(--paper); }
+  .tag-warn { background: oklch(88% 0.12 80); color: oklch(30% 0.1 80); }
+  .tag-ok { background: oklch(85% 0.1 155); color: oklch(30% 0.12 155); }
+  .tag-red { background: oklch(88% 0.1 25); color: oklch(30% 0.12 25); }
+
+  /* ── INDUSTRY TABLE ── */
+  .industry-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+  .industry-table th {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    font-weight: 400;
+    text-align: left;
+    padding: 0.5rem 0.8rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .industry-table td {
+    font-size: 0.82rem;
+    padding: 0.75rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  .industry-table td:first-child { color: var(--ink); font-weight: 500; }
+  .industry-table tr:hover td { background: var(--paper-warm); }
+  .stars { color: var(--gold); letter-spacing: 0.05em; }
+  .stars-low { color: var(--border); letter-spacing: 0.05em; }
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.6rem;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-right: 0.35rem;
+    vertical-align: middle;
+  }
+  .rank-badge.top { background: var(--accent); }
+  .industry-table td:first-child {
+    white-space: nowrap;
+  }
+
+  /* ── MODEL CARDS ── */
+  .model-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  .model-card {
+    background: var(--paper);
+    padding: 1.5rem;
+  }
+  .model-card-tag {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    margin-bottom: 0.8rem;
+  }
+  .model-card-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .model-card-desc {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .model-card-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .metric-pill {
+    background: var(--paper-warm);
+    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+  }
+  .metric-pill span {
+    display: block;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-muted);
+    margin-bottom: 0.1rem;
+  }
+  .model-card.primary { background: var(--accent-bg); }
+  .model-card.primary .model-card-name { color: var(--accent); }
+  .model-card.teal { background: var(--teal-bg); }
+  .model-card.teal .model-card-name { color: var(--teal); }
+
+  /* ── STEPS ── */
+  .steps { margin-bottom: 2rem; }
+  .step {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    margin-bottom: 0.3rem;
+    align-items: start;
+  }
+  .step-num {
+    width: 2.2rem;
+    height: 2.2rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .step-num.accent { background: var(--accent); }
+  .step-num.teal { background: var(--teal); }
+  .step-body { padding-bottom: 1.2rem; border-bottom: 1px dashed var(--border); }
+  .step:last-child .step-body { border-bottom: none; }
+  .step-title {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .step-desc {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* ── SIDE WIDGETS ── */
+  .side-widget { margin-bottom: 2.5rem; }
+  .side-widget-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--ink);
+  }
+  .data-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+  .data-row:last-child { border-bottom: none; }
+  .data-label { color: var(--ink-soft); }
+  .data-value { font-weight: 500; color: var(--ink); }
+  .data-value.accent { color: var(--accent); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--accent);
+    padding: 0.8rem 1rem;
+    background: var(--accent-bg);
+    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .callout strong { color: var(--ink); }
+
+  .callout-teal {
+    border-left-color: var(--teal);
+    background: var(--teal-bg);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 2px solid var(--ink);
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.65rem;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 900px) {
+    .masthead { padding: 2rem; grid-template-columns: 1fr; }
+    .masthead-meta { text-align: left; }
+    .page { padding: 2rem; grid-template-columns: 1fr; }
+    .col-side { border-left: none; border-top: 1px solid var(--border); padding-left: 0; padding-top: 2rem; }
+    .insight-row { grid-template-columns: 1fr; }
+    .insight-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .model-cards { grid-template-columns: 1fr; }
+    .footer { padding: 1.5rem 2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div>
+    <div class="masthead-eyebrow">商业化策略全景 · 2026年4月</div>
+    <h1 class="masthead-title">
+      OpenClaw类产品<br>
+      <em>C端陷阱与B端机会</em>
+    </h1>
+  </div>
+  <div class="masthead-meta">
+    <strong>白小阳</strong>
+    策略研判<br>
+    基于TrustMRR实证数据<br>
+    爱建证券 · PANews · DoNews
+  </div>
+</header>
+
+<main class="page">
+<div class="col-main">
+
+  <!-- 核心判断 -->
+  <div class="verdict">
+    <p class="verdict-text">
+      C端能跑通的场景本质是<strong>信息差红利</strong>——代装、托管、讲故事——窗口期6-18个月。
+      真正健康的钱在B端：选定1-2个垂直行业，做深度Agent工作流交付+持续托管，用<strong>RoofClaw模式</strong>但更聚焦行业。
+    </p>
+  </div>
+
+  <!-- 市场数据 -->
+  <div class="section">
+    <div class="section-label">市场实证数据</div>
+    <div class="insight-row">
+      <div class="insight-cell accent">
+        <div class="insight-cell-label">生态总月收入</div>
+        <div class="insight-cell-value">$358,600</div>
+        <div class="insight-cell-sub">153个项目 · TrustMRR 30天数据</div>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-cell-label">收入集中度</div>
+        <div class="insight-cell-value">Top 30占97.3%</div>
+        <div class="insight-cell-sub">高度头部化，长尾几乎无收入</div>
+      </div>
+      <div class="insight-cell">
+        <div class="insight-cell-label">RoofClaw累计</div>
+        <div class="insight-cell-value">$1.8M</div>
+        <div class="insight-cell-sub">硬件+深度定制服务模式</div>
+      </div>
+    </div>
+
+    <ul class="finding-list">
+      <li>
+        <span class="finding-tag tag-block">托管部署</span>
+        <span>占生态营收<strong style="color:var(--ink)">34.5%（$120,100）</strong>，QuickClaw $3.99/周；但大厂一键部署上线后此类服务将快速萎缩</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-warn">Skill模板</span>
+        <span>ClawMart（Felix创建）累计$71,300居TrustMRR榜首；Skill天然趋向开源，付费护城河需"私有知识嵌入+持续维护"才能成立</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-ok">行业定制</span>
+        <span>RoofClaw：MacBook预装+Agent定制训练，30天$49,800，累计$1.8M；这是目前最健康的商业模式</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-red">流量叙事</span>
+        <span>FelixCraft 1周$3,500+加密MEME峰值$100,000，但本质是"讲了一个AI创业故事"——可复制性极低，不是产品生意</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- C端阻碍 -->
+  <div class="section">
+    <div class="section-label">C端三大结构性阻碍</div>
+    <div class="body-text">大厂入局不是最主要的威胁，<strong>产品属性错配</strong>才是C端天花板的根本原因。</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">①</div>
+        <div class="step-body">
+          <div class="step-title">OpenClaw是基础设施，不是消费品</div>
+          <div class="step-desc">其本质是给LLM赋予自主执行能力的框架，不适合直接做C端消费品。腾讯云/阿里云2026年1月已上线一键部署，大厂的"Kimi Claw/MaxClaw"正在消灭代装、托管类服务的变现窗口。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">②</div>
+        <div class="step-body">
+          <div class="step-title">Skill天然趋向开源，付费内容难建壁垒</div>
+          <div class="step-desc">ClawHub的开源分发逻辑决定了优质Skill一经流传复制成本趋近于零。Skill付费的唯一护城河：私有行业数据嵌入 + 持续迭代维护。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">③</div>
+        <div class="step-body">
+          <div class="step-title">赚钱的是"讲故事的人"，不是做产品的人</div>
+          <div class="step-desc">PANews核心结论：赚最多钱的是帮别人部署、教别人使用、炒话题流量的人。当"如何用OpenClaw赚钱"的内容本身比产品更值钱时，这不是健康的产品商业模式。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 行业机会评估 -->
+  <div class="section">
+    <div class="section-label">四大可触达人群机会评估</div>
+    <div class="callout">
+      <strong>评估维度：</strong>付费意愿 × 需求强度 × Skill可复制性 × 竞争烈度 × 决策链条长短
+    </div>
+    <table class="industry-table">
+      <thead>
+        <tr>
+          <th>行业人群</th>
+          <th>评级</th>
+          <th>核心机会</th>
+          <th>主要障碍</th>
+          <th>建议切入</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rank-badge top">1</span>金融从业者</td>
+          <td><span class="stars">★★★★★</span></td>
+          <td>财报摘要、合规文件、KYC整理；个人付费能力最强，AI接受度高</td>
+          <td>大机构数据安全要求高，需本地部署；大机构决策周期2-6个月</td>
+          <td>先做私募/独立理财师，¥299-599/月订阅，积累案例后撬动中小机构</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge top">2</span>电商白领</td>
+          <td><span class="stars">★★★★</span><span class="stars-low">★</span></td>
+          <td>竞品监控、批量文案改写、选品报告；工具接受度高，需求标准化</td>
+          <td>大厂IT管控、个人预算有限（上限¥199/月），Coze免费模板竞争</td>
+          <td>个人效率订阅 ¥99-199/月，定位"比Coze模板更精准、省去自己配置"</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge">3</span>食品制造加工</td>
+          <td><span class="stars">★★★</span><span class="stars-low">★★</span></td>
+          <td>食品标签合规检查（GB标准）、供应商资质管理；信息差红利大，竞品少</td>
+          <td>决策链条长（老板/生产主管买单），工厂IT基础设施弱，需行业Know-how</td>
+          <td>不做订阅，做单次定制交付 ¥5,000-15,000，以合规风险为切入点</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge">4</span>餐饮行业</td>
+          <td><span class="stars">★★</span><span class="stars-low">★★★</span></td>
+          <td>连锁品牌总部有运营手册/选址分析需求（50家以上门店）</td>
+          <td>利润率5-8%、付费极敏感；美团/商米等SaaS已覆盖基础需求；AI接受度低</td>
+          <td>除非有深度餐饮人脉，否则不建议作为突破口</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 两种商业模式 -->
+  <div class="section">
+    <div class="section-label">两种商业模式 · 落地路径</div>
+    <div class="model-cards">
+      <div class="model-card primary">
+        <div class="model-card-tag">模式 A · 流量入口 + 现金流</div>
+        <div class="model-card-name">白领数字分身</div>
+        <div class="model-card-desc">把用户的工作方式复刻进Agent：思维框架、Prompt偏好、输出模板，打包成专属工作流。先做定制，再提炼课程。</div>
+        <div class="model-card-metrics">
+          <div class="metric-pill"><span>定制单价</span>¥999–3,000/人</div>
+          <div class="metric-pill"><span>课程定价</span>¥199–499一次性</div>
+          <div class="metric-pill"><span>目标人群</span>电商/运营/产品</div>
+          <div class="metric-pill"><span>冷启动</span>3个免费案例</div>
+        </div>
+      </div>
+      <div class="model-card teal">
+        <div class="model-card-tag">模式 B · 高客单价 + 品牌背书</div>
+        <div class="model-card-name">行业工作流定制+托管</div>
+        <div class="model-card-desc">帮企业把特定业务流程自动化，部署好、调试好、维护好，收月租。不卖工具，卖"已经跑通的AI工作员"。</div>
+        <div class="model-card-metrics">
+          <div class="metric-pill"><span>立项费</span>¥3,000–8,000</div>
+          <div class="metric-pill"><span>托管月费</span>¥2,000–5,000/月</div>
+          <div class="metric-pill"><span>目标客户</span>私募/中小资管</div>
+          <div class="metric-pill"><span>参考案例</span>RoofClaw $1.8M</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-teal">
+      <strong>协同逻辑：</strong>模式A的电商白领中若有金融/食品背景者，可直接转介绍到模式B；模式B的企业客户个人用户可反向引导购买模式A课程。两条线共用案例素材，形成内容→信任→转化的自增强飞轮。
+    </div>
+
+    <div class="section-label" style="margin-top:1.5rem">立即执行的三件事</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num accent">01</div>
+        <div class="step-body">
+          <div class="step-title">找3个免费体验用户（本周）</div>
+          <div class="step-desc">从电商白领中找3个愿意体验的人，做出完整的"数字分身"交付物，收集使用反馈和截图，这是最强的冷启动信任素材。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num accent">02</div>
+        <div class="step-body">
+          <div class="step-title">在金融人脉中找到1个决策人做需求调研（两周内）</div>
+          <div class="step-desc">不急于谈钱，先摸清对方最费时的重复性文档工作是什么。私募研究员或独立理财顾问是理想的首批目标用户。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num accent">03</div>
+        <div class="step-body">
+          <div class="step-title">明确团队分工（本周）</div>
+          <div class="step-desc">模式A需要内容/讲师能力；模式B需要销售/行业理解能力。两条线不适合同一人同时推进，需要在团队内分配明确的负责人。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SIDEBAR -->
+<aside class="col-side">
+
+  <div class="side-widget">
+    <div class="side-widget-title">生态真实收入分布</div>
+    <div class="data-row">
+      <span class="data-label">托管/部署服务</span>
+      <span class="data-value accent">$120,100 · 34.5%</span>
+    </div>
+    <div class="data-row">
+      <span class="data-label">Skill包/模板</span>
+      <span class="data-value">$93,100 · 26.4%</span>
+    </div>
+    <div class="data-row">
+      <span class="data-label">RoofClaw（硬件定制）</span>
+      <span class="data-value">$49,800 · 30天</span>
+    </div>
+    <div class="data-row">
+      <span class="data-label">ClawMart 累计</span>
+      <span class="data-value">$71,300</span>
+    </div>
+    <div class="data-row">
+      <span class="data-label">FelixCraft 1周 Stripe</span>
+      <span class="data-value">$3,500</span>
+    </div>
+    <div class="data-row">
+      <span class="data-label">国内代装（闲鱼）</span>
+      <span class="data-value">100–1,000元/次</span>
+    </div>
+  </div>
+
+  <div class="side-widget">
+    <div class="side-widget-title">大厂介入时间线</div>
+    <div class="data-row">
+      <span class="data-label">2026.01.28</span>
+      <span class="data-value">腾讯云/阿里云一键部署</span>
+    </div>
+    <div class="data-row">
+      <span class="data-label">2026.01.30</span>
+      <span class="data-value">Kimi Claw上线（限199元+）</span>
+    </div>
+    <div class="data-row">
+      <span class="data-label">2026.02</span>
+      <span class="data-value">MiniMax MaxClaw上线</span>
+    </div>
+    <div class="data-row">
+      <span class="data-label">2026.03</span>
+      <span class="data-value">阿里云Coding Plan 7.9元/月</span>
+    </div>
+  </div>
+
+  <div class="side-widget">
+    <div class="side-widget-title">Skill付费护城河判断</div>
+    <ul class="finding-list">
+      <li>
+        <span class="finding-tag tag-red">❌ 弱</span>
+        <span>信息差（开源后消失）</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-warn">⚠ 中</span>
+        <span>配置复杂（官方工具完善后下降）</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-ok">✓ 强</span>
+        <span>私有行业数据/Prompt嵌入</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-ok">✓ 强</span>
+        <span>持续维护+模型更新同步</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-ok">✓ 强</span>
+        <span>行业专家品牌信任</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="side-widget">
+    <div class="side-widget-title">数字分身交付标准</div>
+    <div class="callout" style="margin-bottom:0.8rem">
+      <strong>完整交付物包含4层：</strong>
+    </div>
+    <ul class="finding-list">
+      <li>
+        <span class="finding-tag tag-block">输入层</span>
+        <span>10-20个高频场景Prompt模板库</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-block">记忆层</span>
+        <span>个人知识库搭建（公司背景/决策历史）</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-block">输出层</span>
+        <span>符合个人/公司风格的输出格式规范</span>
+      </li>
+      <li>
+        <span class="finding-tag tag-block">工作流层</span>
+        <span>3-5个最高频任务自动化流程</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="side-widget">
+    <div class="side-widget-title">背景溯源</div>
+    <div class="body-text" style="font-size:0.75rem">
+      <strong>OpenClaw</strong>（原名Clawdbot/Moltbot）由PSPDFKit创始人Peter Steinberger于2025年11月启动，2026年1月底爆火，两周内GitHub星标超过17万。其本质是<strong>基础设施层</strong>，而非开箱即用的消费品——这个属性决定了C端变现的天花板。
+    </div>
+    <div class="data-row" style="font-size:0.72rem">
+      <span class="data-label">GitHub星标（2026.02.02）</span>
+      <span class="data-value">142,856</span>
+    </div>
+    <div class="data-row" style="font-size:0.72rem">
+      <span class="data-label">MiniMax 2025前三季度营收</span>
+      <span class="data-value">¥0.53亿（超全年）</span>
+    </div>
+    <div class="data-row" style="font-size:0.72rem">
+      <span class="data-label">月之暗面C端订阅年收入估算</span>
+      <span class="data-value">~¥2亿</span>
+    </div>
+  </div>
+
+</aside>
+</main>
+
+<footer class="footer">
+  <span>数据来源：TrustMRR · PANews · 爱建证券研究报告 · 光锥智能 · DoNews · 2026年4月</span>
+  <span>仅供内部决策参考</span>
+</footer>
+
+</body>
+</html>

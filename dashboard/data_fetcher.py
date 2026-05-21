@@ -126,11 +126,10 @@ def fetch_data():
     }
 
     # 6. Personal portfolio (edit these numbers as they change)
-    portfolio_pct = round(data.get('stock_index_value', 0) / data.get('total_assets', 1) * 100, 1)
     data['personal_portfolio'] = {
         'total_assets': 59366.02,
-        'stock_index_value': 9256.70,
-        'cash_value': 50099.32,
+        'stock_index_value': 8854,
+        'cash_value': 50512,
         'monthly_income': 7500,
         'monthly_living': 3500,
         'monthly_dca': 4000,
@@ -140,15 +139,15 @@ def fetch_data():
             'csi_pct': 45,
         },
         'dca_plan': {
-            'total_deployable': 35099.32,
-            'weekly_dca': 5000,
-            'weeks_total': 7,
+            'total_deployable': 35512,
+            'weekly_dca': 5700,
+            'weeks_total': 11,
         },
         'current_multipliers': {
             'nasdaq': 0.5 if nasdaq_signal == 'x0.5' else (1.5 if nasdaq_signal == 'x1.5' else 1.0),
             'csi': 0.5 if csi_signal == 'x0.5' else (1.5 if csi_signal == 'x1.5' else 1.0),
         },
-        'deployed': 9256.70,
+        'deployed': 8854,
     }
 
     # 7. Static knowledge

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>女娲产品宣推 Roadmap (2026 Q1)</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --bg-color: #f3f4f6;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px; /* Increased width */
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            text-align: center;
+            color: #111827;
+            margin-bottom: 40px;
+            font-size: 2.25rem;
+            font-weight: 800;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding-top: 40px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-left: 220px;
+            border-bottom: 2px solid var(--border-color);
+            position: relative;
+            min-width: 1200px; /* Increased min-width */
+        }
+
+        .month-label {
+            flex: 1;
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #eef2ff;
+            border-radius: 6px 6px 0 0;
+            margin: 0 2px;
+            color: #4f46e5;
+        }
+
+        .roadmap-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 60px; /* Increased margin for labels */
+            position: relative;
+            min-width: 1200px; /* Increased min-width */
+        }
+
+        .item-label {
+            width: 200px;
+            padding: 15px;
+            background-color: #f9fafb;
+            border-right: 4px solid var(--primary-color);
+            font-weight: 600;
+            flex-shrink: 0;
+            margin-right: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .timeline-track {
+            flex-grow: 1;
+            position: relative;
+            height: 4px; /* Thinner track */
+            background-color: #e2e8f0;
+            border-radius: 2px;
+            margin-top: 0;
+        }
+
+        .milestone {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            z-index: 2;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .milestone:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+            z-index: 20;
+        }
+
+        .milestone-final {
+            width: 16px;
+            height: 16px;
+            background-color: var(--danger-color);
+            z-index: 3;
+        }
+
+        .milestone-task {
+            background-color: var(--secondary-color);
+        }
+
+        .connector {
+            position: absolute;
+            top: 50%;
+            height: 4px;
+            background-color: #93c5fd; /* Light blue connector */
+            z-index: 1;
+            transform: translateY(-50%);
+            border-radius: 2px;
+            opacity: 0.5;
+        }
+
+        /* Label Styles */
+        .time-label {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: #4b5563;
+            white-space: nowrap;
+            text-align: center;
+            pointer-events: none; /* Let clicks pass through to milestone */
+            line-height: 1.2;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .time-label.bottom {
+            top: 18px;
+        }
+
+        .time-label.top {
+            bottom: 18px;
+        }
+
+        .time-label .date {
+            display: block;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .time-label .task {
+            display: block;
+            font-size: 0.7rem;
+            color: #6b7280;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Hover Tooltip - simplified */
+        .tooltip {
+            position: absolute;
+            bottom: 160%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1f2937;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s;
+            z-index: 30;
+            pointer-events: none;
+        }
+        
+        .milestone:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 2026 Q1 女娲产品宣推 Roadmap</h1>
+    
+    <div class="timeline-container">
+        <div class="timeline-header">
+            <div class="month-label">三月 (March)</div>
+            <div class="month-label">四月 (April)</div>
+        </div>
+
+        <!-- 需求一 -->
+        <div class="roadmap-item">
+            <div class="item-label">
+                <div>推文宣发</div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">磁力引擎极速开播</div>
+            </div>
+            <div class="timeline-track">
+                <div class="connector" style="left: 9.5%; width: 42.9%;"></div>
+
+                <div class="milestone milestone-task" style="left: 9.5%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.5</span>
+                        <span class="task">确认内容</span>
+                    </div>
+                    <div class="tooltip">3.5: 确认重点内容 (丹姐)</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 21.4%;">
+                    <div class="time-label top">
+                        <span class="date">3.10</span>
+                        <span class="task">需求文档</span>
+                    </div>
+                    <div class="tooltip">3.10: 需求文档撰写</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 23.8%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.11</span>
+                        <span class="task">对接刘科含</span>
+                    </div>
+                    <div class="tooltip">3.11: 对接刘科含</div>
+                </div>
+                
+                <div class="milestone milestone-final" style="left: 52.4%;">
+                    <div class="time-label top">
+                        <span class="date">3.23</span>
+                        <span class="task">正式上线</span>
+                    </div>
+                    <div class="tooltip">3.23: 🚀 正式上线</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 需求二 -->
+        <div class="roadmap-item">
+            <div class="item-label">
+                <div>直播课宣讲</div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">磁力学平台</div>
+            </div>
+            <div class="timeline-track">
+                <div class="connector" style="left: 9.5%; width: 42.9%;"></div>
+
+                <div class="milestone milestone-task" style="left: 9.5%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.5</span>
+                        <span class="task">确认内容</span>
+                    </div>
+                    <div class="tooltip">3.5: 确认重点内容 (丹姐)</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 23.8%;">
+                    <div class="time-label top">
+                        <span class="date">3.11</span>
+                        <span class="task">课程文档</span>
+                    </div>
+                    <div class="tooltip">3.11: 课程文档撰写</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 38.1%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.17</span>
+                        <span class="task">录课上传</span>
+                    </div>
+                    <div class="tooltip">3.17: 录课 & 上传</div>
+                </div>
+                
+                <div class="milestone milestone-final" style="left: 52.4%;">
+                    <div class="time-label top">
+                        <span class="date">3.23</span>
+                        <span class="task">课程上线</span>
+                    </div>
+                    <div class="tooltip">3.23: 🚀 课程上线</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 需求三 -->
+        <div class="roadmap-item">
+            <div class="item-label">
+                <div>大屏演示 Demo</div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">极速开播演示</div>
+            </div>
+            <div class="timeline-track">
+                <div class="connector" style="left: 4.7%; width: 69.1%;"></div>
+
+                <div class="milestone milestone-task" style="left: 4.7%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.3</span>
+                        <span class="task">资源申请</span>
+                    </div>
+                    <div class="tooltip">3.3: 发起资源申请</div>
+                </div>
+
+                <!-- ADDED: 3.5 催办 -->
+                <div class="milestone milestone-task" style="left: 9.5%;">
+                    <div class="time-label top">
+                        <span class="date">3.5</span>
+                        <span class="task">催办申请</span>
+                    </div>
+                    <div class="tooltip">3.5: 催办资源位申请</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 26.2%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.12</span>
+                        <span class="task">讨论形式</span>
+                    </div>
+                    <div class="tooltip">3.12: 讨论呈现形式</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 28.5%;">
+                    <div class="time-label top">
+                        <span class="date">3.13</span>
+                        <span class="task">设计对接</span>
+                    </div>
+                    <div class="tooltip">3.13: 设计对接 (范婧)</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 45.2%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.20</span>
+                        <span class="task">定稿</span>
+                    </div>
+                    <div class="tooltip">3.20: 定稿</div>
+                </div>
+                
+                <div class="milestone milestone-final" style="left: 73.8%;">
+                    <div class="time-label top">
+                        <span class="date">4.1</span>
+                        <span class="task">Demo上线</span>
+                    </div>
+                    <div class="tooltip">4.1: 🚀 Demo 上线</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 需求四 -->
+        <div class="roadmap-item">
+            <div class="item-label">
+                <div>海报 Onepage</div>
+                <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">极速开播宣传</div>
+            </div>
+            <div class="timeline-track">
+                <div class="connector" style="left: 19%; width: 66.7%;"></div>
+
+                <div class="milestone milestone-task" style="left: 19%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.9</span>
+                        <span class="task">资源申请</span>
+                    </div>
+                    <div class="tooltip">3.9: 发起资源申请</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 26.2%;">
+                    <div class="time-label top">
+                        <span class="date">3.12</span>
+                        <span class="task">讨论形式</span>
+                    </div>
+                    <div class="tooltip">3.12: 讨论呈现形式</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 45.2%;">
+                    <div class="time-label bottom">
+                        <span class="date">3.20</span>
+                        <span class="task">设计对接</span>
+                    </div>
+                    <div class="tooltip">3.20: 设计对接 (范婧)</div>
+                </div>
+                
+                <div class="milestone milestone-task" style="left: 61.9%;">
+                    <div class="time-label top">
+                        <span class="date">3.27</span>
+                        <span class="task">定稿</span>
+                    </div>
+                    <div class="tooltip">3.27: 定稿</div>
+                </div>
+                
+                <div class="milestone milestone-final" style="left: 85.7%;">
+                    <div class="time-label bottom">
+                        <span class="date">4.6</span>
+                        <span class="task">海报上线</span>
+                    </div>
+                    <div class="tooltip">4.6: 🚀 海报上线</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-dot" style="background-color: var(--secondary-color);"></div>
+            <span>关键节点 (Task)</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background-color: var(--danger-color);"></div>
+            <span>上线发布 (Launch)</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

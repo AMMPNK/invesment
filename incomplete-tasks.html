@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>未完成任务打捞 - 本周工作回顾</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        body { background: #fff; color: #37352f; }
+        .notion-page { max-width: 900px; margin: 0 auto; padding: 80px 96px; }
+        .workspace-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: #f1f1ef; border-radius: 4px; font-size: 12px; color: #787774; font-weight: 500; }
+        .task-card { background: #fff; border: 1px solid #e9e9e7; border-radius: 6px; padding: 20px; margin-bottom: 12px; transition: all 0.2s; }
+        .task-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 4px; font-size: 13px; font-weight: 500; }
+        .status-in-progress { background: #fff3e0; color: #e65100; }
+        .status-pending { background: #f5f5f5; color: #757575; }
+        .progress-bar { height: 4px; background: #f1f1ef; border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: #2383e2; border-radius: 2px; transition: width 0.3s; }
+        .task-count { font-size: 36px; font-weight: 700; color: #2383e2; }
+        .workspace-section { margin-bottom: 48px; }
+        .icon { width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; }
+        .callout { background: #f7f6f3; border-radius: 4px; padding: 16px 20px; margin: 24px 0; display: flex; gap: 12px; align-items: flex-start; }
+    </style>
+</head>
+<body>
+    <div class="notion-page">
+        <!-- Header -->
+        <div style="margin-bottom: 48px;">
+            <div style="font-size: 14px; color: #787774; margin-bottom: 12px;">2026年4月20日 周日</div>
+            <h1 style="font-size: 40px; font-weight: 700; margin: 0 0 8px 0;">📋 未完成任务打捞</h1>
+            <p style="font-size: 16px; color: #787774; margin: 0;">最近一周做到一半就停了的事情，按工作空间分组</p>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="callout">
+            <div style="font-size: 24px;">🎣</div>
+            <div>
+                <div style="font-weight: 600; margin-bottom: 4px;">打捞结果概览</div>
+                <div style="color: #787774; font-size: 14px;">
+                    在 <strong>3个</strong> 工作空间发现 <strong style="color: #2383e2;">13项</strong> 未完成任务，
+                    其中 <span style="color: #e65100; font-weight: 500;">4项进行中</span>，<span style="color: #9e9e9e;">9项待开始</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workspace 1: 36kr -->
+        <div class="workspace-section">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <div style="width: 8px; height: 8px; background: #e65100; border-radius: 50%;"></div>
+                <h2 style="font-size: 24px; font-weight: 600; margin: 0;">36kr</h2>
+                <div class="workspace-tag">/Users/baixiaoyang/.codeflicker/mem-bank/threads/36kr-1772d5</div>
+            </div>
+
+            <!-- Task Group 1: nvwa-v3 官网重构 -->
+            <div class="task-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                    <div>
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 4px 0;">nvwa-v3 官网重构项目</h3>
+                        <div style="font-size: 13px; color: #787774;">Thread: ve90ol8dvol26ezu84e4</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #787774; margin-bottom: 4px;">完成度</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #2383e2;">25%</div>
+                    </div>
+                </div>
+                <div class="progress-bar" style="margin-bottom: 16px;">
+                    <div class="progress-fill" style="width: 25%;"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="status-badge status-in-progress">
+                            <span>●</span> 进行中
+                        </span>
+                        <span style="font-size: 14px;">官网首页 index.html：导航栏 + Hero + 3屏利益点 + AI能力 + 极速开播 + 解决方案 + 案例 + FAQ + Footer</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">登录流程：login-entry.html + login.html（密码/验证码/扫码/忘记密码）</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">协议页：privacy.html + terms.html</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">分流弹窗逻辑：自助版高亮态 & 高级版高亮态两套 UI</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">解决方案详情页 + 案例中心页</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">控制台：侧边导航整合 + 帮助中心 + 更新公告 + 被清退页</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">消息中心页：Tab分类 + 列表 + 已读逻辑</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">本地测试：启动服务器，验证所有页面跳转/交互可跑通</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Group 2: 女娲功能介绍页 -->
+            <div class="task-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                    <div>
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 4px 0;">女娲功能介绍页编写</h3>
+                        <div style="font-size: 13px; color: #787774;">Thread: q7m60n41xgqbvnvsmtxo</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #787774; margin-bottom: 4px;">完成度</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #2383e2;">40%</div>
+                    </div>
+                </div>
+                <div class="progress-bar" style="margin-bottom: 16px;">
+                    <div class="progress-fill" style="width: 40%;"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="status-badge status-in-progress">
+                            <span>●</span> 进行中
+                        </span>
+                        <span style="font-size: 14px;">编写功能介绍与操作流程区</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">编写脚本质量规则与注意事项区</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">输出完整 HTML 文件</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Group 3: 岗位爬虫项目 -->
+            <div class="task-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                    <div>
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 4px 0;">岗位聚合爬虫与展示</h3>
+                        <div style="font-size: 13px; color: #787774;">Thread: 08k8fdrqur42imbnyamy</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #787774; margin-bottom: 4px;">完成度</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #2383e2;">0%</div>
+                    </div>
+                </div>
+                <div class="progress-bar" style="margin-bottom: 16px;">
+                    <div class="progress-fill" style="width: 0%;"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="status-badge status-in-progress">
+                            <span>●</span> 进行中
+                        </span>
+                        <span style="font-size: 14px;">编写 Python 爬虫脚本（抓取各公司招聘页）</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">生成岗位聚合展示 HTML（含筛选/状态标记）</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">测试运行并验证数据准确性</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workspace 2: study-career -->
+        <div class="workspace-section">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <div style="width: 8px; height: 8px; background: #2383e2; border-radius: 50%;"></div>
+                <h2 style="font-size: 24px; font-weight: 600; margin: 0;">study-career</h2>
+                <div class="workspace-tag">当前工作空间</div>
+            </div>
+
+            <!-- Task Group: FlightZen UI 重构 -->
+            <div class="task-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                    <div>
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 4px 0;">FlightZen 机票平台 UI 重构</h3>
+                        <div style="font-size: 13px; color: #787774;">Thread: kr73t8nkc56qssynqo83</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 12px; color: #787774; margin-bottom: 4px;">完成度</div>
+                        <div style="font-size: 20px; font-weight: 700; color: #2383e2;">25%</div>
+                    </div>
+                </div>
+                <div class="progress-bar" style="margin-bottom: 16px;">
+                    <div class="progress-fill" style="width: 25%;"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="status-badge status-in-progress">
+                            <span>●</span> 进行中
+                        </span>
+                        <span style="font-size: 14px;">调整基础样式变量，融入 Claude 美学</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">重构页面布局与组件，去除 AI 刻板印象，强化机票平台专业调性</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; opacity: 0.7;">
+                        <span class="status-badge status-pending">
+                            <span>○</span> 待开始
+                        </span>
+                        <span style="font-size: 14px;">各个页面功能自测与验收</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Suggestions -->
+        <div style="margin-top: 48px; padding: 24px; background: #f7f6f3; border-radius: 6px;">
+            <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 12px 0;">💡 建议行动</h3>
+            <div style="font-size: 14px; line-height: 1.8; color: #37352f;">
+                <p style="margin: 0 0 8px 0;"><strong>优先级 P0（本周继续）：</strong></p>
+                <ul style="margin: 0 0 16px 0; padding-left: 20px; color: #787774;">
+                    <li>女娲官网重构项目 - 首页完成后需继续登录流程和协议页</li>
+                    <li>FlightZen UI 重构 - 基础样式调整后需完成布局重构和测试</li>
+                </ul>
+                <p style="margin: 0 0 8px 0;"><strong>优先级 P1（下周）：</strong></p>
+                <ul style="margin: 0; padding-left: 20px; color: #787774;">
+                    <li>女娲功能介绍页 - 完成操作流程区和HTML输出</li>
+                    <li>岗位聚合爬虫 - 爬虫脚本运行和展示页面生成</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid #e9e9e7; font-size: 13px; color: #787774;">
+            <p style="margin: 0;">📅 数据时间：2026-04-20 15:10 | 扫描范围：最近7天的任务记录</p>
+        </div>
+    </div>
+
+    <script>
+        // Add smooth animations on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.task-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.4s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Animate progress bars
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach((bar, index) => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 500 + index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 学习路径 · 2026</title>
+  <style>
+    /* ===== Claude 设计风格 · 全局变量 ===== */
+    :root {
+      /* 暖白系背景 */
+      --bg:         #f9f7f4;
+      --bg2:        #f2ede8;
+      --bg3:        #ece6df;
+      --card:       #ffffff;
+      --border:     #e0d9d0;
+      --border-soft:#ede8e1;
+
+      /* 文字层级 */
+      --text:       #1a1510;
+      --text-2:     #3d3530;
+      --muted:      #7a7068;
+      --muted-lt:   #a89f96;
+
+      /* Claude 珊瑚橙主调 */
+      --accent:     #c96442;   /* 主橙 */
+      --accent-lt:  #e8825f;   /* 浅橙 */
+      --accent-bg:  #fdf0eb;   /* 橙底 */
+      --accent-bd:  #f0c4b0;   /* 橙边框 */
+
+      /* 辅助色 */
+      --teal:       #2e7d6e;
+      --teal-bg:    #e8f4f1;
+      --teal-bd:    #b0d8d0;
+
+      --sage:       #5a7a5c;
+      --sage-bg:    #eef3ee;
+      --sage-bd:    #c0d4c0;
+
+      --warm-blue:  #4a6fa5;
+      --blue-bg:    #eef2f8;
+      --blue-bd:    #c0d0e8;
+
+      --amber:      #b5770a;
+      --amber-bg:   #fef8eb;
+      --amber-bd:   #f0d898;
+
+      --rust:       #9e4020;
+      --rust-bg:    #fdf0eb;
+      --rust-bd:    #e8b8a0;
+
+      /* 系统 */
+      --radius:     12px;
+      --radius-sm:  8px;
+      --radius-xs:  6px;
+      --shadow:     0 1px 4px rgba(26,21,16,0.08), 0 4px 16px rgba(26,21,16,0.06);
+      --shadow-sm:  0 1px 3px rgba(26,21,16,0.08);
+      --shadow-hover: 0 4px 20px rgba(201,100,66,0.12), 0 1px 4px rgba(26,21,16,0.08);
+      --transition: all 0.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; color: var(--accent-lt); }
+
+    /* ===== 滚动条 ===== */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ===== 顶部导航 ===== */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(249,247,244,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 58px;
+    }
+    .nav-logo {
+      font-size: 15px; font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.2px;
+    }
+    .nav-links {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .nav-links a {
+      font-size: 13.5px; color: var(--muted); font-weight: 500;
+      transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-badge {
+      font-size: 11.5px; background: var(--accent-bg);
+      border: 1px solid var(--accent-bd);
+      padding: 4px 12px; border-radius: 20px;
+      color: var(--accent); font-weight: 500;
+    }
+
+    /* ===== 布局容器 ===== */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+    .section { padding: 72px 0; }
+    .section + .section { border-top: 1px solid var(--border-soft); }
+
+    /* ===== Hero ===== */
+    .hero {
+      padding: 88px 0 72px;
+      text-align: center;
+      position: relative;
+      background: linear-gradient(180deg, #fdf8f4 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-bd);
+      padding: 5px 16px; border-radius: 20px;
+      font-size: 12px; color: var(--accent);
+      margin-bottom: 28px; font-weight: 500;
+    }
+    .hero-tag .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5.5vw, 58px);
+      font-weight: 800; line-height: 1.18;
+      letter-spacing: -1.5px; margin-bottom: 20px;
+      color: var(--text);
+    }
+    .hero h1 .grad {
+      color: var(--accent);
+      background: linear-gradient(135deg, var(--accent) 0%, #e07040 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 17px; color: var(--muted);
+      max-width: 560px; margin: 0 auto 44px;
+      line-height: 1.65;
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      max-width: 480px; margin: 0 auto;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat {
+      flex: 1; text-align: center;
+      padding: 18px 16px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-size: 26px; font-weight: 800;
+      color: var(--accent);
+      display: block; line-height: 1.2;
+    }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+    /* ===== 角色定位卡 ===== */
+    .role-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      display: flex; align-items: flex-start; gap: 24px;
+      margin-bottom: 56px;
+      box-shadow: var(--shadow-sm);
+      border-left: 3px solid var(--accent);
+    }
+    .role-icon {
+      font-size: 36px; flex-shrink: 0; line-height: 1; margin-top: 2px;
+    }
+    .role-title {
+      font-size: 20px; font-weight: 700; margin-bottom: 10px;
+      color: var(--text);
+    }
+    .role-desc { color: var(--muted); font-size: 14.5px; line-height: 1.7; }
+    .role-desc strong { color: var(--text-2); }
+    .role-tags {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
+    }
+    .role-tag {
+      font-size: 12px; padding: 4px 12px; border-radius: 20px;
+      border: 1px solid var(--border); color: var(--muted);
+      background: var(--bg3); font-weight: 500;
+    }
+
+    /* ===== 路线总览 ===== */
+    .phases-track {
+      display: flex; gap: 0; margin-bottom: 52px;
+      position: relative;
+    }
+    .phases-track::before {
+      content: '';
+      position: absolute; top: 27px; left: 5%; right: 5%; height: 1.5px;
+      background: var(--border);
+      z-index: 0;
+    }
+    .phase-dot-item {
+      flex: 1; text-align: center; position: relative; z-index: 1;
+      cursor: pointer;
+    }
+    .phase-dot {
+      width: 54px; height: 54px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 12px;
+      font-size: 18px; font-weight: 800;
+      border: 2px solid var(--border);
+      background: var(--card);
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      color: var(--muted);
+    }
+    .phase-dot-item:nth-child(1) .phase-dot { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+    .phase-dot-item:nth-child(2) .phase-dot { border-color: var(--teal); color: var(--teal); background: var(--teal-bg); }
+    .phase-dot-item:nth-child(3) .phase-dot { border-color: var(--warm-blue); color: var(--warm-blue); background: var(--blue-bg); }
+    .phase-dot-item:nth-child(4) .phase-dot { border-color: var(--amber); color: var(--amber); background: var(--amber-bg); }
+    .phase-dot-item:nth-child(5) .phase-dot { border-color: var(--sage); color: var(--sage); background: var(--sage-bg); }
+    .phase-dot-item:hover .phase-dot { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .phase-name { font-size: 12px; color: var(--text-2); line-height: 1.4; font-weight: 500; }
+    .phase-weeks { font-size: 11px; color: var(--muted-lt); margin-top: 3px; }
+
+    /* ===== 阶段详情卡片 ===== */
+    .phase-section { margin-bottom: 64px; }
+    .phase-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+    }
+    .phase-badge {
+      padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.8px; text-transform: uppercase;
+    }
+    .phase-1 .phase-badge { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-bd); }
+    .phase-2 .phase-badge { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-bd); }
+    .phase-3 .phase-badge { background: var(--blue-bg); color: var(--warm-blue); border: 1px solid var(--blue-bd); }
+    .phase-4 .phase-badge { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-bd); }
+    .phase-5 .phase-badge { background: var(--sage-bg); color: var(--sage); border: 1px solid var(--sage-bd); }
+    .phase-title { font-size: 22px; font-weight: 700; color: var(--text); }
+    .phase-duration {
+      margin-left: auto; font-size: 12.5px; color: var(--muted);
+      background: var(--bg3); padding: 4px 14px; border-radius: 20px;
+      border: 1px solid var(--border); font-weight: 500;
+    }
+
+    .phase-goal {
+      background: var(--bg2); border-left: 3px solid;
+      border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+      padding: 16px 20px; margin-bottom: 24px;
+      font-size: 14px; color: var(--muted); line-height: 1.7;
+    }
+    .phase-goal strong { color: var(--text-2); }
+    .phase-1 .phase-goal { border-color: var(--accent); background: var(--accent-bg); }
+    .phase-2 .phase-goal { border-color: var(--teal); background: var(--teal-bg); }
+    .phase-3 .phase-goal { border-color: var(--warm-blue); background: var(--blue-bg); }
+    .phase-4 .phase-goal { border-color: var(--amber); background: var(--amber-bg); }
+    .phase-5 .phase-goal { border-color: var(--sage); background: var(--sage-bg); }
+
+    /* ===== 资源卡片网格 ===== */
+    .resources-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px;
+      margin-bottom: 24px;
+    }
+    .resource-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px;
+      transition: var(--transition);
+      display: flex; flex-direction: column; gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+    .resource-card:hover {
+      border-color: var(--accent-bd);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .rc-top { display: flex; align-items: flex-start; gap: 12px; }
+    .rc-icon {
+      width: 40px; height: 40px; border-radius: var(--radius-xs); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; border: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .rc-icon.yt  { background: #fff0ee; border-color: #f8c8be; }
+    .rc-icon.doc { background: var(--blue-bg); border-color: var(--blue-bd); }
+    .rc-icon.crs { background: var(--teal-bg); border-color: var(--teal-bd); }
+    .rc-icon.pod { background: var(--amber-bg); border-color: var(--amber-bd); }
+    .rc-icon.bk  { background: var(--sage-bg); border-color: var(--sage-bd); }
+    .rc-icon.web { background: var(--accent-bg); border-color: var(--accent-bd); }
+    .rc-meta { flex: 1; }
+    .rc-title {
+      font-size: 13.5px; font-weight: 600; color: var(--text);
+      line-height: 1.45; margin-bottom: 4px;
+    }
+    .rc-author { font-size: 12px; color: var(--muted); }
+    .rc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .rc-tag {
+      font-size: 11px; padding: 2px 9px; border-radius: 10px;
+      background: var(--bg3); border: 1px solid var(--border); color: var(--muted);
+      font-weight: 500;
+    }
+    .rc-tag.free  { color: var(--teal);      border-color: var(--teal-bd);   background: var(--teal-bg); }
+    .rc-tag.hot   { color: var(--rust);      border-color: var(--rust-bd);   background: var(--rust-bg); }
+    .rc-tag.new   { color: var(--amber);     border-color: var(--amber-bd);  background: var(--amber-bg); }
+    .rc-tag.must  { color: var(--warm-blue); border-color: var(--blue-bd);   background: var(--blue-bg); }
+    .rc-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 8px; border-top: 1px solid var(--border-soft);
+    }
+    .rc-views { font-size: 11.5px; color: var(--muted); }
+    .rc-link {
+      font-size: 12px; color: var(--accent); font-weight: 600;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .rc-link:hover { color: var(--accent-lt); text-decoration: none; }
+
+    /* ===== 每周计划表 ===== */
+    .week-table {
+      width: 100%; border-collapse: collapse; margin-bottom: 24px;
+      font-size: 13px; background: var(--card);
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+    }
+    .week-table th {
+      background: var(--bg2); padding: 11px 16px;
+      text-align: left; font-size: 11.5px; color: var(--muted);
+      border-bottom: 1px solid var(--border); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .week-table td {
+      padding: 12px 16px; border-bottom: 1px solid var(--border-soft);
+      vertical-align: top;
+    }
+    .week-table tr:last-child td { border-bottom: none; }
+    .week-table tr:hover td { background: var(--bg); }
+    .week-num { font-weight: 700; color: var(--accent); white-space: nowrap; }
+    .week-task { color: var(--text-2); }
+    .week-output { color: var(--teal); font-size: 12px; font-weight: 500; }
+    .week-time { color: var(--muted); font-size: 12px; }
+
+    /* ===== 思想领袖区 ===== */
+    .leader-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;
+    }
+    .leader-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      transition: var(--transition); box-shadow: var(--shadow-sm);
+    }
+    .leader-card:hover {
+      border-color: var(--accent-bd); transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .leader-header {
+      padding: 20px 22px; display: flex; align-items: center; gap: 14px;
+      border-bottom: 1px solid var(--border-soft);
+      background: linear-gradient(135deg, var(--bg) 0%, var(--card) 100%);
+    }
+    .leader-avatar {
+      width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 800; color: white;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+    .leader-name { font-size: 15.5px; font-weight: 700; color: var(--text); }
+    .leader-title { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .leader-body { padding: 18px 22px; }
+    .leader-quote {
+      font-size: 13px; color: var(--muted); font-style: italic;
+      border-left: 2px solid var(--accent-bd);
+      padding: 10px 14px; margin-bottom: 16px; line-height: 1.65;
+      background: var(--accent-bg); border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+    }
+    .leader-resources { display: flex; flex-direction: column; gap: 8px; }
+    .leader-res-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px; background: var(--bg2);
+      border-radius: var(--radius-xs); border: 1px solid var(--border-soft);
+      transition: var(--transition); color: inherit;
+    }
+    .leader-res-item:hover {
+      background: var(--accent-bg); border-color: var(--accent-bd);
+      text-decoration: none;
+    }
+    .lri-type {
+      font-size: 10px; padding: 2px 8px; border-radius: 4px;
+      font-weight: 700; white-space: nowrap; flex-shrink: 0;
+      margin-top: 2px; letter-spacing: 0.3px;
+    }
+    .lri-type.essay  { background: var(--blue-bg); color: var(--warm-blue); border: 1px solid var(--blue-bd); }
+    .lri-type.talk   { background: var(--rust-bg); color: var(--rust); border: 1px solid var(--rust-bd); }
+    .lri-type.pod    { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-bd); }
+    .lri-type.blog   { background: var(--teal-bg); color: var(--teal); border: 1px solid var(--teal-bd); }
+    .lri-type.video  { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent-bd); }
+    .lri-content { flex: 1; }
+    .lri-title { font-size: 13px; color: var(--text-2); line-height: 1.4; font-weight: 500; }
+    .lri-meta  { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* ===== 每日时间分配 ===== */
+    .daily-plan { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+    .day-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px;
+      transition: var(--transition); box-shadow: var(--shadow-sm);
+    }
+    .day-card:hover { border-color: var(--accent-bd); box-shadow: var(--shadow); }
+    .day-name {
+      font-size: 11.5px; font-weight: 700; color: var(--accent);
+      margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .day-block {
+      display: flex; align-items: flex-start; gap: 7px; margin-bottom: 8px;
+      font-size: 11px; color: var(--muted); line-height: 1.45;
+    }
+    .day-block-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 4px;
+    }
+    .dot-blue   { background: var(--warm-blue); }
+    .dot-purple { background: #8b6cb5; }
+    .dot-green  { background: var(--teal); }
+    .dot-orange { background: var(--accent); }
+
+    /* ===== 里程碑时间线 ===== */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 9px; top: 8px; bottom: 0; width: 1.5px;
+      background: linear-gradient(to bottom, var(--accent-bd), var(--border-soft));
+    }
+    .tl-item { position: relative; margin-bottom: 36px; }
+    .tl-dot {
+      position: absolute; left: -27px; top: 4px;
+      width: 14px; height: 14px; border-radius: 50%;
+      border: 2.5px solid; background: var(--card);
+    }
+    .tl-item:nth-child(1) .tl-dot { border-color: var(--accent); background: var(--accent-bg); }
+    .tl-item:nth-child(2) .tl-dot { border-color: var(--teal); background: var(--teal-bg); }
+    .tl-item:nth-child(3) .tl-dot { border-color: var(--warm-blue); background: var(--blue-bg); }
+    .tl-item:nth-child(4) .tl-dot { border-color: var(--amber); background: var(--amber-bg); }
+    .tl-item:nth-child(5) .tl-dot { border-color: var(--sage); background: var(--sage-bg); }
+    .tl-item:nth-child(6) .tl-dot { border-color: var(--muted-lt); }
+    .tl-month { font-size: 11.5px; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
+    .tl-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+    .tl-desc  { font-size: 13.5px; color: var(--muted); }
+    .tl-outcome {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 10px; padding: 4px 12px; border-radius: 20px;
+      font-size: 12px; background: var(--teal-bg);
+      border: 1px solid var(--teal-bd); color: var(--teal); font-weight: 500;
+    }
+
+    /* ===== 工具箱 ===== */
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .tool-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 16px;
+      display: flex; align-items: center; gap: 12px;
+      transition: var(--transition); box-shadow: var(--shadow-sm);
+    }
+    .tool-card:hover { border-color: var(--accent-bd); transform: translateY(-1px); box-shadow: var(--shadow); }
+    .tool-icon { font-size: 22px; flex-shrink: 0; }
+    .tool-name { font-size: 13.5px; font-weight: 600; color: var(--text); }
+    .tool-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ===== Section 标题 ===== */
+    .sec-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 10px;
+    }
+    .sec-title {
+      font-size: 30px; font-weight: 800; margin-bottom: 10px;
+      letter-spacing: -0.5px; color: var(--text);
+    }
+    .sec-sub { font-size: 15px; color: var(--muted); max-width: 600px; margin-bottom: 44px; }
+
+    /* ===== Footer ===== */
+    .footer {
+      text-align: center; padding: 48px 24px;
+      border-top: 1px solid var(--border); color: var(--muted);
+      font-size: 13px; background: var(--bg2);
+    }
+    .footer strong { color: var(--text-2); }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 56px 0 44px; }
+      .hero-stats { max-width: 100%; border-radius: 0; border-left: none; border-right: none; }
+      .daily-plan { grid-template-columns: repeat(2, 1fr); }
+      .phases-track { flex-wrap: wrap; gap: 16px; }
+      .phases-track::before { display: none; }
+      .role-card { flex-direction: column; padding: 24px; }
+    }
+
+    /* ===== 辅助类 ===== */
+    .divider { height: 1px; background: var(--border-soft); margin: 32px 0; }
+    .badge-new {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      background: var(--amber-bg); color: var(--amber);
+      border: 1px solid var(--amber-bd);
+      padding: 1px 7px; border-radius: 4px; margin-left: 6px; vertical-align: middle;
+    }
+    .badge-hot {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      background: var(--rust-bg); color: var(--rust);
+      border: 1px solid var(--rust-bd);
+      padding: 1px 7px; border-radius: 4px; margin-left: 6px; vertical-align: middle;
+    }
+    .highlight { color: var(--accent); font-weight: 600; }
+    .text-muted { color: var(--muted); }
+    .mt-8  { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mb-24 { margin-bottom: 24px; }
+    .flex { display: flex; }
+    .gap-8 { gap: 8px; }
+    .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; }
+  </style>
+</head>
+<body>
+
+<!-- ===== 导航 ===== -->
+<nav class="nav">
+  <div class="nav-logo">🧠 AI 学习路径</div>
+  <ul class="nav-links">
+    <li><a href="#overview">路径总览</a></li>
+    <li><a href="#phases">学习阶段</a></li>
+    <li><a href="#leaders">思想领袖</a></li>
+    <li><a href="#daily">每日计划</a></li>
+    <li><a href="#tools">工具箱</a></li>
+  </ul>
+  <span class="nav-badge">2026 · 持续更新</span>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">
+      <span class="dot"></span>
+      AI-Native Developer 成长路径 · 专为产品经理定制
+    </div>
+    <h1>从 PM 到<br/><span class="grad">AI-Native Developer</span></h1>
+    <p>商科背景 × 机器学习认知 × AI Agent 开发实战<br/>每天 2 小时，6 个月系统进阶</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">6</div>
+        <div class="stat-label">个月完整路径</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">学习阶段</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2h</div>
+        <div class="stat-label">每日投入</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">30+</div>
+        <div class="stat-label">精选资源</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 角色定位 ===== -->
+<div class="container">
+  <div class="role-card">
+    <div class="role-icon">🎯</div>
+    <div>
+      <div class="role-title">你的目标角色：AI-Native Developer</div>
+      <div class="role-desc">
+        这是 2026 年最具价值的新型复合角色——<strong>不需要</strong>从零手写所有代码，
+        <strong>必须能</strong>读懂 AI 生成的代码、发现错误、提出精准需求；
+        <strong>必须懂</strong>ML 基础概念，能和算法工程师对话；
+        <strong>必须会</strong>用 Agent / API 搭建自己的工具。
+        你现在已经在用 Claude Code 指挥 AI 生成代码了，差的只是<span class="highlight">「理解力」</span>这最后一公里。
+      </div>
+      <div class="role-tags">
+        <span class="role-tag">商科 + 经济学背景 ✅</span>
+        <span class="role-tag">统计学基础 ✅</span>
+        <span class="role-tag">AI 工具使用经验 ✅</span>
+        <span class="role-tag">Python 零基础 → 待建立</span>
+        <span class="role-tag">ML 原理认知 → 待建立</span>
+        <span class="role-tag">Agent 开发实战 → 目标</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== 路径总览 ===== -->
+<section class="section" id="overview">
+  <div class="container">
+    <div class="sec-tag">LEARNING PATH</div>
+    <div class="sec-title">5 阶段学习路径</div>
+    <div class="sec-sub">从「完全看不懂代码」到「能独立搭建 AI Agent 应用」，每个阶段都有明确的学习产出。</div>
+
+    <div class="phases-track">
+      <div class="phase-dot-item">
+        <div class="phase-dot">1</div>
+        <div class="phase-name">Python<br/>读懂代码</div>
+        <div class="phase-weeks">第 1–6 周</div>
+      </div>
+      <div class="phase-dot-item">
+        <div class="phase-dot">2</div>
+        <div class="phase-name">机器学习<br/>核心概念</div>
+        <div class="phase-weeks">第 7–14 周</div>
+      </div>
+      <div class="phase-dot-item">
+        <div class="phase-dot">3</div>
+        <div class="phase-name">LLM & Prompt<br/>工程</div>
+        <div class="phase-weeks">第 15–18 周</div>
+      </div>
+      <div class="phase-dot-item">
+        <div class="phase-dot">4</div>
+        <div class="phase-name">AI Agent<br/>开发实战</div>
+        <div class="phase-weeks">第 19–26 周</div>
+      </div>
+      <div class="phase-dot-item">
+        <div class="phase-dot">5</div>
+        <div class="phase-name">持续深化<br/>思想沉淀</div>
+        <div class="phase-weeks">长期</div>
+      </div>
+    </div>
+
+    <!-- 里程碑时间线 -->
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">第 1 个月 · 4 月</div>
+        <div class="tl-title">读懂 Claude 生成的代码</div>
+        <div class="tl-desc">掌握 Python 基础语法，能理解变量、函数、循环、API 调用等结构，不再对 AI 生成的代码一头雾水。</div>
+        <div class="tl-outcome">✓ 能向工程师解释 AI 代码的逻辑</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">第 2–3 个月 · 5–6 月</div>
+        <div class="tl-title">理解机器学习是怎么「工作」的</div>
+        <div class="tl-desc">掌握监督学习、神经网络、LLM 的底层原理，建立对 AI 能力边界的判断力，不再被工程师「忽悠」。</div>
+        <div class="tl-outcome">✓ 能独立评估 AI 方案的可行性</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">第 4 个月 · 7 月</div>
+        <div class="tl-title">掌握 Prompt 工程 + LLM API</div>
+        <div class="tl-desc">能用 OpenAI / Claude API 写出能实际运行的脚本，掌握 Function Calling、RAG 等核心技术模式。</div>
+        <div class="tl-outcome">✓ 能自己调 API 做出一个 AI 小工具</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">第 5–6 个月 · 8–9 月</div>
+        <div class="tl-title">独立搭建 AI Agent 应用</div>
+        <div class="tl-desc">能用 OpenAI Agents SDK / LangChain 搭建一个有实际功能的 Agent，完成一个完整的项目。</div>
+        <div class="tl-outcome">✓ 作品集：1 个可演示的 AI Agent 项目</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-month">持续 · 思想层</div>
+        <div class="tl-title">建立 AI 世界观</div>
+        <div class="tl-desc">持续跟踪 AI 领袖思想，阅读前沿论文，形成对 AGI 发展路径、技术伦理、产业格局的独立判断。</div>
+        <div class="tl-outcome">✓ 能输出有洞察力的 AI 行业观点</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 学习阶段 ===== -->
+<section class="section" id="phases">
+  <div class="container">
+    <div class="sec-tag">CURRICULUM</div>
+    <div class="sec-title">详细学习计划</div>
+    <div class="sec-sub">每个阶段包含：学习目标 · 推荐资源 · 每周任务 · 阶段产出</div>
+
+    <!-- ========== 阶段一 ========== -->
+    <div class="phase-section phase-1">
+      <div class="phase-header">
+        <span class="phase-badge">PHASE 01</span>
+        <div class="phase-title">Python 读懂代码</div>
+        <span class="phase-duration">🗓 第 1–6 周 · 约 6 周</span>
+      </div>
+      <div class="phase-goal">
+        💡 <strong>阶段目标：</strong>不要求你会「写代码」，目标是<strong>读懂</strong> Claude 生成的 Python 代码。
+        理解变量、函数、类、API 请求、JSON 处理、条件判断等基础结构。
+        完成后，当你看到 AI 生成的代码时，不再是「天书」，而是能理解它在干什么、哪里可能出错。
+      </div>
+
+      <h3 style="font-size:16px;color:var(--muted);margin-bottom:16px;">📚 推荐学习资源</h3>
+      <div class="resources-grid">
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon crs">🎓</div>
+            <div class="rc-meta">
+              <div class="rc-title">AI Python for Beginners <span class="badge-new">NEW</span></div>
+              <div class="rc-author">Andrew Ng · DeepLearning.AI</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag must">强烈推荐</span>
+            <span class="rc-tag">Python 入门</span>
+            <span class="rc-tag">AI 结合</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 约 10 小时 · 适合零基础</span>
+            <a class="rc-link" href="https://www.deeplearning.ai/short-courses/ai-python-for-beginners/" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">Python Full Course for Beginners 2025</div>
+              <div class="rc-author">YouTube · 2025年2月发布</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag hot">100k+ 播放</span>
+            <span class="rc-tag">Python</span>
+            <span class="rc-tag">实战项目</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 完整课程 · 系统覆盖</span>
+            <a class="rc-link" href="https://www.youtube.com/watch?v=K5KVEU3aaeQ" target="_blank">观看 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon crs">🎓</div>
+            <div class="rc-meta">
+              <div class="rc-title">freeCodeCamp · Python 免费认证</div>
+              <div class="rc-author">freeCodeCamp.org · 1000万订阅</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">完全免费</span>
+            <span class="rc-tag">项目驱动</span>
+            <span class="rc-tag">有认证</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 按需学习，自定节奏</span>
+            <a class="rc-link" href="https://www.freecodecamp.org" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon doc">📘</div>
+            <div class="rc-meta">
+              <div class="rc-title">Python 官方文档（入门教程）</div>
+              <div class="rc-author">Python.org · 权威一手资料</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag">一手资料</span>
+            <span class="rc-tag">权威</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">遇到问题时必看</span>
+            <a class="rc-link" href="https://docs.python.org/zh-cn/3/tutorial/" target="_blank">阅读 →</a>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 style="font-size:16px;color:var(--muted);margin-bottom:16px;margin-top:8px;">📅 每周任务安排</h3>
+      <table class="week-table">
+        <thead>
+          <tr>
+            <th>周次</th>
+            <th>学习内容</th>
+            <th>每日任务（2h）</th>
+            <th>阶段产出</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="week-num">第 1 周</span></td>
+            <td class="week-task">Python 变量、数据类型、基本运算、print 输出</td>
+            <td class="week-time">AI Python for Beginners 前 4 节</td>
+            <td class="week-output">能写出 Hello World，理解变量</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 2 周</span></td>
+            <td class="week-task">列表 / 字典 / 条件判断 / 循环</td>
+            <td class="week-time">继续 DeepLearning.AI 课程</td>
+            <td class="week-output">能理解 for 循环和 if 判断逻辑</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 3 周</span></td>
+            <td class="week-task">函数定义、参数、返回值、模块导入</td>
+            <td class="week-time">视频课 + 动手跑代码</td>
+            <td class="week-output">能读懂函数结构，理解 import</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 4 周</span></td>
+            <td class="week-task">JSON 处理、文件读写、异常处理 (try/except)</td>
+            <td class="week-time">freeCodeCamp 配套练习</td>
+            <td class="week-output">能理解 API 返回的 JSON 数据</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 5 周</span></td>
+            <td class="week-task">HTTP 请求（requests 库）、API 调用实战</td>
+            <td class="week-time">用 Claude API 发第一个请求</td>
+            <td class="week-output">🎉 跑通第一个 LLM API 调用</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 6 周</span></td>
+            <td class="week-task">回顾 + 读懂一段完整的 Claude Code 生成代码</td>
+            <td class="week-time">分析自己历史项目的代码</td>
+            <td class="week-output">✅ 阶段一完成里程碑</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 阶段二 & 三 ===== -->
+<section class="section" id="phase-2-3">
+  <div class="container">
+
+    <!-- ========== 阶段二 ========== -->
+    <div class="phase-section phase-2">
+      <div class="phase-header">
+        <span class="phase-badge">PHASE 02</span>
+        <div class="phase-title">机器学习核心概念</div>
+        <span class="phase-duration">🗓 第 7–14 周 · 约 8 周</span>
+      </div>
+      <div class="phase-goal">
+        💡 <strong>阶段目标：</strong>不要求你训练模型，目标是<strong>理解原理</strong>——
+        监督学习 / 无监督学习 / 神经网络 / 深度学习 / Transformer 架构到底是怎么工作的。
+        完成后，你能和算法工程师讨论模型选型、评估指标、数据质量，不再是局外人。
+        <strong>你的统计学背景在这一阶段是重要优势！</strong>
+      </div>
+
+      <h3 style="font-size:16px;color:var(--muted);margin-bottom:16px;">📚 推荐学习资源</h3>
+      <div class="resources-grid">
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon crs">🎓</div>
+            <div class="rc-meta">
+              <div class="rc-title">Machine Learning Specialization <span class="badge-hot">经典</span></div>
+              <div class="rc-author">Andrew Ng · Coursera / DeepLearning.AI</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag must">强烈推荐</span>
+            <span class="rc-tag">3课程专项</span>
+            <span class="rc-tag">700万学员</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 可旁听免费 · 有证书</span>
+            <a class="rc-link" href="https://www.coursera.org/specializations/machine-learning-introduction" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">但什么是神经网络？<span class="badge-hot">HOT</span></div>
+              <div class="rc-author">3Blue1Brown · 深度学习系列</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag hot">2200万+播放</span>
+            <span class="rc-tag must">视觉化讲解</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 每集 15–20 分钟，共 4 集</span>
+            <a class="rc-link" href="https://www.youtube.com/c/3blue1brown" target="_blank">观看 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">Neural Networks: Zero to Hero <span class="badge-new">精品</span></div>
+              <div class="rc-author">Andrej Karpathy · 前 OpenAI 联创</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag must">大神出品</span>
+            <span class="rc-tag">从零构建</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 系列课程，可选择性观看</span>
+            <a class="rc-link" href="https://karpathy.ai" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon crs">🎓</div>
+            <div class="rc-meta">
+              <div class="rc-title">Agentic AI Short Course</div>
+              <div class="rc-author">DeepLearning.AI · 2025 新上线</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025新课</span>
+            <span class="rc-tag">ML → Agent 衔接</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 约 4 小时 · ML 基础衔接</span>
+            <a class="rc-link" href="https://learn.deeplearning.ai/courses/agentic-ai/information" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon bk">📗</div>
+            <div class="rc-meta">
+              <div class="rc-title">《统计学习方法》（李航）</div>
+              <div class="rc-author">李航 · 适合你的统计背景</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag">统计 + ML</span>
+            <span class="rc-tag">中文</span>
+            <span class="rc-tag must">理论扎实</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">有统计背景读更顺畅</span>
+            <a class="rc-link" href="https://book.douban.com/subject/33437381/" target="_blank">豆瓣 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">Intro to Large Language Models</div>
+              <div class="rc-author">Andrej Karpathy · YouTube 2024</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag hot">百万播放</span>
+            <span class="rc-tag">LLM 原理</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 约 60 分钟 · 强烈推荐</span>
+            <a class="rc-link" href="https://www.youtube.com/@AndrejKarpathy" target="_blank">观看 →</a>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 style="font-size:16px;color:var(--muted);margin-bottom:16px;margin-top:8px;">📅 每周任务安排</h3>
+      <table class="week-table">
+        <thead>
+          <tr><th>周次</th><th>学习内容</th><th>资源</th><th>产出</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="week-num">第 7–8 周</span></td>
+            <td class="week-task">监督学习：线性回归、逻辑回归、分类问题（用你的统计基础类比理解）</td>
+            <td class="week-time">Andrew Ng ML 专项 Week 1–2</td>
+            <td class="week-output">能解释「模型训练」是怎么优化的</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 9–10 周</span></td>
+            <td class="week-task">神经网络基础：感知器 → 反向传播 → 梯度下降（配合 3Blue1Brown 视频）</td>
+            <td class="week-time">3Blue1Brown 深度学习系列 + Andrew Ng</td>
+            <td class="week-output">能画出神经网络结构图并解释</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 11–12 周</span></td>
+            <td class="week-task">深度学习 + CNN + RNN 基础概念；理解 Transformer 架构原理</td>
+            <td class="week-time">Karpathy「Intro to LLM」讲座</td>
+            <td class="week-output">理解 GPT / Claude 的底层运作方式</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 13–14 周</span></td>
+            <td class="week-task">模型评估指标（准确率/召回率/F1）、过拟合、数据集划分、微调 vs 提示工程</td>
+            <td class="week-time">Andrew Ng ML 专项后半段</td>
+            <td class="week-output">✅ 能和工程师讨论模型方案选型</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== 阶段三 ========== -->
+    <div class="phase-section phase-3">
+      <div class="phase-header">
+        <span class="phase-badge">PHASE 03</span>
+        <div class="phase-title">LLM & Prompt 工程</div>
+        <span class="phase-duration">🗓 第 15–18 周 · 约 4 周</span>
+      </div>
+      <div class="phase-goal">
+        💡 <strong>阶段目标：</strong>从「会用」到「精通」LLM。
+        掌握 System Prompt 设计、Function Calling、RAG（检索增强生成）、上下文管理等核心技术，
+        能用 OpenAI / Anthropic API 写出实际运行的 Python 脚本，搭建第一个 AI 小工具。
+      </div>
+
+      <h3 style="font-size:16px;color:var(--muted);margin-bottom:16px;">📚 推荐学习资源</h3>
+      <div class="resources-grid">
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon crs">🎓</div>
+            <div class="rc-meta">
+              <div class="rc-title">ChatGPT Prompt Engineering for Developers <span class="badge-new">必学</span></div>
+              <div class="rc-author">Andrew Ng × OpenAI · DeepLearning.AI</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag must">官方出品</span>
+            <span class="rc-tag">Prompt 工程</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 约 2 小时 · 快速上手</span>
+            <a class="rc-link" href="https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon doc">📘</div>
+            <div class="rc-meta">
+              <div class="rc-title">Anthropic Prompt Engineering Docs <span class="badge-new">一手资料</span></div>
+              <div class="rc-author">Anthropic 官方文档</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag">一手资料</span>
+            <span class="rc-tag">Claude 专项</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">你每天都在用 Claude，这是必读</span>
+            <a class="rc-link" href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">阅读 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon doc">📘</div>
+            <div class="rc-meta">
+              <div class="rc-title">OpenAI API 官方文档</div>
+              <div class="rc-author">OpenAI · 持续更新</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag">一手资料</span>
+            <span class="rc-tag">Function Calling</span>
+            <span class="rc-tag">RAG</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">包含 Function Calling / Assistants API</span>
+            <a class="rc-link" href="https://platform.openai.com/docs/overview" target="_blank">阅读 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon crs">🎓</div>
+            <div class="rc-meta">
+              <div class="rc-title">Building Systems with ChatGPT API</div>
+              <div class="rc-author">DeepLearning.AI · Andrew Ng</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag">系统设计</span>
+            <span class="rc-tag">API 实战</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 约 3 小时 · 进阶必学</span>
+            <a class="rc-link" href="https://www.deeplearning.ai/short-courses/building-systems-with-chatgpt/" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon crs">🎓</div>
+            <div class="rc-meta">
+              <div class="rc-title">LangChain for LLM Application Development</div>
+              <div class="rc-author">DeepLearning.AI · 2025 版本</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025新</span>
+            <span class="rc-tag">LangChain</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 约 3 小时 · Agent 前置</span>
+            <a class="rc-link" href="https://www.deeplearning.ai/short-courses/langchain-for-llm-application-development/" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">LangChain Mastery 2025 完整课程</div>
+              <div class="rc-author">YouTube · 2025年2月 · 5小时</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025年</span>
+            <span class="rc-tag">LangChain</span>
+            <span class="rc-tag">完整</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 5 小时完整课程</span>
+            <a class="rc-link" href="https://www.youtube.com/watch?v=Cyv-dgv80kE" target="_blank">观看 →</a>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 style="font-size:16px;color:var(--muted);margin-bottom:16px;margin-top:8px;">📅 每周任务安排</h3>
+      <table class="week-table">
+        <thead>
+          <tr><th>周次</th><th>学习内容</th><th>动手实践</th><th>产出</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="week-num">第 15 周</span></td>
+            <td class="week-task">Prompt 工程基础：Role / Context / Format / Chain-of-Thought</td>
+            <td class="week-time">DeepLearning.AI Prompt 课程</td>
+            <td class="week-output">能写出专业级 System Prompt</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 16 周</span></td>
+            <td class="week-task">OpenAI / Anthropic API 调用：消息格式、Token 管理、流式输出</td>
+            <td class="week-time">读官方文档 + 动手写脚本</td>
+            <td class="week-output">🎉 做出第一个能聊天的 Python 程序</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 17 周</span></td>
+            <td class="week-task">Function Calling / Tool Use、RAG 基础原理</td>
+            <td class="week-time">OpenAI 官方文档 + Building Systems 课</td>
+            <td class="week-output">理解 Claude Code 的工具调用机制</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 18 周</span></td>
+            <td class="week-task">LangChain 入门：Chain / Prompt Template / 记忆管理</td>
+            <td class="week-time">LangChain 课程</td>
+            <td class="week-output">✅ 完成一个有记忆能力的 AI 对话程序</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 阶段四 & 五 ===== -->
+<section class="section" id="phase-4-5">
+  <div class="container">
+
+    <!-- ========== 阶段四 ========== -->
+    <div class="phase-section phase-4">
+      <div class="phase-header">
+        <span class="phase-badge">PHASE 04</span>
+        <div class="phase-title">AI Agent 开发实战</div>
+        <span class="phase-duration">🗓 第 19–26 周 · 约 8 周</span>
+      </div>
+      <div class="phase-goal">
+        💡 <strong>阶段目标：</strong>这是你最感兴趣的部分——用 OpenAI Agents SDK / LangChain 搭建一个<strong>真实可用的 AI Agent 应用</strong>。
+        理解 Agent 的核心架构：工具调用（Tool Use）、多步规划、记忆管理、多 Agent 协作。
+        最终产出：一个能解决你工作中实际问题的 AI Agent 项目作品。
+      </div>
+
+      <h3 style="font-size:16px;color:var(--muted);margin-bottom:16px;">📚 推荐学习资源</h3>
+      <div class="resources-grid">
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon doc">📘</div>
+            <div class="rc-meta">
+              <div class="rc-title">OpenAI Agents SDK 官方文档 <span class="badge-new">2025 NEW</span></div>
+              <div class="rc-author">OpenAI 官方 · 2025年3月发布</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025年3月</span>
+            <span class="rc-tag must">一手资料</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">最新官方 Agent 开发框架</span>
+            <a class="rc-link" href="https://openai.com/index/new-tools-for-building-agents/" target="_blank">阅读 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">OpenAI Agents SDK Full Tutorial Series <span class="badge-new">NEW</span></div>
+              <div class="rc-author">YouTube · 2025年4月 · 34k播放</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025年</span>
+            <span class="rc-tag hot">34k+ 播放</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 完整系列教程</span>
+            <a class="rc-link" href="https://www.youtube.com/watch?v=gFcAfU3V1Zo" target="_blank">观看 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">Agents SDK from OpenAI! Full Tutorial</div>
+              <div class="rc-author">YouTube · 2025年3月发布</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025年</span>
+            <span class="rc-tag">入门友好</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 官方 SDK 发布后第一批教程</span>
+            <a class="rc-link" href="https://www.youtube.com/watch?v=35nxORG1mtg" target="_blank">观看 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">Agentic AI Engineering 4小时实战工坊</div>
+              <div class="rc-author">YouTube · 2025年6月 · MCP + CrewAI + OpenAI</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025年</span>
+            <span class="rc-tag">MCP</span>
+            <span class="rc-tag">CrewAI</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 4 小时完整工坊</span>
+            <a class="rc-link" href="https://www.youtube.com/watch?v=LSk5KaEGVk4" target="_blank">观看 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon yt">▶</div>
+            <div class="rc-meta">
+              <div class="rc-title">LangChain Agents in 2025 完整教程 v0.3</div>
+              <div class="rc-author">YouTube · 2025年6月</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025年</span>
+            <span class="rc-tag">LangChain</span>
+            <span class="rc-tag">Agent</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">⏱ 最新版 LangChain Agent 教程</span>
+            <a class="rc-link" href="https://www.youtube.com/watch?v=Gi7nqB37WEY" target="_blank">观看 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon doc">📘</div>
+            <div class="rc-meta">
+              <div class="rc-title">Anthropic Model Context Protocol (MCP)</div>
+              <div class="rc-author">Anthropic 官方 · 2024年11月发布</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag new">2025年</span>
+            <span class="rc-tag must">一手资料</span>
+            <span class="rc-tag">行业标准</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">Agent 工具调用新标准，必读</span>
+            <a class="rc-link" href="https://www.anthropic.com/news/model-context-protocol" target="_blank">阅读 →</a>
+          </div>
+        </div>
+
+      </div>
+
+      <h3 style="font-size:16px;color:var(--muted);margin-bottom:16px;margin-top:8px;">📅 每周任务安排</h3>
+      <table class="week-table">
+        <thead>
+          <tr><th>周次</th><th>学习内容</th><th>动手项目</th><th>产出</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="week-num">第 19–20 周</span></td>
+            <td class="week-task">Agent 架构：ReAct 框架、工具定义、单步 vs 多步 Agent</td>
+            <td class="week-time">OpenAI Agents SDK 官方 quickstart</td>
+            <td class="week-output">跑通第一个能调用工具的 Agent</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 21–22 周</span></td>
+            <td class="week-task">多 Agent 协作：Orchestrator + Worker 模式、Handoffs、GuardRails</td>
+            <td class="week-time">OpenAI Agents SDK 系列教程</td>
+            <td class="week-output">搭建一个包含 2 个 Agent 的协作系统</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 23–24 周</span></td>
+            <td class="week-task">记忆管理（短期/长期）、RAG 集成、向量数据库基础</td>
+            <td class="week-time">LangChain 教程 + Agentic AI 课程</td>
+            <td class="week-output">给 Agent 加上长期记忆能力</td>
+          </tr>
+          <tr>
+            <td><span class="week-num">第 25–26 周</span></td>
+            <td class="week-task">完整项目开发：选择一个工作中真实需求，独立搭建 Agent</td>
+            <td class="week-time">自由开发，Claude Code 辅助</td>
+            <td class="week-output">🎉 <strong>作品：1 个可演示的 AI Agent 项目</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- 项目创意 -->
+      <div style="margin-top:24px;">
+        <h3 style="font-size:16px;color:var(--muted);margin-bottom:14px;">💡 推荐项目方向（结合你的 AIGC PM 背景）</h3>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon">📊</div>
+            <div>
+              <div class="tool-name">竞品情报 Agent</div>
+              <div class="tool-desc">自动抓取竞品动态，每日生成简报</div>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">🎬</div>
+            <div>
+              <div class="tool-name">直播脚本生成 Agent</div>
+              <div class="tool-desc">输入商品信息，自动生成带货脚本</div>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">📝</div>
+            <div>
+              <div class="tool-name">PRD 评审 Agent</div>
+              <div class="tool-desc">读取文档，自动输出结构化评审意见</div>
+            </div>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">🔍</div>
+            <div>
+              <div class="tool-name">行业报告 Agent</div>
+              <div class="tool-desc">搜集整理 AI 行业周报，自动推送</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ========== 阶段五 ========== -->
+    <div class="phase-section phase-5">
+      <div class="phase-header">
+        <span class="phase-badge">PHASE 05</span>
+        <div class="phase-title">持续深化 · 思想沉淀</div>
+        <span class="phase-duration">🗓 长期持续</span>
+      </div>
+      <div class="phase-goal">
+        💡 <strong>阶段目标：</strong>技术能力和思想认知是两条并行的轨道。
+        这个阶段没有终点——持续跟踪 AI 前沿发展、阅读领袖原著、关注顶会论文，
+        建立你对 AI 发展路径的<strong>独立判断力</strong>，而不是被二手解读左右。
+      </div>
+
+      <div class="resources-grid">
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon web">🌐</div>
+            <div class="rc-meta">
+              <div class="rc-title">Arxiv CS.AI / CS.LG 论文预印本</div>
+              <div class="rc-author">每日更新 · AI 前沿第一手</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag must">一手资料</span>
+            <span class="rc-tag">论文</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">订阅关键词推送，每周选读 1 篇</span>
+            <a class="rc-link" href="https://arxiv.org/list/cs.AI/recent" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon web">🌐</div>
+            <div class="rc-meta">
+              <div class="rc-title">Hugging Face Papers</div>
+              <div class="rc-author">每日精选 AI 论文 · 社区评论</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag">论文精选</span>
+            <span class="rc-tag">每日更新</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">比 arxiv 更友好的入口</span>
+            <a class="rc-link" href="https://huggingface.co/papers" target="_blank">前往 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon pod">🎙</div>
+            <div class="rc-meta">
+              <div class="rc-title">Dwarkesh Patel Podcast</div>
+              <div class="rc-author">深度访谈 AI 领袖 · 2024–2025</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag hot">热门播客</span>
+            <span class="rc-tag">深度访谈</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">Ilya Sutskever、Sam Altman 等均上过</span>
+            <a class="rc-link" href="https://www.dwarkesh.com" target="_blank">收听 →</a>
+          </div>
+        </div>
+
+        <div class="resource-card">
+          <div class="rc-top">
+            <div class="rc-icon bk">📗</div>
+            <div class="rc-meta">
+              <div class="rc-title">《注意力就是一切》原论文 · Attention Is All You Need</div>
+              <div class="rc-author">Google Brain · 2017 · Transformer 奠基之作</div>
+            </div>
+          </div>
+          <div class="rc-tags">
+            <span class="rc-tag free">免费</span>
+            <span class="rc-tag must">必读经典</span>
+            <span class="rc-tag">Transformer</span>
+          </div>
+          <div class="rc-footer">
+            <span class="rc-views">理解现代 AI 的根基论文</span>
+            <a class="rc-link" href="https://arxiv.org/abs/1706.03762" target="_blank">阅读 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== 思想领袖 ===== -->
+<section class="section" id="leaders">
+  <div class="container">
+    <div class="sec-tag">THOUGHT LEADERS</div>
+    <div class="sec-title">AI 思想领袖 · 一手资料库</div>
+    <div class="sec-sub">直接来自 CEO 和顶尖研究者的原著演讲访谈——不经媒体改写，你需要的是第一手思想。</div>
+
+    <div class="leader-grid">
+
+      <!-- Dario Amodei -->
+      <div class="leader-card">
+        <div class="leader-header">
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#6c8fff,#a78bfa);">D</div>
+          <div>
+            <div class="leader-name">Dario Amodei</div>
+            <div class="leader-title">CEO · Anthropic（Claude 的缔造者）</div>
+          </div>
+        </div>
+        <div class="leader-body">
+          <div class="leader-quote">
+            "AI could compress decades of scientific progress into years—defeating diseases, addressing mental health crises, and driving economic growth that could lift billions out of poverty."
+          </div>
+          <div class="leader-resources">
+            <a class="leader-res-item" href="https://darioamodei.com/essay/machines-of-loving-grace" target="_blank">
+              <span class="lri-type essay">长文</span>
+              <div class="lri-content">
+                <div class="lri-title">Machines of Loving Grace — AI 能为人类做什么</div>
+                <div class="lri-meta">darioamodei.com · 2024年10月 · 强烈推荐原文阅读</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://www.youtube.com/watch?v=ugvHCXCOmm4" target="_blank">
+              <span class="lri-type pod">播客</span>
+              <div class="lri-content">
+                <div class="lri-title">Anthropic CEO on Claude, AGI & the Future of AI — Lex Fridman</div>
+                <div class="lri-meta">YouTube · 2024年11月 · 3小时深度访谈</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://www.youtube.com/watch?v=K7F6ohcBJus" target="_blank">
+              <span class="lri-type talk">演讲</span>
+              <div class="lri-content">
+                <div class="lri-title">Davos 2026 World Economic Forum 直播访谈</div>
+                <div class="lri-meta">YouTube · 2026年1月 · WSJ × Anthropic CEO</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://www.nytimes.com/2026/02/12/opinion/artificial-intelligence-anthropic-amodei.html" target="_blank">
+              <span class="lri-type blog">NYT</span>
+              <div class="lri-content">
+                <div class="lri-title">"We Don't Know if the Models Are Conscious" — NYT 深度对话</div>
+                <div class="lri-meta">纽约时报 · 2026年2月 · 关于 AI 意识的探讨</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sam Altman -->
+      <div class="leader-card">
+        <div class="leader-header">
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#34d399,#6c8fff);">S</div>
+          <div>
+            <div class="leader-name">Sam Altman</div>
+            <div class="leader-title">CEO · OpenAI（ChatGPT 的缔造者）</div>
+          </div>
+        </div>
+        <div class="leader-body">
+          <div class="leader-quote">
+            "Intelligence—the ability to learn and reason—may soon be available to everyone in abundance. In the Intelligence Age, we will live better than people in any previous generation."
+          </div>
+          <div class="leader-resources">
+            <a class="leader-res-item" href="https://ia.samaltman.com/" target="_blank">
+              <span class="lri-type blog">博客</span>
+              <div class="lri-content">
+                <div class="lri-title">The Intelligence Age — 智能时代</div>
+                <div class="lri-meta">samaltman.com · 2024年9月 · 必读原文，仅2000字</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://www.youtube.com/watch?v=5MWT_doo68k" target="_blank">
+              <span class="lri-type talk">TED</span>
+              <div class="lri-content">
+                <div class="lri-title">OpenAI's Sam Altman Talks ChatGPT, AI Agents and Superintelligence — TED 2025</div>
+                <div class="lri-meta">TED · 2025年4月 · 220万+播放</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://stratechery.com/2025/an-interview-with-openai-ceo-sam-altman-about-building-a-consumer-tech-company/" target="_blank">
+              <span class="lri-type pod">访谈</span>
+              <div class="lri-content">
+                <div class="lri-title">Stratechery 深度访谈 — 关于构建消费级 AI 产品</div>
+                <div class="lri-meta">Ben Thompson · 2025年3月 · PM 视角必读</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Andrej Karpathy -->
+      <div class="leader-card">
+        <div class="leader-header">
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#f472b6,#fb923c);">A</div>
+          <div>
+            <div class="leader-name">Andrej Karpathy</div>
+            <div class="leader-title">前 OpenAI 联创 · Tesla AI 前总监 · 顶尖教育者</div>
+          </div>
+        </div>
+        <div class="leader-body">
+          <div class="leader-quote">
+            "The hottest new programming language is English. Software is eating the world, but AI is eating software."
+          </div>
+          <div class="leader-resources">
+            <a class="leader-res-item" href="https://www.youtube.com/@AndrejKarpathy" target="_blank">
+              <span class="lri-type video">YouTube</span>
+              <div class="lri-content">
+                <div class="lri-title">Neural Networks: Zero to Hero 系列课程</div>
+                <div class="lri-meta">YouTube · 2022–2024 · 全球最受好评的 DL 免费课程</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://karpathy.ai" target="_blank">
+              <span class="lri-type blog">个站</span>
+              <div class="lri-content">
+                <div class="lri-title">karpathy.ai — 个人网站和讲座合集</div>
+                <div class="lri-meta">含 Dwarkesh 2025 播客、YC AI School 2025 等最新内容</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ilya Sutskever -->
+      <div class="leader-card">
+        <div class="leader-header">
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#fbbf24,#f472b6);">I</div>
+          <div>
+            <div class="leader-name">Ilya Sutskever</div>
+            <div class="leader-title">OpenAI 联创 · Safe Superintelligence (SSI) 创始人</div>
+          </div>
+        </div>
+        <div class="leader-body">
+          <div class="leader-quote">
+            "We are moving from the age of scaling to the age of reasoning. The next breakthrough won't just be bigger models—it will be smarter ones."
+          </div>
+          <div class="leader-resources">
+            <a class="leader-res-item" href="https://www.dwarkesh.com/p/ilya-sutskever-2" target="_blank">
+              <span class="lri-type pod">播客</span>
+              <div class="lri-content">
+                <div class="lri-title">We're Moving from the Age of Scaling to the Age of Reasoning</div>
+                <div class="lri-meta">Dwarkesh Patel · 2025年11月 · AGI 进展深度讨论</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://news.ycombinator.com/item?id=42413677" target="_blank">
+              <span class="lri-type talk">演讲</span>
+              <div class="lri-content">
+                <div class="lri-title">NeurIPS 2024 演讲（视频）</div>
+                <div class="lri-meta">Hacker News 收录 · 2024年12月 · 关于 AI 下一步</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jensen Huang -->
+      <div class="leader-card">
+        <div class="leader-header">
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#34d399,#fbbf24);">J</div>
+          <div>
+            <div class="leader-name">Jensen Huang</div>
+            <div class="leader-title">CEO · NVIDIA（AI 基础设施之王）</div>
+          </div>
+        </div>
+        <div class="leader-body">
+          <div class="leader-quote">
+            "AI is not software. AI is a new kind of computing. Every company will be an AI company, or they will be replaced by one that is."
+          </div>
+          <div class="leader-resources">
+            <a class="leader-res-item" href="https://www.youtube.com/watch?v=pE6sw_E9Gh0" target="_blank">
+              <span class="lri-type pod">访谈</span>
+              <div class="lri-content">
+                <div class="lri-title">NVIDIA: OpenAI Partnership, Future of Compute — BG2 播客</div>
+                <div class="lri-meta">YouTube · 2025年9月 · AI 算力格局深度讨论</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://www.youtube.com/watch?v=YNshj2oOr3E" target="_blank">
+              <span class="lri-type talk">演讲</span>
+              <div class="lri-content">
+                <div class="lri-title">Cambridge Union — Hawking Fellow Award Speech 2025</div>
+                <div class="lri-meta">YouTube · 2025年11月 · 关于 AI 与人类未来</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://www.nvidia.com/gtc/keynote/" target="_blank">
+              <span class="lri-type talk">主题演讲</span>
+              <div class="lri-content">
+                <div class="lri-title">NVIDIA GTC 2026 Keynote（最新）</div>
+                <div class="lri-meta">nvidia.com · 2026年 · 覆盖全 AI 技术栈进展</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Greg Brockman -->
+      <div class="leader-card">
+        <div class="leader-header">
+          <div class="leader-avatar" style="background:linear-gradient(135deg,#6c8fff,#34d399);">G</div>
+          <div>
+            <div class="leader-name">Greg Brockman</div>
+            <div class="leader-title">总裁 · OpenAI 联创</div>
+          </div>
+        </div>
+        <div class="leader-body">
+          <div class="leader-quote">
+            "An AI engineer is someone who builds the products and systems that sit on top of these models. It's a new discipline, and it's the most exciting one right now."
+          </div>
+          <div class="leader-resources">
+            <a class="leader-res-item" href="https://www.youtube.com/watch?v=avWhreBUYF0" target="_blank">
+              <span class="lri-type talk">演讲</span>
+              <div class="lri-content">
+                <div class="lri-title">Define "AI Engineer" — AI Engineer World's Fair 2025</div>
+                <div class="lri-meta">YouTube · 2025年8月 · 和 Jensen Huang 同台</div>
+              </div>
+            </a>
+            <a class="leader-res-item" href="https://www.youtube.com/watch?v=35ZWesLrv5A" target="_blank">
+              <span class="lri-type pod">访谈</span>
+              <div class="lri-content">
+                <div class="lri-title">Greg Brockman on OpenAI's Road to AGI</div>
+                <div class="lri-meta">YouTube · 2025年8月 · GPT-5 与 AGI 路线图</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 每日时间分配 ===== -->
+<section class="section" id="daily">
+  <div class="container">
+    <div class="sec-tag">DAILY SCHEDULE</div>
+    <div class="sec-title">每天 2 小时怎么用</div>
+    <div class="sec-sub">合理分配学习、实践、思想输入的比例。周一到周五偏技术，周末做项目和思想输入。</div>
+
+    <div class="daily-plan">
+      <div class="day-card">
+        <div class="day-name">周一</div>
+        <div class="day-block">
+          <div class="day-block-dot dot-blue"></div>
+          <div>视频课 60min<br/>技术概念学习</div>
+        </div>
+        <div class="day-block">
+          <div class="day-block-dot dot-green"></div>
+          <div>动手实践 60min<br/>跑代码做练习</div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周二</div>
+        <div class="day-block">
+          <div class="day-block-dot dot-blue"></div>
+          <div>视频课 60min<br/>继续上节内容</div>
+        </div>
+        <div class="day-block">
+          <div class="day-block-dot dot-purple"></div>
+          <div>官方文档 60min<br/>深化理解</div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周三</div>
+        <div class="day-block">
+          <div class="day-block-dot dot-green"></div>
+          <div>项目实践 60min<br/>写代码解决问题</div>
+        </div>
+        <div class="day-block">
+          <div class="day-block-dot dot-orange"></div>
+          <div>领袖访谈 60min<br/>思想输入</div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周四</div>
+        <div class="day-block">
+          <div class="day-block-dot dot-blue"></div>
+          <div>视频课 60min<br/>新章节学习</div>
+        </div>
+        <div class="day-block">
+          <div class="day-block-dot dot-green"></div>
+          <div>动手实践 60min<br/>巩固练习</div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周五</div>
+        <div class="day-block">
+          <div class="day-block-dot dot-purple"></div>
+          <div>本周复盘 30min<br/>总结知识点</div>
+        </div>
+        <div class="day-block">
+          <div class="day-block-dot dot-green"></div>
+          <div>小项目 90min<br/>应用本周所学</div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周六</div>
+        <div class="day-block">
+          <div class="day-block-dot dot-orange"></div>
+          <div>长文 / 论文 60min<br/>领袖文章精读</div>
+        </div>
+        <div class="day-block">
+          <div class="day-block-dot dot-green"></div>
+          <div>项目开发 60min<br/>推进阶段项目</div>
+        </div>
+      </div>
+      <div class="day-card">
+        <div class="day-name">周日</div>
+        <div class="day-block">
+          <div class="day-block-dot dot-orange"></div>
+          <div>播客 / 访谈 60min<br/>轻松听，吸收思想</div>
+        </div>
+        <div class="day-block">
+          <div class="day-block-dot dot-purple"></div>
+          <div>下周预习 60min<br/>规划下周任务</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 学习原则 -->
+    <div style="margin-top:48px;">
+      <h3 style="font-size:18px;font-weight:700;margin-bottom:20px;">🧭 核心学习原则</h3>
+      <div class="resources-grid">
+        <div class="resource-card" style="border-color:var(--blue-bd);">
+          <div style="font-size:24px;margin-bottom:10px;">🔄</div>
+          <div class="rc-title">「用中学」优先于「学完再用」</div>
+          <div class="rc-author" style="margin-top:8px;">每学完一个概念，立刻找到它在 Claude Code 生成的代码里的对应位置。不要等全部学完再开始动手。</div>
+        </div>
+        <div class="resource-card" style="border-color:var(--teal-bd);">
+          <div style="font-size:24px;margin-bottom:10px;">🎯</div>
+          <div class="rc-title">技术学习 ≠ 背概念，而是建「直觉」</div>
+          <div class="rc-author" style="margin-top:8px;">你不需要记住所有公式，你需要的是「看到一个问题，能想到用什么 AI 技术来解决」的直觉。</div>
+        </div>
+        <div class="resource-card" style="border-color:var(--amber-bd);">
+          <div style="font-size:24px;margin-bottom:10px;">💬</div>
+          <div class="rc-title">把 Claude 当学习伙伴</div>
+          <div class="rc-author" style="margin-top:8px;">遇到不懂的代码，直接问 Claude 解释。遇到不懂的概念，让 Claude 用类比说明。你已经有最好的老师了。</div>
+        </div>
+        <div class="resource-card" style="border-color:var(--accent-bd);">
+          <div style="font-size:24px;margin-bottom:10px;">📤</div>
+          <div class="rc-title">输出倒逼输入</div>
+          <div class="rc-author" style="margin-top:8px;">每两周写一篇学习总结（可以是内部文档）。能用自己的话解释给别人听，才是真的懂了。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 工具箱 ===== -->
+<section class="section" id="tools">
+  <div class="container">
+    <div class="sec-tag">TOOLKIT</div>
+    <div class="sec-title">你的 AI 开发工具箱</div>
+    <div class="sec-sub">这些是你在学习和开发过程中会用到的核心工具，全部免费或有免费套餐。</div>
+
+    <h3 style="font-size:15px;color:var(--muted);margin-bottom:16px;font-weight:600;">🛠 开发环境</h3>
+    <div class="tools-grid" style="margin-bottom:32px;">
+      <div class="tool-card">
+        <div class="tool-icon">🤖</div>
+        <div>
+          <div class="tool-name">Claude Code</div>
+          <div class="tool-desc">你已在用 · AI 编程助手</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">📓</div>
+        <div>
+          <div class="tool-name">Jupyter Notebook</div>
+          <div class="tool-desc">Python 交互式学习环境</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">☁️</div>
+        <div>
+          <div class="tool-name">Google Colab</div>
+          <div class="tool-desc">免费云端 GPU · 无需本地配置</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">💻</div>
+        <div>
+          <div class="tool-name">VS Code</div>
+          <div class="tool-desc">主力代码编辑器</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;color:var(--muted);margin-bottom:16px;font-weight:600;">🔌 AI API 平台</h3>
+    <div class="tools-grid" style="margin-bottom:32px;">
+      <div class="tool-card">
+        <div class="tool-icon">🟢</div>
+        <div>
+          <div class="tool-name">OpenAI Platform</div>
+          <div class="tool-desc">GPT-4o / Agents SDK / DALL-E</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🔷</div>
+        <div>
+          <div class="tool-name">Anthropic API</div>
+          <div class="tool-desc">Claude 3.5 · 你最熟悉的 LLM</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🤗</div>
+        <div>
+          <div class="tool-name">Hugging Face</div>
+          <div class="tool-desc">开源模型 · 数据集 · 部署</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🦙</div>
+        <div>
+          <div class="tool-name">Groq / Together AI</div>
+          <div class="tool-desc">免费快速推理 API · 学习用</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:15px;color:var(--muted);margin-bottom:16px;font-weight:600;">📦 核心 Python 库</h3>
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="tool-icon">🔗</div>
+        <div>
+          <div class="tool-name">LangChain</div>
+          <div class="tool-desc">LLM 应用开发框架</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">📊</div>
+        <div>
+          <div class="tool-name">Pandas + NumPy</div>
+          <div class="tool-desc">数据处理（你的统计基础有用）</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🌐</div>
+        <div>
+          <div class="tool-name">Requests + FastAPI</div>
+          <div class="tool-desc">HTTP 请求和 API 构建</div>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🧠</div>
+        <div>
+          <div class="tool-name">OpenAI Python SDK</div>
+          <div class="tool-desc">官方 Python 客户端库</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <div class="container">
+    <p style="font-size:20px;margin-bottom:12px;">🧠</p>
+    <p><strong>AI 学习路径 · 专属定制版</strong></p>
+    <p style="margin-top:8px;">为 AIGC 产品经理打造 · 2026年3月制作 · 每天 2 小时 × 6 个月</p>
+    <p style="margin-top:16px;font-size:12px;color:var(--border);">
+      资源链接均为一手来源，定期验证有效性 · 如有失效请使用搜索引擎查找最新版本
+    </p>
+    <div class="divider" style="margin:24px auto;max-width:200px;"></div>
+    <p style="font-size:12px;">
+      <span style="color:var(--accent)">Phase 1</span> Python 基础 ·
+      <span style="color:var(--teal)">Phase 2</span> 机器学习 ·
+      <span style="color:var(--warm-blue)">Phase 3</span> LLM工程 ·
+      <span style="color:var(--amber)">Phase 4</span> Agent开发 ·
+      <span style="color:var(--sage)">Phase 5</span> 持续深化
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

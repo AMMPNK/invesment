@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>腾讯CSIG计费团队 · 产品策划实习 面试备战</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF9F5;
+    --bg-card: #F5F3EE;
+    --text-primary: #141413;
+    --text-secondary: #73726C;
+    --text-tertiary: #3D3D3A;
+    --accent: #D97B5A;
+    --accent-dark: #C26645;
+    --accent-soft: rgba(217, 123, 90, 0.10);
+    --border: rgba(31, 30, 29, 0.11);
+    --shadow-sm: 0 1px 4px rgba(20,20,19,0.05), 0 1px 2px rgba(20,20,19,0.03);
+    --radius-card: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 52px 24px 40px;
+    text-align: center;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .header-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+  }
+
+  .header h1 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 14px;
+  }
+
+  .header h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .header-sub {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── TAB NAV ── */
+  .tab-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,249,245,0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .tab-nav-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    padding: 0 20px;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-nav-inner::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -0.5px;
+  }
+
+  .tab-btn:hover {
+    color: var(--text-primary);
+  }
+
+  .tab-btn.active {
+    color: var(--accent-dark);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .tab-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .tab-btn.active .tab-icon {
+    opacity: 1;
+  }
+
+  .tab-count {
+    font-size: 10.5px;
+    font-weight: 700;
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 36px 20px 80px;
+  }
+
+  /* ── TAB PANEL ── */
+  .tab-panel {
+    display: none;
+  }
+  .tab-panel.active {
+    display: block;
+  }
+
+  /* ── PANEL HEADER ── */
+  .panel-heading {
+    margin-bottom: 28px;
+  }
+
+  .panel-heading h2 {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: clamp(19px, 3vw, 24px);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+  }
+
+  .panel-heading p {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 22px 26px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 14px;
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .card-title .cnum {
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .card p {
+    font-size: 14px;
+    color: var(--text-tertiary);
+    line-height: 1.75;
+  }
+
+  /* ── GRID ── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 620px) {
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+
+  /* ── STAT ROW ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 620px) {
+    .stat-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+
+  .stat-num {
+    font-family: 'Noto Serif SC', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* ── TAGS ── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(20,20,19,0.06);
+    border: 0.5px solid rgba(20,20,19,0.10);
+    border-radius: 5px;
+    padding: 2px 7px;
+    font-size: 11.5px;
+    color: var(--text-tertiary);
+    margin: 2px 3px 2px 0;
+  }
+
+  .tag.a {
+    background: var(--accent-soft);
+    border-color: rgba(217,123,90,0.18);
+    color: var(--accent-dark);
+  }
+
+  .tag.g {
+    background: rgba(52,168,83,0.07);
+    border-color: rgba(52,168,83,0.18);
+    color: #1e7e34;
+  }
+
+  .tag.b {
+    background: rgba(66,133,244,0.07);
+    border-color: rgba(66,133,244,0.18);
+    color: #1a56c4;
+  }
+
+  .tag.r {
+    background: rgba(234,67,53,0.07);
+    border-color: rgba(234,67,53,0.18);
+    color: #b71c1c;
+  }
+
+  /* ── FLOW ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+  }
+
+  .flow-step {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: 7px;
+    padding: 5px 11px;
+    font-size: 12.5px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+  }
+
+  .flow-arr {
+    color: var(--accent);
+    font-size: 13px;
+    opacity: 0.6;
+    font-weight: 500;
+  }
+
+  /* ── K-LIST ── */
+  .k-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .k-list li {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    line-height: 1.65;
+    padding-left: 13px;
+    position: relative;
+  }
+
+  .k-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .k-list li b {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ── KNOWLEDGE GRID ── */
+  .know-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  @media (max-width: 620px) {
+    .know-grid { grid-template-columns: 1fr; }
+  }
+
+  .know-block {
+    padding: 4px 0;
+  }
+
+  .know-block-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent-dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* SVG dot icon for know-block-title */
+  .dot-icon {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── TABLE ── */
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 12px 0;
+  }
+
+  .tbl th {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    font-weight: 600;
+    padding: 9px 13px;
+    text-align: left;
+    font-size: 12.5px;
+    border: 0.5px solid rgba(217,123,90,0.13);
+  }
+
+  .tbl td {
+    padding: 9px 13px;
+    border: 0.5px solid var(--border);
+    color: var(--text-tertiary);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .tbl tr:nth-child(even) td {
+    background: rgba(245,243,238,0.5);
+  }
+
+  /* ── ROUND BLOCK (面试轮次) ── */
+  .round {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .round-head {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--bg);
+  }
+
+  .round-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .round-badge.r1 { background: rgba(217,123,90,0.12); }
+  .round-badge.r2 { background: rgba(66,133,244,0.09); }
+  .round-badge.r3 { background: rgba(52,168,83,0.09); }
+
+  .round-info h3 {
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .round-info span {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .round-body {
+    padding: 18px 24px;
+  }
+
+  /* ── Q ITEM ── */
+  .q-item {
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .q-item:last-child { border-bottom: none; }
+
+  .q-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .q-mark {
+    flex-shrink: 0;
+    width: 17px;
+    height: 17px;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9.5px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .q-hint {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-left: 25px;
+    margin-bottom: 5px;
+  }
+
+  .q-ans {
+    font-size: 12.5px;
+    color: var(--text-tertiary);
+    background: var(--bg);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 7px 7px 0;
+    padding: 9px 13px;
+    margin-left: 25px;
+    line-height: 1.7;
+  }
+
+  /* ── HIGHLIGHT ── */
+  .hl {
+    background: linear-gradient(135deg, var(--accent-soft), rgba(250,249,245,0.2));
+    border: 0.5px solid rgba(217,123,90,0.18);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin: 14px 0;
+    font-size: 13.5px;
+    color: var(--text-tertiary);
+    line-height: 1.75;
+  }
+
+  .hl b { color: var(--accent-dark); }
+
+  .hl-warn {
+    background: rgba(234,67,53,0.05);
+    border: 0.5px solid rgba(234,67,53,0.18);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+  }
+
+  .hl-warn-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #c0392b;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .hl-warn p {
+    font-size: 13px;
+    color: var(--text-tertiary);
+    line-height: 1.7;
+  }
+
+  /* ── ANSWER TEMPLATE ── */
+  .tpl {
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 11px 0;
+  }
+
+  .tpl-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .tpl-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .t-step {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  .t-num {
+    flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+    border: 0.5px solid var(--accent);
+    color: var(--accent);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10.5px;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+
+  /* ── CHECKLIST ── */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin: 10px 0;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: 13px;
+    color: var(--text-tertiary);
+    line-height: 1.6;
+  }
+
+  .check-box {
+    width: 16px;
+    height: 16px;
+    border: 0.5px solid rgba(31,30,29,0.2);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: var(--bg);
+  }
+
+  /* ── TIPS ROW ── */
+  .tips-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  @media (max-width: 620px) {
+    .tips-row { grid-template-columns: 1fr; }
+  }
+
+  .tip-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 18px;
+  }
+
+  .tip-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 11px;
+  }
+
+  .tip-card h4 {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+  }
+
+  .tip-card p {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 0.5px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .footer p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <p class="header-eyebrow">腾讯 CSIG · 云计费团队 · 产品策划实习</p>
+  <h1>面试<em>全攻略</em></h1>
+  <p class="header-sub">团队背景 · 三轮面试题库 · 云计费专业知识 · B端产品方法论</p>
+</header>
+
+<!-- TAB NAV -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="team">
+      <svg class="tab-icon" viewBox="0 0 16 16" fill="none">
+        <rect x="1" y="3" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M5 7h6M5 10h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      团队背景
+    </button>
+    <button class="tab-btn" data-tab="process">
+      <svg class="tab-icon" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M8 5v3.5l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      面试流程
+    </button>
+    <button class="tab-btn" data-tab="questions">
+      <svg class="tab-icon" viewBox="0 0 16 16" fill="none">
+        <path d="M6 6c0-1.1.9-2 2-2s2 .9 2 2c0 1.5-2 2-2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <circle cx="8" cy="12" r="0.8" fill="currentColor"/>
+      </svg>
+      面试题库
+      <span class="tab-count">20+</span>
+    </button>
+    <button class="tab-btn" data-tab="knowledge">
+      <svg class="tab-icon" viewBox="0 0 16 16" fill="none">
+        <path d="M3 4h10M3 8h7M3 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      专业知识
+    </button>
+    <button class="tab-btn" data-tab="tob">
+      <svg class="tab-icon" viewBox="0 0 16 16" fill="none">
+        <path d="M2 12 L5 6 L8 9 L11 4 L14 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      B端方法论
+    </button>
+    <button class="tab-btn" data-tab="strategy">
+      <svg class="tab-icon" viewBox="0 0 16 16" fill="none">
+        <path d="M8 2l1.5 4.5H14l-3.7 2.7 1.4 4.4L8 11.2l-3.7 2.4 1.4-4.4L2 6.5h4.5L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      作战策略
+    </button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ▌PANEL 1: 团队背景 -->
+  <div class="tab-panel active" id="panel-team">
+    <div class="panel-heading">
+      <h2>团队背景与产品全景</h2>
+      <p>面试前必须清楚你要去的地方是做什么的，这直接影响你所有回答的方向</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-num">CSIG</div>
+        <div class="stat-label">云与智慧产业事业群<br>Cloud & Smart Industries</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4</div>
+        <div class="stat-label">核心模块<br>交易·资源·折扣·账票款</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">ToB</div>
+        <div class="stat-label">面向企业客户<br>降本增效为核心价值</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3轮</div>
+        <div class="stat-label">典型面试流程<br>TL → 总监 → HR</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">CSIG 是什么</div>
+        <p>CSIG全称「云与智慧产业事业群」，是腾讯面向B端企业的核心业务部门，旗下涵盖<b>腾讯云、腾讯会议、腾讯文档、微信支付B端</b>等产品线。计费团队属于腾讯云基础服务层，为整个CSIG的所有云产品提供统一的计费系统支撑。</p>
+        <div style="margin-top:12px">
+          <span class="tag a">腾讯云</span>
+          <span class="tag">企业服务</span>
+          <span class="tag">基础设施</span>
+          <span class="tag a">支撑型产品</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">计费团队职责</div>
+        <p>面试官透露团队负责<b>CSIG计费系统规划</b>，核心四大模块：</p>
+        <div class="flow" style="margin-top:10px">
+          <span class="flow-step">交易管理</span>
+          <span class="flow-arr">→</span>
+          <span class="flow-step">资源管理</span>
+          <span class="flow-arr">→</span>
+          <span class="flow-step">优惠折扣</span>
+          <span class="flow-arr">→</span>
+          <span class="flow-step">账票款</span>
+        </div>
+        <p style="margin-top:8px;font-size:13.5px">本质：<b>让企业客户能清晰地购买、使用、核算云资源费用</b>，并享受各类优惠政策。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">腾讯云费用中心 — 产品全景</div>
+      <div class="know-grid">
+        <div class="know-block">
+          <div class="know-block-title"><span class="dot-icon"></span>账单体系</div>
+          <ul class="k-list">
+            <li><b>账单概览</b>：总消费汇总、趋势图</li>
+            <li><b>多维汇总账单</b>：按产品/项目/地域聚合</li>
+            <li><b>资源账单</b>：单个资源粒度消费</li>
+            <li><b>明细账单</b>：每笔交易流水</li>
+            <li><b>账单订阅</b>：定时推送邮件/Excel</li>
+          </ul>
+        </div>
+        <div class="know-block">
+          <div class="know-block-title"><span class="dot-icon"></span>优惠折扣体系</div>
+          <ul class="k-list">
+            <li><b>代金券</b>：满额抵扣，有面值限制</li>
+            <li><b>折扣券</b>：按比例打折，不与代金券叠加</li>
+            <li><b>资源包</b>：预购特定用量，比按量更优惠</li>
+            <li><b>长期折扣</b>：按量计费自动阶梯折扣</li>
+            <li><b>包年包月</b>：预付费，享受买断优惠</li>
+          </ul>
+        </div>
+        <div class="know-block">
+          <div class="know-block-title"><span class="dot-icon"></span>交易 / 支付体系</div>
+          <ul class="k-list">
+            <li><b>预付费</b>：包年包月，一次性付清</li>
+            <li><b>后付费</b>：按量计费，月结账单</li>
+            <li><b>冻结机制</b>：按量计费时预冻结余额</li>
+            <li><b>退款规则</b>：5天无理由退/按比例退</li>
+            <li><b>集团账号</b>：管理账号代付成员账号</li>
+          </ul>
+        </div>
+        <div class="know-block">
+          <div class="know-block-title"><span class="dot-icon"></span>账票款管理</div>
+          <ul class="k-list">
+            <li><b>发票管理</b>：增值税普票/专票申请</li>
+            <li><b>合同管理</b>：框架合同、订单合同</li>
+            <li><b>对账指引</b>：与ERP系统对账流程</li>
+            <li><b>成本分配</b>：按业务线/项目分摊费用</li>
+            <li><b>欠费处理</b>：欠费停服 → 回收 → 销毁</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▌PANEL 2: 面试流程 -->
+  <div class="tab-panel" id="panel-process">
+    <div class="panel-heading">
+      <h2>三轮面试流程拆解</h2>
+      <p>基于牛客网 18 篇 CSIG 产品策划真实面经整理，了解每轮考察重点</p>
+    </div>
+
+    <div class="round">
+      <div class="round-head">
+        <div class="round-badge r1">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="6" r="3" stroke="#D97B5A" stroke-width="1.5"/>
+            <path d="M3 15c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#D97B5A" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="round-info">
+          <h3>一面 — Team Leader 直属面试</h3>
+          <span>时长约 50–60 分钟 · 产品能力 + 项目深度 · 难度最高</span>
+        </div>
+        <span class="tag a" style="margin-left:auto;flex-shrink:0">最重要</span>
+      </div>
+      <div class="round-body">
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">TL 会深度挖掘简历，结合 B 端计费业务设计场景题，期望看到<b>结构化思维 + 数据意识 + 产品感</b></p>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>详细介绍你做过的某个产品项目，你在其中承担什么角色？遇到了哪些困难？</div>
+          <div class="q-hint">必问题，用 STAR 框架：背景 → 任务 → 行动 → 结果，重点量化成果</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>假设你是腾讯云费用中心 PM，发现某大客户月账单明细复杂，如何设计优化方案？</div>
+          <div class="q-hint">产品设计题，先定义「谁的问题」「什么场景」「什么痛点」再给方案</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>如果代金券使用率突然下降 30%，你会如何定位问题？</div>
+          <div class="q-hint">数据分析题，展示：拆解指标 → 提出假设 → 设计验证路径</div>
+          <div class="q-ans"><b>参考思路：</b>先区分是「发放量下降」还是「领取率下降」还是「核销率下降」→ 分渠道分客群看数据 → 排查是产品 bug / 规则变更 / 竞品优惠更大 → 用 AB 测试验证假设</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>微信有 5 个常用功能，如果只能保留 1 个，你选哪个？说出理由。<span class="tag a" style="margin-left:4px">高频</span></div>
+          <div class="q-hint">来自多篇 CSIG 真实面经，考察产品核心价值理解 + 用户需求洞察</div>
+          <div class="q-ans"><b>参考框架：</b>选「通讯/聊天」功能。① 用户核心诉求是「沟通连接」，这是微信立身之本；② 其他功能（朋友圈/支付/小程序）都是在连接能力上的延伸，失去连接则平台价值归零；③ B 端延伸：企业微信场景下「群聊+文件传输」比朋友圈更核心</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>腾讯会议 DAU 疫情期间暴涨，疫情后如何分析并保留用户？</div>
+          <div class="q-hint">分析用户生命周期变化，给出差异化留存策略</div>
+          <div class="q-ans"><b>参考框架：</b>① 区分疫情期「刚需用户」和「习惯用户」② 流失预测：哪类用户在哪个节点最可能流失③ 功能差异化：「远程开会」→「云协作办公」④ 与企业微信联动，嵌入 B 端工作流，提升替换成本</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>如何判断一个新功能需求是否值得做？你会从哪些维度评估优先级？</div>
+          <div class="q-hint">可以提 RICE 模型（覆盖面/影响力/置信度/工作量）</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>费米问题：估算北京市一天产生多少快递包裹？<span class="tag a" style="margin-left:4px">高频</span></div>
+          <div class="q-hint">来自多篇 CSIG 面经，考察结构化拆解思维，过程比答案更重要</div>
+          <div class="q-ans"><b>答题模板：</b>① 假设：北京约 2000 万人口，上班族/学生约 1200 万人 ② 频率：平均每人每周网购 2 次，约 1 件/次 ③ 计算：1200 万 × 2/7 ≈ 340 万件/天，约 300–400 万件 ④ 验证合理性：对比双 11 峰值数据</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="round">
+      <div class="round-head">
+        <div class="round-badge r2">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M9 2l2 5h5l-4 3 1.5 5L9 12l-4.5 3L6 10 2 7h5L9 2z" stroke="#4285F4" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="round-info">
+          <h3>二面 — 总监面</h3>
+          <span>时长约 15–20 分钟 · 业务认知 + 战略视角 · 云计算深度</span>
+        </div>
+        <span class="tag r" style="margin-left:auto;flex-shrink:0">高风险</span>
+      </div>
+      <div class="round-body">
+        <div class="hl-warn">
+          <div class="hl-warn-title">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 13H1L7 1z" stroke="#c0392b" stroke-width="1.3" stroke-linejoin="round"/><path d="M7 5.5v3M7 10.5v.5" stroke="#c0392b" stroke-width="1.3" stroke-linecap="round"/></svg>
+            真实面经预警（来自牛客网 CSIG 面经）
+          </div>
+          <p>总监面「说一说你对云计算的了解」——某应聘者只被问了 5 个问题，<b>不到 15 分钟就结束面试</b>，最终因对云计算了解深度不够而凉。另有前腾讯云实习生被评价「拥有 PM 必备技能，但<b>对云计算了解不够专精</b>」。<br>→ <b>云计算专业深度是 CSIG 二面核心考察点，必须重点准备！</b></p>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>说一说你对云计算的了解。<span class="tag r" style="margin-left:4px">必问高危</span></div>
+          <div class="q-hint">总监级面试官问完就决定要不要你，答不好直接凉</div>
+          <div class="q-ans">
+            <b>黄金答题框架（3 层递进）：</b><br>
+            ① <b>基础认知</b>：IaaS/PaaS/SaaS 三层架构，公有云/私有云/混合云；云计算本质是「IT 资源的按需租用」，帮企业将 CAPEX 转为 OPEX<br>
+            ② <b>行业理解</b>：当前云计算处于「规模化扩张期」，国内三大云（阿里/腾讯/华为）竞争激烈，向行业云/边缘计算/AI 云演进；计费系统是云商业化的核心底座<br>
+            ③ <b>业务洞察</b>：腾讯云 CSIG 面向 B 端，计费系统核心价值是「让企业清晰买、用、算云资源费用」，FinOps 是未来重要方向
+          </div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>怎么看待云计算行业现在发展到什么阶段，今后向什么方向发展？</div>
+          <div class="q-hint">来自真实字节云产品面经，腾讯云实习背景者被深问</div>
+          <div class="q-ans"><b>参考框架：</b>① 成熟期：IaaS 竞争红海化，价格战进入尾声 ② 向上走：PaaS/SaaS/AI 云差异化 ③ 向下走：边缘计算、IoT 云延伸 ④ FinOps 兴起：企业上云后重视成本治理，云管理平台成新战场</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>你做过的哪个项目，认为有没有做到极致？如果重来一次会怎么做？</div>
+          <div class="q-hint">复盘能力题，展示自我迭代的思考，不要只说优点</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>竞品（阿里云/AWS）的计费体系相比腾讯云有什么值得借鉴的地方？</div>
+          <div class="q-hint">提前研究阿里云费用中心和 AWS Cost Explorer 的设计差异</div>
+          <div class="q-ans"><b>参考要点：</b>AWS Cost Explorer 标签体系成熟，支持自定义成本分摊；阿里云账单可视化更好；腾讯云可强化企业级成本归因和 FinOps 主动优化建议</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>如果你来做腾讯云计费系统的产品规划，第一优先级是什么方向？</div>
+          <div class="q-hint">展示对业务的理解深度，不要随便说，先做功课</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="round">
+      <div class="round-head">
+        <div class="round-badge r3">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M6 9h6M9 6v6" stroke="#34A853" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="9" cy="9" r="6.5" stroke="#34A853" stroke-width="1.3"/>
+          </svg>
+        </div>
+        <div class="round-info">
+          <h3>三面 — HR 面</h3>
+          <span>时长约 20–30 分钟 · 价值观 + 沟通能力 + 稳定性</span>
+        </div>
+        <span class="tag g" style="margin-left:auto;flex-shrink:0">几乎必过</span>
+      </div>
+      <div class="round-body">
+        <p style="font-size:13px;color:var(--text-secondary);margin-bottom:14px">HR 面相对宽松，但对腾讯的兴趣要具体而非空泛，表达要真诚</p>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>为什么选择腾讯，为什么想来计费这个团队？</div>
+          <div class="q-hint">研究腾讯云计费的具体业务方向，不要只说「大厂」「学到东西」</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>你的职业规划是什么？实习结束后的打算？</div>
+          <div class="q-hint">诚实说明，如果有意愿转正就说，不要给模糊答案</div>
+        </div>
+        <div class="q-item">
+          <div class="q-text"><span class="q-mark">Q</span>描述一次和团队意见不一致，你是如何处理的？</div>
+          <div class="q-hint">展示沟通协作能力，重点是「如何求同存异」而不是「我说服了所有人」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▌PANEL 3: 面试题库 -->
+  <div class="tab-panel" id="panel-questions">
+    <div class="panel-heading">
+      <h2>高频题目 + 答题框架</h2>
+      <p>结合你的快手 AI 直播实习背景，定制化的答题模板</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="cnum">1</span>自我介绍（100% 出现）</div>
+      <div class="tpl">
+        <div class="tpl-title">STAR 式自我介绍框架 · 建议 3 分钟</div>
+        <div class="tpl-steps">
+          <div class="t-step"><span class="t-num">①</span><span><b>背景</b>：北邮+中传双校研一，AIGC 方向，研究方向是[补充]</span></div>
+          <div class="t-step"><span class="t-num">②</span><span><b>亮点项目</b>：快手女娲数字人 AI 直播产品实习，参与[具体功能]，数据结果是[量化数字]</span></div>
+          <div class="t-step"><span class="t-num">③</span><span><b>技能匹配</b>：有 ToC 产品经验 + 数据分析能力（Python/SQL/Tushare），现在想向 ToB 转型</span></div>
+          <div class="t-step"><span class="t-num">④</span><span><b>兴趣切入</b>：对云计算计费系统感兴趣，调研过腾讯云费用中心 vs 阿里云 vs AWS 的计费产品设计</span></div>
+          <div class="t-step"><span class="t-num">⑤</span><span><b>期待收获</b>：期望深入学习 B 端产品设计方法论和云计算业务逻辑</span></div>
+        </div>
+      </div>
+      <div class="hl">关键技巧：介绍快手经历时埋一个「钩子」，比如<b>「在快手实习时我注意到 AI 功能的内部计费逻辑和 ToB 系统有很多相似之处，这让我对企业级计费系统产生了浓厚兴趣」</b>——能自然引导面试官往你准备好的方向追问。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="cnum">2</span>项目经历深挖（必问）</div>
+      <div class="tpl">
+        <div class="tpl-title">STAR 答题框架</div>
+        <div class="tpl-steps">
+          <div class="t-step"><span class="t-num">S</span><span><b>背景</b>：项目在什么业务背景下启动？公司的目标是什么？</span></div>
+          <div class="t-step"><span class="t-num">T</span><span><b>任务</b>：你个人负责哪部分？你的角色和职责边界是什么？</span></div>
+          <div class="t-step"><span class="t-num">A</span><span><b>行动</b>：你具体做了什么？遇到了什么挑战？如何解决的？（最重要）</span></div>
+          <div class="t-step"><span class="t-num">R</span><span><b>结果</b>：量化结果是什么？用户反馈如何？对业务的影响？有没有复盘？</span></div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);margin-top:12px"><b>一定要有量化数字</b>：如「功能上线后 DAU 提升 X%」「用户完成率从 X% 提升至 Y%」「节省人工审核成本 X 元/天」</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="cnum">3</span>数据分析题（计费团队必问）</div>
+      <p>计费系统本质是数据密集型产品，面试官一定会考察你的数据分析思维。</p>
+      <div class="tpl" style="margin-top:12px">
+        <div class="tpl-title">数据异常分析 通用框架</div>
+        <div class="tpl-steps">
+          <div class="t-step"><span class="t-num">①</span><span><b>确认数据</b>：异常是真实的还是统计口径问题？数据源是否可信？</span></div>
+          <div class="t-step"><span class="t-num">②</span><span><b>拆解指标</b>：按维度分解（时间/地区/用户类型/产品线），定位问题在哪个细分层</span></div>
+          <div class="t-step"><span class="t-num">③</span><span><b>提出假设</b>：枚举所有可能原因（内部：功能上线/规则变更；外部：竞品/政策/季节性）</span></div>
+          <div class="t-step"><span class="t-num">④</span><span><b>验证假设</b>：通过 SQL 查询、AB 实验、用户访谈等方式逐一排查</span></div>
+          <div class="t-step"><span class="t-num">⑤</span><span><b>给出结论</b>：明确根因，给出可执行的修复/优化方案</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="cnum">4</span>产品设计题 — 以计费场景为例</div>
+      <div class="q-ans" style="margin:0 0 12px">
+        <b>题目示例：</b>「企业财务人员反馈腾讯云账单太复杂看不懂，如何优化账单产品？」
+      </div>
+      <div class="tpl">
+        <div class="tpl-title">产品设计题答题框架</div>
+        <div class="tpl-steps">
+          <div class="t-step"><span class="t-num">①</span><span><b>用户洞察</b>：财务人员 vs IT 采购人员 vs 业务负责人，各自需求不同，先明确目标用户</span></div>
+          <div class="t-step"><span class="t-num">②</span><span><b>场景还原</b>：财务人员什么时候看账单？月末结账、对账 ERP、申请报销、向领导汇报</span></div>
+          <div class="t-step"><span class="t-num">③</span><span><b>痛点定义</b>：复杂在哪里？SKU 太多/计量单位不一致/无法按部门拆分/缺少趋势对比</span></div>
+          <div class="t-step"><span class="t-num">④</span><span><b>方案设计</b>：优先级最高的方案 → 次优方案，说明取舍理由</span></div>
+          <div class="t-step"><span class="t-num">⑤</span><span><b>成功指标</b>：账单查看时长↓、投诉率↓、完成对账任务成功率↑</span></div>
+        </div>
+      </div>
+      <div class="hl">可以提到 <b>FinOps（云财务运营）</b>理念：让财务、业务、技术三方都能看懂云费用，这是当下云厂商的热门方向，能体现你的行业洞察。</div>
+    </div>
+  </div>
+
+  <!-- ▌PANEL 4: 专业知识 -->
+  <div class="tab-panel" id="panel-knowledge">
+    <div class="panel-heading">
+      <h2>云计费系统核心知识</h2>
+      <p>面试时能主动提及这些概念，会显著提升专业印象</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">计费模式核心概念</div>
+        <ul class="k-list">
+          <li><b>预付费（包年包月）</b>：先付后用，折扣大，适合稳定业务</li>
+          <li><b>后付费（按量计费）</b>：用多少付多少，按小时/天结算，欠费冻结机制</li>
+          <li><b>资源包</b>：预购特定用量，比按量便宜但需提前规划</li>
+          <li><b>竞价实例</b>：大幅折扣但随时可能被回收，适合弹性任务</li>
+          <li><b>账单周期</b>：按量计费每小时出账，月底汇总账单</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">企业账号管理体系</div>
+        <ul class="k-list">
+          <li><b>集团账号</b>：管理账号 + 成员账号，统一计费</li>
+          <li><b>代付模式</b>：管理账号代成员账号支付费用</li>
+          <li><b>账单归集</b>：集团统一查看所有成员账单</li>
+          <li><b>配额管理</b>：管理账号可限制成员账号的资源配额</li>
+          <li><b>财务隔离</b>：不同业务线独立核算成本</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">优惠折扣体系设计</div>
+        <ul class="k-list">
+          <li><b>代金券</b>：有面值上限，用于拉新促活，不可提现</li>
+          <li><b>折扣券</b>：按比例打折，不与代金券叠加</li>
+          <li><b>长期折扣</b>：连续按量计费自动享受阶梯优惠</li>
+          <li><b>商务折扣</b>：大客户签合同可享受定制化折扣</li>
+          <li><b>欠费规则</b>：欠费时不可使用代金券新购</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">FinOps 云财务管理</div>
+        <ul class="k-list">
+          <li><b>FinOps 理念</b>：让财务+技术+业务三方共同管理云成本</li>
+          <li><b>成本归因</b>：通过标签 Tag 将费用归属到具体项目/部门</li>
+          <li><b>成本优化</b>：识别浪费资源（闲置实例、低使用率资源）</li>
+          <li><b>预算预警</b>：设置消费阈值，超额自动通知</li>
+          <li><b>成本预测</b>：基于历史用量预测未来费用</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">竞品速览 — 腾讯云 vs 阿里云 vs AWS 计费产品</div>
+      <table class="tbl">
+        <tr>
+          <th>对比维度</th>
+          <th>腾讯云费用中心</th>
+          <th>阿里云费用中心</th>
+          <th>AWS Cost Explorer</th>
+        </tr>
+        <tr><td>账单可视化</td><td>基础图表，产品分类</td><td>较完善，多维度视图</td><td>最强，自定义图表</td></tr>
+        <tr><td>成本分配</td><td>项目/标签维度</td><td>资源组+标签</td><td>成本分配标签最成熟</td></tr>
+        <tr><td>企业账号</td><td>集团账号体系</td><td>企业账号</td><td>AWS Organizations</td></tr>
+        <tr><td>成本优化建议</td><td>基础提示</td><td>云优化顾问</td><td>Cost Optimization Hub</td></tr>
+        <tr><td>FinOps 支持</td><td>成长中</td><td>云财管 CFO</td><td>行业最成熟</td></tr>
+      </table>
+      <div class="hl">可以在总监面主动提出：腾讯云在 FinOps 方向还有很大提升空间，可以参考 AWS Cost Optimization Hub 的「AI 智能推荐闲置资源」功能，结合腾讯在 AI 方面的优势，为企业客户提供<b>主动式成本优化建议</b>。</div>
+    </div>
+  </div>
+
+  <!-- ▌PANEL 5: B端方法论 -->
+  <div class="tab-panel" id="panel-tob">
+    <div class="panel-heading">
+      <h2>B端产品核心方法论</h2>
+      <p>从你的 ToC 快手经历向 ToB 平滑过渡，展示转型的思考</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ToC vs ToB 核心差异（背下来）</div>
+      <table class="tbl">
+        <tr>
+          <th>维度</th>
+          <th>ToC（你的经历：快手）</th>
+          <th>ToB（目标：腾讯云计费）</th>
+        </tr>
+        <tr><td>目标用户</td><td>个人用户，情感/娱乐驱动</td><td>企业客户，效率/ROI 驱动</td></tr>
+        <tr><td>决策链路</td><td>用户自己决策，路径短</td><td>财务+IT+业务负责人多方审批</td></tr>
+        <tr><td>核心价值</td><td>好玩、好看、好用</td><td>降本、增效、合规</td></tr>
+        <tr><td>反馈节奏</td><td>快速迭代，AB 测试验证</td><td>需求定制，周期长，重服务</td></tr>
+        <tr><td>盈利模式</td><td>广告+增值服务+电商</td><td>直接收费/订阅/按量付费</td></tr>
+        <tr><td>产品失败成本</td><td>用户流失，可快速挽回</td><td>客户流失，合同违约，损失巨大</td></tr>
+      </table>
+      <div class="hl"><b>转型加分话术：</b>「我在快手实习的经历培养了我对用户体验的敏锐感知，我意识到 ToB 产品同样需要用户体验思维，只是『用户』变成了企业里的财务专员、IT 管理员等不同角色，需要同时满足他们各自的核心诉求，这让我更想深入 ToB 领域。」</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">B端需求优先级 RICE 模型</div>
+        <ul class="k-list">
+          <li><b>Reach（覆盖度）</b>：这个需求影响多少客户/用户？</li>
+          <li><b>Impact（影响力）</b>：解决这个问题的价值有多大？</li>
+          <li><b>Confidence（置信度）</b>：我们有多确定这个方案有效？</li>
+          <li><b>Effort（工作量）</b>：需要投入多少研发成本？</li>
+        </ul>
+        <div class="flow" style="margin-top:12px">
+          <span class="flow-step">RICE 得分</span>
+          <span class="flow-arr">=</span>
+          <span class="flow-step">(R × I × C) / E</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">B端需求调研方法</div>
+        <ul class="k-list">
+          <li><b>主动获取</b>：竞品分析、行业调研、问卷调查</li>
+          <li><b>被动收集</b>：客户反馈、客服工单、销售传递</li>
+          <li><b>需求过滤</b>：区分「个性需求」和「共性需求」</li>
+          <li><b>价值验证</b>：增收/降本/提效，量化业务价值</li>
+          <li><b>MVP 验证</b>：最小成本验证核心假设</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">B端产品成功指标体系</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px">
+        <div style="background:var(--bg);border:0.5px solid var(--border);border-radius:12px;padding:14px 16px">
+          <div class="know-block-title"><span class="dot-icon"></span>商业指标</div>
+          <ul class="k-list">
+            <li>ARR 年经常性收入</li>
+            <li>NRR 净收入留存率</li>
+            <li>LTV/CAC 客户价值比</li>
+            <li>客户流失率 &lt;20%</li>
+          </ul>
+        </div>
+        <div style="background:var(--bg);border:0.5px solid var(--border);border-radius:12px;padding:14px 16px">
+          <div class="know-block-title"><span class="dot-icon"></span>产品指标</div>
+          <ul class="k-list">
+            <li>功能使用率/渗透率</li>
+            <li>任务完成率</li>
+            <li>账单查询成功率</li>
+            <li>客户满意度 CSAT</li>
+          </ul>
+        </div>
+        <div style="background:var(--bg);border:0.5px solid var(--border);border-radius:12px;padding:14px 16px">
+          <div class="know-block-title"><span class="dot-icon"></span>效率指标</div>
+          <ul class="k-list">
+            <li>账单生成时延</li>
+            <li>对账准确率</li>
+            <li>客服投诉率</li>
+            <li>发票开具时效</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▌PANEL 6: 作战策略 -->
+  <div class="tab-panel" id="panel-strategy">
+    <div class="panel-heading">
+      <h2>面试前 Checklist + 进阶技巧</h2>
+      <p>最后冲刺，确保每个细节都准备到位</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">面试前 Checklist</div>
+      <div class="grid-2" style="margin-top:8px">
+        <div>
+          <p style="font-size:12.5px;font-weight:600;color:var(--accent-dark);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">产品体验（必做）</p>
+          <div class="checklist">
+            <div class="check-item"><span class="check-box"></span>登录腾讯云体验费用中心，走一遍账单查询流程</div>
+            <div class="check-item"><span class="check-box"></span>体验代金券领取和使用流程</div>
+            <div class="check-item"><span class="check-box"></span>对比阿里云账单中心，记录 3 个差异点</div>
+            <div class="check-item"><span class="check-box"></span>了解腾讯云包年包月购买流程</div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12.5px;font-weight:600;color:var(--accent-dark);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">知识准备（必背）</p>
+          <div class="checklist">
+            <div class="check-item"><span class="check-box"></span><b>重点</b>：「说一说你对云计算的了解」— 用 3 层递进框架背熟</div>
+            <div class="check-item"><span class="check-box"></span>ToB vs ToC 核心差异，能流畅表达（结合快手经历）</div>
+            <div class="check-item"><span class="check-box"></span>计费系统四大模块（交易/资源/折扣/账票款）</div>
+            <div class="check-item"><span class="check-box"></span>RICE 优先级模型 + 数据异常分析 5 步框架</div>
+            <div class="check-item"><span class="check-box"></span>微信 5 选 1 问题 + 费米估算题练习思路</div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12.5px;font-weight:600;color:var(--accent-dark);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">个人准备（必做）</p>
+          <div class="checklist">
+            <div class="check-item"><span class="check-box"></span>快手实习项目：准备 3 个量化数据</div>
+            <div class="check-item"><span class="check-box"></span>准备 1 个「失败/挑战」案例（有复盘）</div>
+            <div class="check-item"><span class="check-box"></span>想好为什么从 ToC 转型 ToB 的故事</div>
+            <div class="check-item"><span class="check-box"></span>准备 2–3 个向面试官提问的问题</div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:12.5px;font-weight:600;color:var(--accent-dark);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">细节准备</p>
+          <div class="checklist">
+            <div class="check-item"><span class="check-box"></span>提前测试视频会议软件和网络</div>
+            <div class="check-item"><span class="check-box"></span>简历 PDF 版本确认</div>
+            <div class="check-item"><span class="check-box"></span>整理 1–2 个作品集/项目截图</div>
+            <div class="check-item"><span class="check-box"></span>了解当前腾讯云业务动态（新闻）</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-row">
+      <div class="tip-card">
+        <div class="tip-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="5.5" stroke="#D97B5A" stroke-width="1.4"/>
+            <path d="M7 4v3.5l2 1.2" stroke="#D97B5A" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h4>主动关联计费业务</h4>
+        <p>回答任何产品问题时，尽量举计费场景的例子。比如谈「数据分析」就说「代金券使用率下降分析」，让面试官感受到你的针对性准备。</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M2 7h10M7 2l5 5-5 5" stroke="#D97B5A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h4>善用你的快手背景</h4>
+        <p>快手数字人 AI 直播是 AIGC+ToC 的交叉产品，可以说「这段经历让我理解了功能商业化的逻辑，而计费系统正是商业化的底层基础设施」，建立差异化故事线。</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1L8.5 5.5H13L9.3 8.2l1.4 4.4L7 10.2l-3.7 2.4 1.4-4.4L1 5.5h4.5L7 1z" stroke="#D97B5A" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h4>问高质量的问题</h4>
+        <p>面试末尾主动提问：「团队目前在 FinOps 方向有什么规划？」「计费系统和业务线 PM 如何协作？」展示你对业务的真实兴趣。</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <p>腾讯 CSIG 计费团队 · 产品策划实习岗 · 面试备战资料</p>
+  <p style="margin-top:4px;opacity:0.55;font-size:11px">综合整理自牛客网 18 篇 CSIG 真实面经 · 腾讯云官方文档 · B 端产品方法论</p>
+</footer>
+
+<script>
+  const btns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      panels.forEach(p => {
+        p.classList.remove('active');
+        if (p.id === 'panel-' + target) {
+          p.classList.add('active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

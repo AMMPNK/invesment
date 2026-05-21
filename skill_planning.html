@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Openclaw Skill 模块工作规划文档</title>
+<style>
+  :root {
+    --bg: #FAF9F5;
+    --bg-card: #F5F3EE;
+    --text-primary: #141413;
+    --text-secondary: #73726C;
+    --text-tertiary: #3D3D3A;
+    --accent: #D97B5A;
+    --accent-dark: #C26645;
+    --border: rgba(31,30,29,0.12);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.03);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.03);
+    --radius-card: 20px;
+    --radius-btn: 10px;
+    --radius-tag: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ===== Header ===== */
+  .header {
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    padding: 48px 0 36px;
+    text-align: center;
+  }
+
+  .header .badge {
+    display: inline-block;
+    background: rgba(217, 123, 90, 0.1);
+    color: var(--accent-dark);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  .header h1 {
+    font-family: Georgia, serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .header .subtitle {
+    color: var(--text-secondary);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto 24px;
+  }
+
+  .meta-bar {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+  }
+
+  .meta-bar span { display: flex; align-items: center; gap: 5px; }
+
+  /* ===== Nav ===== */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,249,245,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0;
+  }
+
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    padding: 0 24px;
+  }
+
+  .nav a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 13px;
+    padding: 14px 16px;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav a:hover { color: var(--text-primary); border-bottom-color: var(--accent); }
+
+  /* ===== Container ===== */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ===== Section ===== */
+  .section {
+    margin-top: 64px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+
+  .section > h2 {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .section > .section-desc {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 28px;
+    max-width: 640px;
+  }
+
+  /* ===== Cards ===== */
+  .card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 28px 32px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 16px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card p { color: var(--text-tertiary); font-size: 14px; line-height: 1.75; }
+
+  /* ===== Grid ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+  @media (max-width: 680px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  /* ===== Stat Cards ===== */
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 24px 24px 20px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .stat-card .num {
+    font-family: Georgia, serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-card .label { font-size: 13px; color: var(--text-secondary); }
+
+  @media (max-width: 680px) { .stat-row { grid-template-columns: 1fr; } }
+
+  /* ===== Tag ===== */
+  .tag {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-bottom: 4px;
+  }
+
+  .tag-orange { background: rgba(217,123,90,0.1); color: var(--accent-dark); }
+  .tag-blue   { background: rgba(70,130,180,0.1); color: #3870A0; }
+  .tag-green  { background: rgba(60,150,100,0.1); color: #2E8060; }
+  .tag-gray   { background: rgba(100,100,100,0.08); color: var(--text-secondary); }
+  .tag-red    { background: rgba(200,60,60,0.08); color: #C03C3C; }
+
+  /* ===== 工作拆解表格 ===== */
+  .work-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    background: var(--bg-card);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .work-table th {
+    text-align: left;
+    padding: 14px 18px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background: rgba(31,30,29,0.03);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .work-table td {
+    padding: 14px 18px;
+    border-bottom: 0.5px solid var(--border);
+    vertical-align: top;
+    color: var(--text-tertiary);
+    line-height: 1.65;
+  }
+
+  .work-table tr:last-child td { border-bottom: none; }
+  .work-table tr:hover td { background: rgba(217,123,90,0.03); }
+
+  .owner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .owner-you   { background: rgba(217,123,90,0.12); color: var(--accent-dark); }
+  .owner-a     { background: rgba(70,130,180,0.12); color: #3870A0; }
+  .owner-b     { background: rgba(60,150,100,0.12); color: #2E8060; }
+  .owner-joint { background: rgba(130,80,180,0.1);  color: #7040B0; }
+
+  /* ===== 分工卡片 ===== */
+  .role-card {
+    border-radius: var(--radius-card);
+    padding: 28px 30px;
+    border: 0.5px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .role-card.you  { background: rgba(217,123,90,0.06); }
+  .role-card.a    { background: rgba(70,130,180,0.06); }
+  .role-card.b    { background: rgba(60,150,100,0.06); }
+
+  .role-card .role-title {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .role-card .role-sub { font-size: 12.5px; color: var(--text-secondary); margin-bottom: 18px; }
+
+  .role-card ul { list-style: none; padding: 0; }
+  .role-card ul li {
+    padding: 6px 0;
+    font-size: 13.5px;
+    color: var(--text-tertiary);
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.6;
+  }
+
+  .role-card ul li:last-child { border-bottom: none; }
+  .role-card ul li::before { content: "·"; color: var(--accent); font-size: 18px; line-height: 1.2; flex-shrink: 0; }
+
+  /* ===== 里程碑 ===== */
+  .milestone-list { list-style: none; padding: 0; }
+
+  .milestone-item {
+    display: flex;
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 0.5px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .milestone-item:last-child { border-bottom: none; }
+
+  .milestone-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(217,123,90,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .milestone-content h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+  }
+
+  .milestone-content p { font-size: 13.5px; color: var(--text-tertiary); line-height: 1.65; }
+
+  /* ===== 风险框 ===== */
+  .alert {
+    border-radius: 14px;
+    padding: 18px 22px;
+    border: 0.5px solid;
+    margin-bottom: 12px;
+    font-size: 13.5px;
+  }
+
+  .alert-warning {
+    background: rgba(220,160,20,0.06);
+    border-color: rgba(220,160,20,0.25);
+    color: #7A5800;
+  }
+
+  .alert-info {
+    background: rgba(70,130,180,0.06);
+    border-color: rgba(70,130,180,0.2);
+    color: #2A5A80;
+  }
+
+  .alert strong { font-weight: 700; }
+
+  /* ===== 核心问题清单 ===== */
+  .question-list { list-style: none; padding: 0; }
+
+  .question-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 0.5px solid var(--border);
+    align-items: flex-start;
+  }
+
+  .question-item:last-child { border-bottom: none; }
+
+  .q-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .q-content { flex: 1; }
+  .q-content .q-text { font-size: 14px; color: var(--text-primary); font-weight: 600; margin-bottom: 4px; }
+  .q-content .q-why  { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ===== divider ===== */
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 0;
+  }
+
+  /* ===== footer ===== */
+  .footer {
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    border-top: 0.5px solid var(--border);
+    margin-top: 80px;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="badge">Internal Planning · 内部对齐文档</div>
+  <h1>Openclaw Skill 模块<br>策划工作规划</h1>
+  <p class="subtitle">聚焦下沉市场，以低门槛切入 + 自建成就感驱动为核心策略，全面覆盖用户体验、内容生态与内置 Skill 库三大工作域</p>
+  <div class="meta-bar">
+    <span>📅 2026 年 Q2 启动</span>
+    <span>👥 团队规模：Leader + 2 人</span>
+    <span>🎯 核心阶段目标：UX 设计 · 生态设计 · 内置库打磨</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#context">背景认知</a>
+    <a href="#questions">核心问题</a>
+    <a href="#workdomain">工作域拆解</a>
+    <a href="#division">团队分工</a>
+    <a href="#milestone">工作节奏</a>
+    <a href="#risk">风险提示</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- ===== Section 1: 背景认知 ===== -->
+  <div class="section" id="context">
+    <div class="section-label">Section 01</div>
+    <h2>背景认知与策略定位</h2>
+    <p class="section-desc">在正式拆解工作之前，需要统一团队对竞争格局与策略方向的认知底座。</p>
+
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="num">2+</div>
+        <div class="label">大厂强劲竞品<br>腾讯 QClaw · 字节 ArkClaw</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">↓</div>
+        <div class="label">切入方向<br>下沉市场 · 低门槛 · 非专业用户</div>
+      </div>
+      <div class="stat-card">
+        <div class="num">★</div>
+        <div class="label">体验核心<br>自建成就感 · 即时正反馈</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🎯 我们的差异化方向</h3>
+        <p>大厂产品（QClaw / ArkClaw）资源厚，但通常面向专业开发者，Skill 系统设计偏技术。<br><br>
+        我们的机会在于：<b>让"0 基础用户"也能轻松定制 AI 的工作方式</b>，完成第一个属于自己的 Skill 时，产生"我也会用 AI"的成就感驱动留存与口碑传播。</p>
+      </div>
+      <div class="card">
+        <h3>📌 阶段目标三件事</h3>
+        <p>本阶段（Q2）聚焦三件事，不盲目扩张：<br><br>
+        ① <b>Skill 用户体验设计</b> — 从发现到使用，全链路低门槛<br>
+        ② <b>内容生态架构设计</b> — 内置库 + 用户自建 + 分享机制<br>
+        ③ <b>内置 Skill 库打磨</b> — 精选高频场景，打样板，建质量标准</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Section 2: 核心问题 ===== -->
+  <div class="section" id="questions">
+    <div class="section-label">Section 02</div>
+    <h2>我们必须回答的核心问题</h2>
+    <p class="section-desc">以下是在正式动工前，团队必须通过调研 + 讨论得出结论的关键决策点。</p>
+
+    <div class="card">
+      <ul class="question-list">
+
+        <li class="question-item">
+          <div class="q-num">1</div>
+          <div class="q-content">
+            <div class="q-text">我们的目标用户到底是谁？他们用 Skill 解决什么问题？</div>
+            <div class="q-why">下沉市场宽泛，需要明确是"小白职场用户"还是"非技术创业者"还是"学生群体"，用户画像不同，Skill 内容和交互方式天差地别。</div>
+          </div>
+        </li>
+
+        <li class="question-item">
+          <div class="q-num">2</div>
+          <div class="q-content">
+            <div class="q-text">Skill 的最小可理解定义是什么？用户说得出来吗？</div>
+            <div class="q-why">如果用户无法用一句话说明白"Skill 是什么"，我们的概念设计就失败了。需要在产品语言层面找到非技术用户能接受的比喻（如"AI 的工作习惯"、"助手的性格设定"）。</div>
+          </div>
+        </li>
+
+        <li class="question-item">
+          <div class="q-num">3</div>
+          <div class="q-content">
+            <div class="q-text">用户自建 Skill 的门槛底线在哪？最简流程是几步？</div>
+            <div class="q-why">成就感驱动的核心是"第一次成功"足够快。如果自建流程超过 5 步或出现任何技术词汇，用户大概率放弃。需要明确最简可行流程（MVP 自建路径）。</div>
+          </div>
+        </li>
+
+        <li class="question-item">
+          <div class="q-num">4</div>
+          <div class="q-content">
+            <div class="q-text">内置 Skill 库的选品标准是什么？做多少个算够？</div>
+            <div class="q-why">大而全不如小而精。需要确定内置库的选品原则：高频场景优先？还是能展示差异化？并定义"打磨完成"的质量标准。</div>
+          </div>
+        </li>
+
+        <li class="question-item">
+          <div class="q-num">5</div>
+          <div class="q-content">
+            <div class="q-text">Skill 分享/传播的激励机制如何设计？</div>
+            <div class="q-why">生态冷启动最难。"用户创建 → 分享 → 他人使用 → 创作者获得反馈"的正循环能否跑起来，取决于传播激励和成就感设计，需要明确玩法。</div>
+          </div>
+        </li>
+
+        <li class="question-item">
+          <div class="q-num">6</div>
+          <div class="q-content">
+            <div class="q-text">竞品 Skill 体系的核心差距在哪？我们能超越的点是什么？</div>
+            <div class="q-why">调研不只是"他们有什么"，更要找"他们哪里做得烂/下沉用户在哪里被劝退"，这是我们的机会点。</div>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Section 3: 工作域拆解 ===== -->
+  <div class="section" id="workdomain">
+    <div class="section-label">Section 03</div>
+    <h2>工作域全景拆解</h2>
+    <p class="section-desc">将本阶段工作拆为 4 个域，共 16 项任务，涵盖调研 → 设计 → 内容 → 标准 全流程。</p>
+
+    <!-- 域 A -->
+    <div style="margin-bottom: 32px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span class="tag tag-orange" style="font-size:12px; padding:5px 14px;">域 A · 用户认知与竞品研究</span>
+        <span style="font-size:13px; color:var(--text-secondary)">所有设计的基础，优先完成</span>
+      </div>
+      <table class="work-table">
+        <thead>
+          <tr>
+            <th style="width:30%">任务</th>
+            <th style="width:38%">核心产出</th>
+            <th style="width:16%">负责人</th>
+            <th style="width:16%">优先级</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>A1. 竞品 Skill 体系深度拆解</b><br><span style="font-size:12px;color:var(--text-secondary)">QClaw / ArkClaw / Claude Code / Cursor Rules</span></td>
+            <td>竞品对比矩阵：Skill 定义 / 触发方式 / 自建流程 / 分享机制 / 下沉友好度评分</td>
+            <td><span class="owner-badge owner-a">员工 A</span></td>
+            <td><span class="tag tag-red">P0</span></td>
+          </tr>
+          <tr>
+            <td><b>A2. 目标用户画像访谈 & 需求挖掘</b><br><span style="font-size:12px;color:var(--text-secondary)">5~8 个下沉用户深度访谈</span></td>
+            <td>用户画像文档 + 核心使用场景 Top 5 + 用户语言词库（他们怎么描述 Skill）</td>
+            <td><span class="owner-badge owner-b">员工 B</span></td>
+            <td><span class="tag tag-red">P0</span></td>
+          </tr>
+          <tr>
+            <td><b>A3. 产品概念测试</b><br><span style="font-size:12px;color:var(--text-secondary)">验证"低门槛自建"认知</span></td>
+            <td>3 种 Skill 概念描述方式测试报告，选出用户最能理解的表达</td>
+            <td><span class="owner-badge owner-b">员工 B</span></td>
+            <td><span class="tag tag-orange">P1</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 域 B -->
+    <div style="margin-bottom: 32px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span class="tag tag-blue" style="font-size:12px; padding:5px 14px;">域 B · Skill 用户体验设计</span>
+        <span style="font-size:13px; color:var(--text-secondary)">全链路交互设计，需与研发对齐约束</span>
+      </div>
+      <table class="work-table">
+        <thead>
+          <tr>
+            <th style="width:30%">任务</th>
+            <th style="width:38%">核心产出</th>
+            <th style="width:16%">负责人</th>
+            <th style="width:16%">优先级</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>B1. Skill 发现 & 入口设计</b><br><span style="font-size:12px;color:var(--text-secondary)">用户怎么知道有 Skill 这个东西</span></td>
+            <td>Skill 中心信息架构 + 入口设计方案（含首屏推荐/搜索/分类逻辑）</td>
+            <td><span class="owner-badge owner-you">你</span></td>
+            <td><span class="tag tag-red">P0</span></td>
+          </tr>
+          <tr>
+            <td><b>B2. Skill 使用全链路 UX</b><br><span style="font-size:12px;color:var(--text-secondary)">激活 → 使用 → 反馈感知</span></td>
+            <td>用户使用旅程地图 + 关键触点设计（激活提示 / 使用中感知 / 效果反馈）</td>
+            <td><span class="owner-badge owner-a">员工 A</span></td>
+            <td><span class="tag tag-red">P0</span></td>
+          </tr>
+          <tr>
+            <td><b>B3. 用户自建 Skill 引导流程</b><br><span style="font-size:12px;color:var(--text-secondary)">核心！成就感的来源</span></td>
+            <td>最简自建流程设计（目标 ≤ 3 步完成第一个 Skill）+ 引导文案 + 空状态设计</td>
+            <td><span class="owner-badge owner-you">你</span></td>
+            <td><span class="tag tag-red">P0</span></td>
+          </tr>
+          <tr>
+            <td><b>B4. Skill 管理页设计</b><br><span style="font-size:12px;color:var(--text-secondary)">已有 Skill 的增删改查</span></td>
+            <td>Skill 列表 / 编辑 / 删除 / 开关管理页设计方案</td>
+            <td><span class="owner-badge owner-a">员工 A</span></td>
+            <td><span class="tag tag-orange">P1</span></td>
+          </tr>
+          <tr>
+            <td><b>B5. 成就感激励体系设计</b><br><span style="font-size:12px;color:var(--text-secondary)">让用户上瘾的关键</span></td>
+            <td>成就节点设计（首次创建 / 使用 N 次 / 被分享）+ 激励方式方案（徽章/提示/数据反馈）</td>
+            <td><span class="owner-badge owner-joint">共同</span></td>
+            <td><span class="tag tag-orange">P1</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 域 C -->
+    <div style="margin-bottom: 32px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span class="tag tag-green" style="font-size:12px; padding:5px 14px;">域 C · 内容生态架构设计</span>
+        <span style="font-size:13px; color:var(--text-secondary)">内置库 + 自建 + 分享三层生态</span>
+      </div>
+      <table class="work-table">
+        <thead>
+          <tr>
+            <th style="width:30%">任务</th>
+            <th style="width:38%">核心产出</th>
+            <th style="width:16%">负责人</th>
+            <th style="width:16%">优先级</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>C1. 内置 Skill 选品策略</b><br><span style="font-size:12px;color:var(--text-secondary)">做什么？做多少？做到什么程度？</span></td>
+            <td>选品原则文档 + 首批内置库清单（场景名 / 目标人群 / 预期使用频率 / 差异化说明）</td>
+            <td><span class="owner-badge owner-you">你</span></td>
+            <td><span class="tag tag-red">P0</span></td>
+          </tr>
+          <tr>
+            <td><b>C2. Skill 内容模板 & 质量标准</b><br><span style="font-size:12px;color:var(--text-secondary)">打磨的基准线</span></td>
+            <td>官方 Skill 内容规范（结构 / 触发词 / 长度 / 禁忌词）+ 质量评分 Checklist</td>
+            <td><span class="owner-badge owner-you">你</span></td>
+            <td><span class="tag tag-red">P0</span></td>
+          </tr>
+          <tr>
+            <td><b>C3. 用户自建 Skill 内容框架</b><br><span style="font-size:12px;color:var(--text-secondary)">引导用户"写好"一个 Skill</span></td>
+            <td>自建 Skill 的填写结构设计（哪些字段 / 哪些必填 / 智能补全逻辑）+ 引导提示文案库</td>
+            <td><span class="owner-badge owner-b">员工 B</span></td>
+            <td><span class="tag tag-orange">P1</span></td>
+          </tr>
+          <tr>
+            <td><b>C4. Skill 分享 & 社区冷启动方案</b><br><span style="font-size:12px;color:var(--text-secondary)">生态的种子</span></td>
+            <td>分享机制设计 + 冷启动运营方案（种子用户招募 / KOL Skill 包 / 社区激励玩法）</td>
+            <td><span class="owner-badge owner-b">员工 B</span></td>
+            <td><span class="tag tag-orange">P1</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 域 D -->
+    <div style="margin-bottom: 0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span class="tag tag-gray" style="font-size:12px; padding:5px 14px;">域 D · 内置 Skill 库内容打磨</span>
+        <span style="font-size:13px; color:var(--text-secondary)">选品完成后的内容生产执行</span>
+      </div>
+      <table class="work-table">
+        <thead>
+          <tr>
+            <th style="width:30%">任务</th>
+            <th style="width:38%">核心产出</th>
+            <th style="width:16%">负责人</th>
+            <th style="width:16%">优先级</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>D1. 首批内置 Skill 内容生产</b><br><span style="font-size:12px;color:var(--text-secondary)">依据 C1 选品清单执行</span></td>
+            <td>首批 8~12 个内置 Skill 完整内容稿（含名称 / 描述 / 触发逻辑 / prompt 正文）</td>
+            <td><span class="owner-badge owner-a">员工 A</span></td>
+            <td><span class="tag tag-orange">P1</span></td>
+          </tr>
+          <tr>
+            <td><b>D2. Skill 内容测试 & 迭代</b><br><span style="font-size:12px;color:var(--text-secondary)">保证实际效果达标</span></td>
+            <td>测试报告（实际对话效果 / 边界 case / 失效场景）+ 修订版 prompt</td>
+            <td><span class="owner-badge owner-a">员工 A</span></td>
+            <td><span class="tag tag-orange">P1</span></td>
+          </tr>
+          <tr>
+            <td><b>D3. Skill 展示文案 & 封面设计</b><br><span style="font-size:12px;color:var(--text-secondary)">让用户想点进来</span></td>
+            <td>每个内置 Skill 的标题 / 一句话描述 / 使用场景举例 / 封面视觉</td>
+            <td><span class="owner-badge owner-b">员工 B</span></td>
+            <td><span class="tag tag-blue">P2</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ===== Section 4: 团队分工 ===== -->
+  <div class="section" id="division">
+    <div class="section-label">Section 04</div>
+    <h2>团队角色分工</h2>
+    <p class="section-desc">基于三人的角色定位，明确每人的核心职责与能力成长方向，AI 工具作为每人的协作增强器。</p>
+
+    <div class="grid-3" style="margin-bottom: 20px;">
+
+      <div class="role-card you">
+        <div class="role-title" style="color: var(--accent-dark);">你（Leader）</div>
+        <div class="role-sub">策略把控 · 体验主导 · 对齐研发</div>
+        <ul>
+          <li>Skill 整体产品定义与边界划定</li>
+          <li>Skill 中心信息架构与入口设计（B1）</li>
+          <li>自建引导核心流程设计（B3）</li>
+          <li>内置库选品策略拍板（C1）</li>
+          <li>内容质量标准制定（C2）</li>
+          <li>与研发对齐技术约束（数据结构 / 触发机制）</li>
+          <li>阶段性成果 Review + 方向校准</li>
+        </ul>
+      </div>
+
+      <div class="role-card a">
+        <div class="role-title" style="color: #3870A0;">员工 A</div>
+        <div class="role-sub">竞品研究 · 交互体验 · 内容生产</div>
+        <ul>
+          <li>竞品 Skill 体系深度拆解（A1）</li>
+          <li>Skill 使用全链路 UX 旅程设计（B2）</li>
+          <li>Skill 管理页交互设计（B4）</li>
+          <li>首批内置 Skill 内容撰写与测试（D1/D2）</li>
+          <li>协助整理竞品调研结论汇报材料</li>
+        </ul>
+      </div>
+
+      <div class="role-card b">
+        <div class="role-title" style="color: #2E8060;">员工 B</div>
+        <div class="role-sub">用户研究 · 生态运营 · 内容包装</div>
+        <ul>
+          <li>目标用户访谈与画像输出（A2）</li>
+          <li>概念认知测试（A3）</li>
+          <li>自建 Skill 内容框架设计（C3）</li>
+          <li>分享与冷启动方案（C4）</li>
+          <li>成就感激励体系协同设计（B5）</li>
+          <li>内置 Skill 展示文案与封面（D3）</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="alert alert-info">
+      <strong>AI 工具使用建议：</strong>两位员工虽无技术背景，竞品分析可用 AI 辅助结构化整理；用户访谈可用 AI 辅助设计访谈提纲和分析总结；内置 Skill 内容撰写可用 AI 辅助 Prompt 调优和效果测试；Figma + AI 工具可覆盖交互设计原型输出需求。
+    </div>
+  </div>
+
+  <!-- ===== Section 5: 里程碑 ===== -->
+  <div class="section" id="milestone">
+    <div class="section-label">Section 05</div>
+    <h2>工作推进节奏</h2>
+    <p class="section-desc">分四个阶段推进，每阶段结束有明确可交付产出用于内部对齐，不设时间 deadline，以交付物完成度为推进信号。</p>
+
+    <div class="card">
+      <ul class="milestone-list">
+
+        <li class="milestone-item">
+          <div class="milestone-dot">P1</div>
+          <div class="milestone-content">
+            <h4>阶段一：认知底座建立</h4>
+            <p>完成竞品拆解（A1）+ 用户访谈（A2）+ 产品概念测试（A3）。<br>
+            <b>对齐产出：</b>「竞品 Skill 体系对比报告」+「目标用户画像 & 需求洞察」。<br>
+            全团队看完报告，统一认知后进入设计阶段。</p>
+          </div>
+        </li>
+
+        <li class="milestone-item">
+          <div class="milestone-dot">P2</div>
+          <div class="milestone-content">
+            <h4>阶段二：核心体验设计</h4>
+            <p>完成 Skill 发现/入口设计（B1）+ 自建引导流程（B3）+ 使用链路 UX（B2）。<br>
+            <b>对齐产出：</b>「Skill UX 设计方案 v1」（包含信息架构 + 关键流程原型）。<br>
+            内部走查后确认可以开展内容工作。</p>
+          </div>
+        </li>
+
+        <li class="milestone-item">
+          <div class="milestone-dot">P3</div>
+          <div class="milestone-content">
+            <h4>阶段三：内容策略 & 生态架构</h4>
+            <p>完成选品策略（C1）+ 质量标准（C2）+ 自建内容框架（C3）+ 分享冷启动方案（C4）。<br>
+            <b>对齐产出：</b>「内置 Skill 库规划书」+「Skill 生态架构设计方案」。</p>
+          </div>
+        </li>
+
+        <li class="milestone-item">
+          <div class="milestone-dot">P4</div>
+          <div class="milestone-content">
+            <h4>阶段四：内置库首批内容生产</h4>
+            <p>完成首批 8~12 个内置 Skill 的内容撰写（D1）+ 效果测试（D2）+ 展示包装（D3）+ 管理页设计（B4）+ 成就感激励方案（B5）。<br>
+            <b>对齐产出：</b>「Skill 模块完整交付包」，可进入研发提审。</p>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== Section 6: 风险提示 ===== -->
+  <div class="section" id="risk">
+    <div class="section-label">Section 06</div>
+    <h2>需要提前关注的风险</h2>
+    <p class="section-desc">提前识别，不是让你焦虑，是让你有预案。</p>
+
+    <div class="alert alert-warning">
+      <strong>⚠️ 风险 1：用户画像失准</strong><br>
+      "下沉市场"是个宽泛标签，如果访谈样本过于集中（如全是同学/朋友），很容易得出不真实的用户需求。建议员工 B 提前设计招募标准，确保受访者真实符合目标画像（如：非技术职业 + 正在用 AI 工具 + 非一线城市）。
+    </div>
+
+    <div class="alert alert-warning">
+      <strong>⚠️ 风险 2：自建流程陷入"功能堆叠"</strong><br>
+      低门槛设计最大的陷阱是设计者高估用户能力，在"简易"路径里塞太多选项。建议 B3 设计完成后，找 3 个真实目标用户做冷启动测试，观察他们能否在 5 分钟内独立完成第一个 Skill 创建。
+    </div>
+
+    <div class="alert alert-warning">
+      <strong>⚠️ 风险 3：内置库选品与实际使用脱节</strong><br>
+      内置 Skill 如果基于"我们觉得用户需要什么"而非真实数据选品，上线后大概率使用率惨淡。C1 选品阶段必须以用户访谈结论（A2）作为输入，避免拍脑袋。
+    </div>
+
+    <div class="alert alert-info">
+      <strong>📌 建议预留的对齐节点</strong><br>
+      每阶段结束后，建议与研发团队做一次简短的技术可行性确认会（≤1 小时），确保 UX 方案和生态设计中的关键机制（如 Skill 触发条件、上下文注入方式）在技术上可落地，避免设计完发现做不了的情况。
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">
+  Openclaw Skill 策划工作规划 · 内部对齐文档 · 生成于 2026.04.01
+</div>
+
+</body>
+</html>
