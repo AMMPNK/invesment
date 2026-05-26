@@ -1,6 +1,6 @@
 {
-  "last_updated": "2026-05-25 05:19:53",
-  "last_updated_date": "2026-05-25",
+  "last_updated": "2026-05-26 05:03:23",
+  "last_updated_date": "2026-05-26",
   "nasdaq100": {
     "price": 717.54,
     "pe": 35.002605,
@@ -8,7 +8,7 @@
     "pb": 2.0055678
   },
   "csi300": {
-    "price": 4901.2896,
+    "price": 4907.6904,
     "pe": 16.937712,
     "forward_pe": null,
     "pb": null
@@ -16,19 +16,19 @@
   "macro": {
     "us10y": {
       "price": 4.558,
-      "change": -0.61
+      "change": 0.0
     },
     "dxy": {
-      "price": 98.99,
-      "change": -0.25
+      "price": 99.073,
+      "change": -0.17
     },
     "usdcny": {
-      "price": 6.7801,
-      "change": -0.2
+      "price": 6.7863,
+      "change": 0.04
     },
     "gold": {
-      "price": 4523.2,
-      "change": 0.0
+      "price": 4527.9,
+      "change": 0.1
     }
   },
   "holdings": {
@@ -69,7 +69,7 @@
       "name": "谷歌",
       "price": 382.97,
       "pe": 29.23435,
-      "forward_pe": 26.500639,
+      "forward_pe": 26.421965,
       "gm": 0.60368,
       "nm": 0.37919,
       "roe": 0.38884997,
