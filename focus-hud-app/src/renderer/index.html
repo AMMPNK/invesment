@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob:; connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co; img-src 'self' data: blob:;" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Focus HUD</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* ===== Electron 集成补丁 ===== */
+  html, body {
+    background: transparent !important;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  body {
+    background: transparent !important;
+  }
+  .help-pill, .desktop-hint { display: none !important; }
+
+  /* ============================================================
+     拖拽策略：
+     - 整个 body 默认可拖（拖动 = 移动窗口）
+     - HUD 卡片本身 no-drag，内部内容可点击
+     - hud-header 是主要拖拽手柄，cursor 手型提示
+     ============================================================ */
+  body {
+    -webkit-app-region: drag;
+  }
+  /* HUD 不再固定 bottom/right，由 Electron 窗口位置决定 */
+  .hud {
+    -webkit-app-region: no-drag;
+    position: fixed !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    top: auto !important;
+    /* 让 HUD 填满整个透明窗口，拖拽时跟着走 */
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  /* 头部拖拽手柄：拖这里移动窗口 */
+  .hud-header {
+    -webkit-app-region: drag;
+    cursor: grab;
+  }
+  .hud-header:active { cursor: grabbing; }
+  /* 头部内的按钮必须 no-drag 才能点击 */
+  .hud-header button,
+  .hud-header input,
+  .hud-header .icon-btn,
+  .ws-tabs {
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+  }
+  /* 所有交互元素 no-drag */
+  .input-box, .modal, .modal-overlay, .cal-panel,
+  .journal-panel, button, textarea, input,
+  .hud-body, .hud-footer {
+    -webkit-app-region: no-drag;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+  /* 同步状态条 */
+  .sync-bar {
+    position: fixed;
+    top: 8px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 4px 10px;
+    box-shadow: var(--shadow);
+    z-index: 9997;
+    -webkit-app-region: no-drag;
+    cursor: pointer;
+    user-select: none;
+  }
+  .sync-bar .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #9CA3AF;
+    transition: background 0.3s;
+  }
+  .sync-bar.online .dot { background: var(--color-success); }
+  .sync-bar.syncing .dot { background: var(--color-warn); animation: pulse 1.2s infinite; }
+  .sync-bar.error .dot { background: var(--color-danger); }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* 登录 modal */
+  .auth-modal {
+    width: 380px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+  }
+  .auth-modal h3 { margin: 0 0 4px; font-size: 18px; }
+  .auth-modal .sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; }
+  .auth-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .auth-input:focus { border-color: var(--color-primary); }
+  .auth-row { display: flex; gap: 8px; margin-top: 8px; }
+  .auth-row .btn { flex: 1; }
+  .auth-msg {
+    font-size: 12px;
+    color: var(--color-danger);
+    min-height: 16px;
+    margin: 6px 0 0;
+  }
+  .auth-msg.ok { color: var(--color-success); }
+  .auth-bottom-link {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+  .auth-bottom-link:hover { text-decoration: underline; }
+  .auth-skip {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- 同步状态条 -->
+<div class="sync-bar" id="sync-bar" title="点击查看同步详情">
+  <span class="dot"></span>
+  <span class="text" id="sync-text">未登录</span>
+</div>
+
+<!-- 登录 Modal -->
+<div class="modal-overlay" id="modal-auth" style="display:none;">
+  <div class="auth-modal">
+    <h3 id="auth-title">登录 / 注册</h3>
+    <div class="sub" id="auth-sub">使用邮箱密码同步多设备数据</div>
+    <input type="email" class="auth-input" id="auth-email" placeholder="邮箱" autocomplete="email" />
+    <input type="password" class="auth-input" id="auth-password" placeholder="密码（至少 6 位）" autocomplete="current-password" />
+    <div class="auth-row">
+      <button class="btn" id="auth-cancel">取消</button>
+      <button class="btn primary" id="auth-submit">登录</button>
+    </div>
+    <div class="auth-msg" id="auth-msg"></div>
+    <div class="auth-bottom-link" id="auth-toggle">还没有账号？点这里注册</div>
+    <div class="auth-skip" id="auth-skip">暂不登录，仅本地使用</div>
+  </div>
+</div>
+
+<!-- HUD -->
+<div id="hud" class="hud">
+  <div class="ws-tabs" id="ws-tabs">
+    <button class="ws-tab active" data-ws="work">💼 工作</button>
+    <button class="ws-tab" data-ws="life">🏠 生活</button>
+  </div>
+  <div class="hud-header" id="hud-header">
+    <div class="hud-status">
+      <span class="status-dot" id="status-dot"></span>
+      <span class="status-text" id="status-text">没有进行中的任务</span>
+    </div>
+    <div class="hud-header-btns">
+      <button class="cal-toggle-btn" id="cal-toggle-btn" title="弹性日历视图">📅</button>
+      <button class="cal-toggle-btn" id="journal-btn" title="日记存档">📖</button>
+      <button class="icon-btn warn" id="quick-action" style="display:none;"></button>
+      <button class="toggle-btn" id="hud-toggle" title="展开/收起">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 11L3 6h10z"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="hud-body">
+    <div class="hud-content" id="task-list"></div>
+    <div class="ai-nav-msg" id="ai-nav-msg" style="display:none;">
+      <span>🧭</span>
+      <span class="text" id="ai-nav-text"></span>
+      <button class="close" id="ai-nav-close">✕</button>
+    </div>
+    <div class="hud-footer">
+      <div class="type-bar" id="type-bar">
+        <button class="type-pill active-plan" data-type="plan">📋 计划</button>
+        <button class="type-pill" data-type="temp">⚡ 临时</button>
+        <button class="type-pill" data-type="daily">🔁 每日固定</button>
+      </div>
+      <div class="input-row">
+        <input type="text" class="input-box" id="task-input" placeholder="录入新任务… 回车确认" autocomplete="off" />
+        <button class="mic-btn" id="mic-btn" title="语音输入">🎙</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 弹性日历面板 -->
+<div class="cal-panel" id="cal-panel">
+  <div class="cal-header">
+    <div>
+      <h3>📅 今日日历</h3>
+      <div class="cal-date" id="cal-date-label"></div>
+    </div>
+    <button class="cal-close-btn" id="cal-close-btn">✕</button>
+  </div>
+  <div class="cal-timeline" id="cal-timeline"></div>
+  <div class="cal-footer">
+    <div class="cal-stat" id="cal-stat"></div>
+  </div>
+</div>
+
+<!-- 日记列表面板 -->
+<div class="journal-panel" id="journal-panel">
+  <div class="journal-panel-header">
+    <h4>📖 日记存档</h4>
+    <button class="journal-panel-close" id="journal-panel-close">✕</button>
+  </div>
+  <div class="journal-entry-list" id="journal-entry-list"></div>
+</div>
+<!-- journal-fab 已移入 HUD 头部，此处保留隐藏占位避免 app.js 报错 -->
+<button id="journal-fab" style="display:none;"></button>
+
+<!-- 模态：切出 -->
+<div class="modal-overlay" id="modal-suspend" style="display:none;">
+  <div class="modal">
+    <div class="modal-title">挂起任务，保存现场</div>
+    <div class="modal-task-name" id="suspend-task-name"></div>
+    <textarea class="modal-textarea" id="suspend-context" placeholder="一句话：你刚才正在想/做什么？"></textarea>
+    <div class="modal-hint">💡 越具体越好，例如"刚写到第三个论点的反例"</div>
+    <div class="modal-actions">
+      <button class="btn" id="suspend-cancel">取消</button>
+      <button class="btn warn" id="suspend-confirm">确认挂起</button>
+    </div>
+  </div>
+</div>
+
+<!-- 模态：切回 -->
+<div class="modal-overlay" id="modal-restore" style="display:none;">
+  <div class="modal">
+    <div class="modal-title">回到 · 你刚才在做</div>
+    <div class="modal-task-name" id="restore-task-name"></div>
+    <div class="modal-context-display" id="restore-context"></div>
+    <div class="modal-hint">⏱ 已挂起 <span id="restore-duration"></span></div>
+    <div class="modal-actions">
+      <button class="btn" id="restore-cancel">再等等</button>
+      <button class="btn primary" id="restore-confirm">开始恢复</button>
+    </div>
+  </div>
+</div>
+
+<!-- 收尾仪式 / 日记 Modal -->
+<div class="modal-overlay" id="modal-ritual" style="display:none;">
+  <div class="journal-modal">
+    <div class="jm-head">
+      <div class="jm-head-top">
+        <div>
+          <div class="jm-date-big" id="jm-date-big"></div>
+          <div class="jm-date-sub" id="jm-date-sub"></div>
+        </div>
+        <span class="jm-streak" id="jm-streak" style="display:none;">🔥 <span id="jm-streak-num"></span> 天</span>
+      </div>
+      <div class="jm-mood-row" id="jm-mood-row">
+        <button class="jm-mood-btn" data-mood="5">🤩<span class="mood-label">超棒</span></button>
+        <button class="jm-mood-btn" data-mood="4">😊<span class="mood-label">不错</span></button>
+        <button class="jm-mood-btn" data-mood="3">😐<span class="mood-label">一般</span></button>
+        <button class="jm-mood-btn" data-mood="2">😕<span class="mood-label">有点累</span></button>
+        <button class="jm-mood-btn" data-mood="1">😩<span class="mood-label">很糟</span></button>
+      </div>
+    </div>
+
+    <div class="jm-stats">
+      <div class="jm-ring">
+        <svg viewBox="0 0 80 80">
+          <circle class="jm-ring-bg" cx="40" cy="40" r="32"/>
+          <circle class="jm-ring-fg" id="jm-ring-fg" cx="40" cy="40" r="32"
+                  stroke-dasharray="201.06" stroke-dashoffset="201.06"/>
+        </svg>
+        <div class="jm-ring-text">
+          <div class="jm-ring-num" id="jm-ring-num">0/0</div>
+          <div class="jm-ring-label">完成度</div>
+        </div>
+      </div>
+      <div class="jm-stat-grid">
+        <div class="jm-stat-cell"><div class="label">完成率</div><div class="value" id="jm-stat-pct">—</div></div>
+        <div class="jm-stat-cell"><div class="label">专注时长</div><div class="value" id="jm-stat-focus">—</div></div>
+        <div class="jm-stat-cell"><div class="label">临时事务</div><div class="value" id="jm-stat-temp">—</div></div>
+        <div class="jm-stat-cell"><div class="label">挂起次数</div><div class="value" id="jm-stat-suspend">—</div></div>
+      </div>
+    </div>
+
+    <div class="jm-pep" id="jm-pep"><span class="icon">💡</span><span id="jm-pep-text"></span></div>
+
+    <div class="jm-body">
+      <div class="jm-section-title">⏱ 今日时间轴 <span class="count" id="jm-tl-count"></span></div>
+      <div class="jm-timeline" id="jm-timeline"></div>
+
+      <div id="jm-undone-section" style="display:none;">
+        <div class="jm-section-title">⏸ 未完成 <span class="count" id="jm-undone-count"></span></div>
+        <div class="jm-undone-list" id="jm-undone-list"></div>
+        <div class="jm-postpone-row">
+          <span>这些任务可以延后到明天</span>
+          <button class="jm-postpone-btn" id="jm-postpone-btn">↦ 全部延后</button>
+        </div>
+      </div>
+
+      <div class="jm-reflect">
+        <div class="jm-reflect-prompt"><span class="icon">✦</span><span id="jm-reflect-question"></span></div>
+        <div class="jm-reflect-hint">不写也没关系，今天本身已经被记下了。</div>
+        <textarea class="jm-textarea" id="jm-user-note" placeholder="写下你的回答…"></textarea>
+      </div>
+    </div>
+
+    <div class="jm-footer">
+      <span class="left-hint">无论是否填写，今日数据都会自动归档</span>
+      <div style="display:flex;gap:8px;">
+        <button class="jm-btn" id="jm-skip">稍后</button>
+        <button class="jm-btn primary" id="jm-save">完成收尾</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 日记详情 Modal -->
+<div class="modal-overlay" id="modal-journal-detail" style="display:none;">
+  <div class="journal-detail-modal">
+    <div class="journal-detail-title" id="jd-title"></div>
+    <div class="journal-detail-sub" id="jd-sub"></div>
+    <div class="jd-mood-bar" id="jd-mood-bar" style="display:none;">
+      <span class="emoji" id="jd-mood-emoji"></span>
+      <span id="jd-mood-text"></span>
+    </div>
+    <div class="journal-detail-section">
+      <h4>⏱ 时间轴</h4>
+      <div class="journal-detail-text" id="jd-done"></div>
+    </div>
+    <div class="journal-detail-section" id="jd-undone-section">
+      <h4>未完成</h4>
+      <div class="journal-detail-text" id="jd-undone"></div>
+    </div>
+    <div class="journal-detail-section" id="jd-note-section">
+      <h4>反思</h4>
+      <div class="journal-detail-text" id="jd-note"></div>
+    </div>
+    <div style="text-align:right;margin-top:16px;">
+      <button class="btn" id="jd-close">关闭</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<!-- 脚本顺序：先用 adapter.js 同步替换 localStorage，再加载 app.js -->
+<script src="adapter.js"></script>
+<script src="app.js"></script>
+<script src="sync-ui.js"></script>
+</body>
+</html>

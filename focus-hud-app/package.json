@@ -1,0 +1,61 @@
+{
+  "name": "focus-hud",
+  "productName": "Focus HUD",
+  "version": "1.0.0",
+  "description": "Focus HUD — a desktop companion that helps you stay focused and ritualize your day.",
+  "main": "src/main/index.js",
+  "author": {
+    "name": "baixiaoyang",
+    "email": "baixiaoyang@example.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "FHUD_DEV=1 electron .",
+    "build:mac": "electron-builder --mac --arm64 --x64",
+    "build:mac-dmg": "electron-builder --mac dmg",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "electron-store": "^8.2.0",
+    "keytar": "^7.9.0"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.baixiaoyang.focus-hud",
+    "productName": "Focus HUD",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "resources/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["arm64", "x64"]
+        }
+      ],
+      "icon": "resources/icon.png",
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "identity": null,
+      "extendInfo": {
+        "LSUIElement": false,
+        "NSCameraUsageDescription": "Not used.",
+        "NSMicrophoneUsageDescription": "Not used."
+      }
+    },
+    "dmg": {
+      "title": "Focus HUD ${version}"
+    }
+  }
+}
