@@ -1,42 +1,42 @@
 {
-  "last_updated": "2026-05-28 05:08:27",
-  "last_updated_date": "2026-05-28",
+  "last_updated": "2026-05-29 05:13:06",
+  "last_updated_date": "2026-05-29",
   "nasdaq100": {
-    "price": 729.45,
-    "pe": 35.58359,
+    "price": 735.6,
+    "pe": 35.8836,
     "forward_pe": null,
-    "pb": 2.038857
+    "pb": 2.0560465
   },
   "csi300": {
-    "price": 4881.1733,
-    "pe": 17.210823,
+    "price": 4917.0176,
+    "pe": 17.229988,
     "forward_pe": null,
     "pb": null
   },
   "macro": {
     "us10y": {
-      "price": 4.481,
-      "change": -0.27
+      "price": 4.455,
+      "change": -0.58
     },
     "dxy": {
-      "price": 99.494,
-      "change": 0.29
+      "price": 99.073,
+      "change": 0.05
     },
     "usdcny": {
-      "price": 6.7847,
-      "change": 0.09
+      "price": 6.7697,
+      "change": -0.14
     },
     "gold": {
-      "price": 4403.4,
-      "change": -1.74
+      "price": 4541.9,
+      "change": 0.21
     }
   },
   "holdings": {
     "NVDA": {
       "name": "英伟达",
-      "price": 212.6,
-      "pe": 32.557426,
-      "forward_pe": 16.812,
+      "price": 214.25,
+      "pe": 32.810104,
+      "forward_pe": 16.926723,
       "gm": 0.74144995,
       "nm": 0.62966,
       "roe": 1.14288,
@@ -45,42 +45,42 @@
     },
     "AAPL": {
       "name": "苹果",
-      "price": 310.85,
-      "pe": 37.63317,
-      "forward_pe": 32.35352,
+      "price": 312.51,
+      "pe": 37.6065,
+      "forward_pe": 32.526295,
       "gm": 0.47862,
       "nm": 0.27152002,
       "roe": 1.4147099,
-      "peg": 2.68,
+      "peg": 2.72,
       "revenue_growth": 0.166
     },
     "MSFT": {
       "name": "微软",
-      "price": 412.67,
-      "pe": 24.563692,
-      "forward_pe": 21.340147,
+      "price": 426.99,
+      "pe": 25.416073,
+      "forward_pe": 22.080667,
       "gm": 0.68309,
       "nm": 0.39341998,
       "roe": 0.34013999,
-      "peg": 1.28,
+      "peg": 1.32,
       "revenue_growth": 0.183
     },
     "GOOGL": {
       "name": "谷歌",
-      "price": 388.83,
-      "pe": 29.681677,
-      "forward_pe": 26.863327,
+      "price": 390.13,
+      "pe": 29.758202,
+      "forward_pe": 26.924866,
       "gm": 0.60368,
       "nm": 0.37919,
       "roe": 0.38884997,
-      "peg": 1.51,
+      "peg": 1.53,
       "revenue_growth": 0.218
     },
     "AMZN": {
       "name": "亚马逊",
-      "price": 271.85,
-      "pe": 31.647264,
-      "forward_pe": 27.5727,
+      "price": 274.0,
+      "pe": 31.639723,
+      "forward_pe": 27.790766,
       "gm": 0.50604,
       "nm": 0.12224,
       "roe": 0.24285,
@@ -89,46 +89,46 @@
     },
     "META": {
       "name": "Meta",
-      "price": 635.255,
-      "pe": 23.091785,
-      "forward_pe": 17.566862,
+      "price": 635.29,
+      "pe": 23.093056,
+      "forward_pe": 17.56783,
       "gm": 0.81941,
       "nm": 0.32837,
       "roe": 0.32930002,
-      "peg": 0.88,
+      "peg": 0.92,
       "revenue_growth": 0.331
     },
     "TSLA": {
       "name": "特斯拉",
-      "price": 440.36,
-      "pe": 400.32724,
-      "forward_pe": 175.4639,
+      "price": 442.1,
+      "pe": 398.2883,
+      "forward_pe": 176.15721,
       "gm": 0.19065,
       "nm": 0.03946,
       "roe": 0.04901,
-      "peg": 5.97,
+      "peg": 6.09,
       "revenue_growth": 0.158
     },
     "AVGO": {
       "name": "博通",
-      "price": 421.86,
-      "pe": 81.91456,
-      "forward_pe": 23.056364,
+      "price": 426.58,
+      "pe": 83.31641,
+      "forward_pe": 23.188208,
       "gm": 0.76725996,
       "nm": 0.36571997,
       "roe": 0.33370999,
-      "peg": 0.92,
+      "peg": 0.93,
       "revenue_growth": 0.295
     },
     "TSM": {
       "name": "台积电",
-      "price": 422.73,
-      "pe": 36.099915,
-      "forward_pe": 21.65988,
+      "price": 424.86,
+      "pe": 36.374996,
+      "forward_pe": 21.769016,
       "gm": 0.61873,
       "nm": 0.46505,
       "roe": 0.3621,
-      "peg": 1.28,
+      "peg": 1.32,
       "revenue_growth": 0.351
     }
   },
